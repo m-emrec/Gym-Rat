@@ -1,0 +1,128 @@
+import 'package:flutter/material.dart';
+import 'package:gym_rat_v2/constants.dart';
+import 'package:gym_rat_v2/utils/Boxes/archive.dart';
+import 'package:gym_rat_v2/utils/Boxes/workouts_container.dart';
+import 'package:gym_rat_v2/utils/appBar.dart';
+import 'package:gym_rat_v2/utils/customTitle.dart';
+
+import '../utils/navigationBar.dart';
+
+class WorkoutsMainPage extends StatelessWidget {
+  const WorkoutsMainPage({super.key});
+
+  static const routeName = "workouts-main-page";
+
+  @override
+  Widget build(BuildContext context) {
+    final String _userName = "memrec";
+
+    //* contains New Cycle and New Workout buttons
+    Widget buttonContainer = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 18),
+      alignment: Alignment.centerRight,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+
+          //* add new workout Cycle button
+          Tooltip(
+            message: "Click to add new Cycle",
+            child: OutlinedButton(
+              onPressed: () => {},
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.add,
+                    color: AppColors.kIconColor,
+                  ),
+                  Text(
+                    "New Cycle",
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodySmall!.color,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Just for some spacing
+          const SizedBox(
+            width: 10,
+          ),
+
+          //*  add new workout button
+          Tooltip(
+            message: "Click to add new Workout",
+            child: OutlinedButton(
+              onPressed: () => {},
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.add,
+                    color: AppColors.kIconColor,
+                  ),
+                  Text(
+                    "New Workout",
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodySmall!.color,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    return Scaffold(
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(
+          75,
+        ),
+        child: CustomAppBar(),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomTitle(
+            title: "$_userName,",
+            subtitle: "Your Workouts",
+          ),
+          buttonContainer,
+          const Divider(
+            indent: 15,
+            endIndent: 15,
+            color: AppColors.kPrimary,
+            thickness: 3,
+          ),
+          const Flexible(
+            // ? buradaki flex değerini değiştir sonradan
+            flex: 5,
+            child: WorkoutsBox(),
+          ),
+          const Flexible(
+            child: ArchiveBox(),
+          ),
+        ],
+      ),
+      bottomNavigationBar: const CustomNavigationBar(),
+    );
+  }
+}
+
+/*
+
+Text(
+              "Workouts",
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            Text(
+              "Title",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            Text(
+              "Subtitle , Subtitle , Subtitle , Subtitle , ",
+              style: Theme.of(context).textTheme.displaySmall,
+            )
+
+*/
