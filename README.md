@@ -1,6 +1,7 @@
-# gym_rat_v2
+# Gym Rat
 
 A new Flutter project.
+Figma file : https://www.figma.com/file/dzcQzU5UIafhJV7OgtYCME/Gym-Rat?node-id=0%3A1&t=AcrRAi2aQtGUM1jc-1
 
 ## Getting Started
 
