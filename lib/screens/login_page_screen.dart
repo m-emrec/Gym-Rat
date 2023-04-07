@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
@@ -14,10 +16,29 @@ class LoginPage extends StatelessWidget {
 
   static const routeName = "login-page";
 
-  void signInUSer(BuildContext ctx) {
-    // logger.i("Email : ${passWordController.text}");
-    final snack = customSnackBar(message: "Snack Bar Test").createSnackBar();
-    ScaffoldMessenger.of(ctx).showSnackBar(snack);
+  void signInUSer({
+    required BuildContext ctx,
+    AuthCredential? credential,
+    required String email,
+    required String password,
+  }) {
+    final snackBar =
+        customSnackBar(message: "Logged in as $email").createSnackBar();
+
+    if (credential == null) {
+      // Sign in via email and password.
+      // TODO: add cathError to login page. 
+      FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then(
+            (_) => {
+              ScaffoldMessenger.of(ctx).showSnackBar(snackBar),
+              Navigator.of(ctx).pushReplacementNamed("/"),
+            },
+          );
+    } else {
+      FirebaseAuth.instance.signInWithCredential(credential);
+    }
   }
 
   final TextEditingController emailController = TextEditingController();
@@ -90,7 +111,7 @@ class LoginPage extends StatelessWidget {
       ),
     );
     //final snackBar = ModalRoute.of(context)?.settings.arguments as SnackBar;
-    
+
     var signUpText = Padding(
       padding: const EdgeInsets.symmetric(vertical: 30.0),
       child: Row(
@@ -147,7 +168,10 @@ class LoginPage extends StatelessWidget {
                 ),
                 // Continue Button
                 CustomButton(
-                  onTap: ()=> signInUSer(context),
+                  onTap: () => signInUSer(
+                      ctx: context,
+                      email: emailController.text,
+                      password: passwordController.text),
                   text: "Continue",
                 ),
                 // Don't have an Account ? Sign Up(Text button)
