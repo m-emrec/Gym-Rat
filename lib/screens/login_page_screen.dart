@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/screens/sign_up_page.dart';
+import 'package:gym_rat_v2/utils/customSnackBar.dart';
 import 'package:gym_rat_v2/utils/customTitle.dart';
 
 import '../utils/custom_buton.dart';
@@ -13,8 +14,10 @@ class LoginPage extends StatelessWidget {
 
   static const routeName = "login-page";
 
-  void signInUSer() {
+  void signInUSer(BuildContext ctx) {
     // logger.i("Email : ${passWordController.text}");
+    final snack = customSnackBar(message: "Snack Bar Test").createSnackBar();
+    ScaffoldMessenger.of(ctx).showSnackBar(snack);
   }
 
   final TextEditingController emailController = TextEditingController();
@@ -86,7 +89,8 @@ class LoginPage extends StatelessWidget {
         ],
       ),
     );
-
+    //final snackBar = ModalRoute.of(context)?.settings.arguments as SnackBar;
+    
     var signUpText = Padding(
       padding: const EdgeInsets.symmetric(vertical: 30.0),
       child: Row(
@@ -108,6 +112,7 @@ class LoginPage extends StatelessWidget {
         ],
       ),
     );
+    //ScaffoldMessenger.of(context).showSnackBar(snackBar);
     return Scaffold(
       backgroundColor: AppColors.kSignInPagebgColor,
       body: Center(
@@ -142,7 +147,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 // Continue Button
                 CustomButton(
-                  onTap: signInUSer,
+                  onTap: ()=> signInUSer(context),
                   text: "Continue",
                 ),
                 // Don't have an Account ? Sign Up(Text button)

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
 
@@ -28,6 +29,7 @@ class CustomAppBar extends StatelessWidget {
         actions: [
           //* Profile button
           GestureDetector(
+            onTap: ()=>FirebaseAuth.instance.signOut(),
             child: Image.asset(
               filterQuality: FilterQuality.high,
               "lib/assets/images/user_icon.webp",
