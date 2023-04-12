@@ -1,11 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/utils/Boxes/archive.dart';
 import 'package:gym_rat_v2/utils/Boxes/workouts_container.dart';
-import 'package:gym_rat_v2/utils/appBar.dart';
-import 'package:gym_rat_v2/utils/customTitle.dart';
+import 'package:gym_rat_v2/utils/Custom%20Widgets/appBar.dart';
+import 'package:gym_rat_v2/utils/Custom%20Widgets/customTitle.dart';
 
-import '../utils/navigationBar.dart';
+import '../utils/Custom Widgets/navigationBar.dart';
 
 class WorkoutsMainPage extends StatelessWidget {
   const WorkoutsMainPage({super.key});
@@ -14,7 +15,7 @@ class WorkoutsMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String _userName = "memrec";
+    final String? _userName = FirebaseAuth.instance.currentUser?.displayName;
 
     //* contains New Cycle and New Workout buttons
     Widget buttonContainer = Container(

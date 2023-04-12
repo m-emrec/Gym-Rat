@@ -1,44 +1,45 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_rat_v2/authService.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/logger.dart';
+import 'package:gym_rat_v2/provider/user_provider.dart';
 import 'package:gym_rat_v2/screens/sign_up_page.dart';
-import 'package:gym_rat_v2/utils/customSnackBar.dart';
-import 'package:gym_rat_v2/utils/customTitle.dart';
+import 'package:gym_rat_v2/utils/Custom%20Widgets/customSnackBar.dart';
+import 'package:gym_rat_v2/utils/Custom%20Widgets/customTitle.dart';
+import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_progress_indicator.dart';
+import 'package:provider/provider.dart';
 
-import '../utils/custom_buton.dart';
-import '../utils/custom_text_field.dart';
+import '../utils/Custom Widgets/custom_buton.dart';
+import '../utils/Custom Widgets/custom_text_field.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
   static const routeName = "login-page";
 
+  void onError(BuildContext ctx, var error) {
+    logger.e(error.code);
+    Map errorMap = {
+      "user-not-found":
+          "User not found ! Please check your e-mail address and try again.",
+      "wrong-password":
+          "Wrong Password ! Please check your password and try again. If you forget your password click Forget my password.",
+      "invalid-email": "Invalid email ! PLease check your email address."
+    };
+    final snackBar =
+        customSnackBar(message: errorMap[error.code]).createSnackBar();
+    ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
+  }
+
   void signInUSer({
     required BuildContext ctx,
-    AuthCredential? credential,
     required String email,
     required String password,
   }) {
-    final snackBar =
-        customSnackBar(message: "Logged in as $email").createSnackBar();
-
-    if (credential == null) {
-      // Sign in via email and password.
-      // TODO: add cathError to login page. 
-      FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then(
-            (_) => {
-              ScaffoldMessenger.of(ctx).showSnackBar(snackBar),
-              Navigator.of(ctx).pushReplacementNamed("/"),
-            },
-          );
-    } else {
-      FirebaseAuth.instance.signInWithCredential(credential);
-    }
+    Provider.of<UserProvider>(ctx, listen: false)
+        .signIn(ctx: ctx, email: email, password: password);
   }
 
   final TextEditingController emailController = TextEditingController();
@@ -46,7 +47,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // This container contains --or-- text and below that a row with Google and Facebook Sıng in in it.
-    var alternativeSignInContainer = Container(
+    Widget alternativeSignInContainer = Container(
       margin: const EdgeInsets.only(bottom: 20),
       alignment: Alignment.center,
       width: 150,
@@ -88,14 +89,16 @@ class LoginPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                // Google Sign in
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () => Provider.of<UserProvider>(context,listen: false).googleSignIn(context),
                   child: Image.asset(
                     "lib/assets/images/GoogleLogo.webp",
                     height: 32,
                     width: 32,
                   ),
                 ),
+                // Facebook Sign in
                 GestureDetector(
                   onTap: () {},
                   child: Image.asset(
@@ -110,10 +113,9 @@ class LoginPage extends StatelessWidget {
         ],
       ),
     );
-    //final snackBar = ModalRoute.of(context)?.settings.arguments as SnackBar;
 
     var signUpText = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30.0),
+      padding: const EdgeInsets.only(top: 20.0, bottom: 30.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -133,7 +135,6 @@ class LoginPage extends StatelessWidget {
         ],
       ),
     );
-    //ScaffoldMessenger.of(context).showSnackBar(snackBar);
     return Scaffold(
       backgroundColor: AppColors.kSignInPagebgColor,
       body: Center(
@@ -159,6 +160,7 @@ class LoginPage extends StatelessWidget {
                   textController: emailController,
                   isEmailField: true,
                   label: "Email",
+                  goToNextTextField: true,
                 ),
                 // Password Field
                 CustomTextField(
@@ -173,6 +175,14 @@ class LoginPage extends StatelessWidget {
                       email: emailController.text,
                       password: passwordController.text),
                   text: "Continue",
+                ),
+                TextButton(
+                  //TODO: Add Forget my password function.
+                  onPressed: () {},
+                  child: const Text(
+                    "Forget my password.",
+                    style: TextStyle(color: AppColors.kButtonColor),
+                  ),
                 ),
                 // Don't have an Account ? Sign Up(Text button)
                 signUpText,

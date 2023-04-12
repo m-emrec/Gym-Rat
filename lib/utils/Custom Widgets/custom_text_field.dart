@@ -8,13 +8,14 @@ class CustomTextField extends StatelessWidget {
     this.isEmailField = false,
     required this.label,
     this.isPassword = false,
+    this.goToNextTextField = false,
   });
 
   final TextEditingController textController;
   final bool isEmailField;
   final bool isPassword;
   final String label;
-
+  final bool goToNextTextField;
   final OutlineInputBorder _border = OutlineInputBorder(
     borderSide: const BorderSide(
       color: Colors.black,
@@ -42,6 +43,7 @@ class CustomTextField extends StatelessWidget {
         ),
         obscureText: isPassword,
         cursorColor: AppColors.kButtonColor,
+        textInputAction: goToNextTextField ? TextInputAction.next : TextInputAction.done,
       ),
     );
   }

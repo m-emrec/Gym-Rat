@@ -5,13 +5,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/logger.dart';
+import 'package:gym_rat_v2/provider/user_provider.dart';
+import 'package:gym_rat_v2/screens/auth_page.dart';
 import 'package:gym_rat_v2/screens/login_page_screen.dart';
-import 'package:gym_rat_v2/utils/customSnackBar.dart';
+import 'package:gym_rat_v2/utils/Custom%20Widgets/customSnackBar.dart';
+import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_progress_indicator.dart';
 import 'package:gym_rat_v2/utils/terms_and_privacy_popup.dart';
+import 'package:provider/provider.dart';
 
-import '../utils/customTitle.dart';
-import '../utils/custom_buton.dart';
-import '../utils/custom_text_field.dart';
+import '../utils/Custom Widgets/customTitle.dart';
+import '../utils/Custom Widgets/custom_buton.dart';
+import '../utils/Custom Widgets/custom_text_field.dart';
 
 class SignUpPage extends StatelessWidget {
   SignUpPage({super.key});
@@ -20,6 +24,7 @@ class SignUpPage extends StatelessWidget {
 
   // I use this function to show an error message during Sign Up process.
   void onError(BuildContext ctx, var error) {
+    Navigator.of(ctx).pop(); // Just for closing the Progress Indicator.
     logger.e(error.code);
     Map errorMap = {
       "unknown": "Email or Password can't be empty!",
@@ -36,27 +41,14 @@ class SignUpPage extends StatelessWidget {
   }
 
   // Sign up function.
-  void signUpUser(String email, String password, BuildContext ctx) {
-    final SnackBar snackBar =
-        customSnackBar(message: "Signed Up!").createSnackBar();
-    FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        )
-        .catchError(
-          (e) => onError(ctx, e),
-        )
-        .then(
-          (value) => {
-            ScaffoldMessenger.of(ctx).showSnackBar(snackBar),
-            Navigator.of(ctx).pushReplacementNamed(
-              LoginPage.routeName,
-            )
-          },
-        );
+  void signUpUser({
+    required String email,
+    required String password,
+    required BuildContext ctx,
+  }) {
+    Provider.of<UserProvider>(ctx, listen: false)
+        .signUp(email: email, password: password, ctx: ctx);
   }
-
 
   void showTermsofServiceAndPrivacyPolicy(BuildContext ctx) {
     // Shows the Terms and pravicy popup widget
@@ -70,7 +62,7 @@ class SignUpPage extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var termsAndPrivacyPolicyText = Padding(
+    Widget termsAndPrivacyPolicyText = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 30),
       child: Wrap(
         alignment: WrapAlignment.center,
@@ -96,9 +88,10 @@ class SignUpPage extends StatelessWidget {
               showTermsofServiceAndPrivacyPolicy(context);
             },
             child: const Text(
-              "Terms of Service and Privacy Policy",
+              "Terms of Service and Privacy Policy.",
               style: TextStyle(
                 color: AppColors.kTextColor,
+                fontStyle: FontStyle.italic,
               ),
             ),
           )
@@ -123,7 +116,7 @@ class SignUpPage extends StatelessWidget {
             child: SingleChildScrollView(
               // I use BackDropFilter to give blur effect
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16.0),
                   decoration: BoxDecoration(
@@ -152,7 +145,9 @@ class SignUpPage extends StatelessWidget {
                         textController: emailController,
                         isEmailField: true,
                         label: "Email",
+                        goToNextTextField: true,
                       ),
+
                       // Password Field
                       CustomTextField(
                         textController: passwordController,
@@ -165,8 +160,11 @@ class SignUpPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 60.0),
                         child: CustomButton(
-                          onTap: () => signUpUser(emailController.text,
-                              passwordController.text, context),
+                          onTap: () => signUpUser(
+                            ctx: context,
+                            email: emailController.text,
+                            password: passwordController.text,
+                          ),
                           text: "Agree and Continue",
                         ),
                       ),
