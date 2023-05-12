@@ -7,6 +7,7 @@ import 'package:gym_rat_v2/screens/auth_page.dart';
 import 'package:gym_rat_v2/screens/get_started_screen.dart';
 import 'package:gym_rat_v2/screens/login_page_screen.dart';
 import 'package:gym_rat_v2/screens/sign_up_page.dart';
+import 'Theme/theme.dart';
 import 'screens/workouts_main_page_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -36,20 +37,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Gym Rat',
-        theme: ThemeData(
-          primaryColor: AppColors.kPrimary,
-          canvasColor: AppColors.kCanvasColor,
-          dividerColor: AppColors.kTextColor,
-          textTheme: TextTheme(
-            bodySmall: TextStyles.bodySmall,
-            titleLarge: TextStyles.titleLarge,
-            displaySmall: TextStyles.subtitle,
-          ),
-        ),
+        theme: lightTheme,
         initialRoute: AuthPage.routeName,
         routes: {
-          "/": (context) => AuthPage(),
-          WorkoutsMainPage.routeName: (context) => WorkoutsMainPage(),
+          "/": (context) => const AuthPage(),
+          WorkoutsMainPage.routeName: (context) => const WorkoutsMainPage(),
           LoginPage.routeName: (context) => LoginPage(),
           SignUpPage.routeName: (context) => SignUpPage(),
           GetStartedPage.routeName: (context) => GetStartedPage(),

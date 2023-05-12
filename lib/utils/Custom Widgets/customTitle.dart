@@ -15,18 +15,16 @@ class CustomTitle extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.withDivider = true,
-    this.dividerColor = AppColors.kPrimary,
   });
 
   final String title;
   final String? subtitle;
   final bool withDivider;
-  final Color dividerColor;
+
   @override
   Widget build(BuildContext context) {
     final double _screenWidth = MediaQuery.of(context).size.width;
-    var divider = Divider(
-      color: dividerColor,
+    var divider = const Divider(
       thickness: 3,
     );
     return Padding(

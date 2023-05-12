@@ -1,13 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
-class User {
+class UserModel {
   final String userName;
-  final String email;
-  final String password;
 
-  User({
+  final String? uid;
+
+  final String gender;
+  final DateTime birthDate;
+  final double length;
+  final double weight;
+
+  UserModel({
     required this.userName,
-    required this.email,
-    required this.password,
+    required this.uid,
+    required this.gender,
+    required this.birthDate,
+    required this.length,
+    required this.weight,
   });
 }

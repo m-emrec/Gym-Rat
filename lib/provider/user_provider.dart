@@ -1,12 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/authService.dart';
+import 'package:gym_rat_v2/models/user_model.dart';
 
 import '../logger.dart';
 import '../utils/Custom Widgets/customSnackBar.dart';
 import '../utils/Custom Widgets/custom_progress_indicator.dart';
 
 class UserProvider extends ChangeNotifier {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final CollectionReference _userCollection =
+      FirebaseFirestore.instance.collection("Users");
+
   // I use this function to manage errors on SignIn
   void _onSignInError(BuildContext ctx, FirebaseAuthException error) {
     logger.e(error.code);
@@ -50,7 +58,7 @@ class UserProvider extends ChangeNotifier {
     final snackBar =
         customSnackBar(message: "Logged in as $email").createSnackBar();
 
-    FirebaseAuth.instance
+    _auth
         .signInWithEmailAndPassword(email: email, password: password)
         .catchError(
           (error) => {
@@ -63,7 +71,7 @@ class UserProvider extends ChangeNotifier {
             // Close the Progress Indicator.
             Navigator.of(ctx).pop(),
           },
-        )
+        ) // Navigate to AuthPage
         .then((_) => {
               ScaffoldMessenger.of(ctx).showSnackBar(snackBar),
               Navigator.of(ctx).pushReplacementNamed("/"),
@@ -84,32 +92,54 @@ class UserProvider extends ChangeNotifier {
     final SnackBar snackBar =
         customSnackBar(message: "Signed Up!").createSnackBar();
 
-    final _auth = FirebaseAuth.instance;
-
     await _auth
         .createUserWithEmailAndPassword(
           email: email,
           password: password,
         )
+        // If there is an error.
         .catchError(
           (e) => _onSignUpError(ctx, e),
         )
-        .then((_) => {
-              ScaffoldMessenger.of(ctx).showSnackBar(snackBar),
-              Navigator.of(ctx).pushReplacementNamed(
-                "/",
-              )
-            });
+        .then(
+          // add the User to the Firestore database.
+          (_) => _firestore.collection("Users").add(
+            {"uid": _auth.currentUser?.uid},
+          ),
+        )
+        // Navigate to AuthPage.
+        .then(
+          (_) => {
+            ScaffoldMessenger.of(ctx).showSnackBar(snackBar),
+            Navigator.of(ctx).pushReplacementNamed(
+              "/",
+            )
+          },
+        );
   }
 
   void logOut() {
-    FirebaseAuth.instance.signOut();
+    _auth.signOut();
   }
 
 // end of Auth operations
 
+  //this function connects the User from FirebaseAuth to Firestore database.
+  void addUserToDatabase(UserModel newUser) {
+    final Map<String, dynamic> userData = {
+      "uid": newUser.uid,
+      "userName": newUser.userName,
+      "gender": newUser.gender,
+      "birthDate": newUser.birthDate,
+      "length": newUser.length,
+      "weight": newUser.weight,
+    };
+    _auth.currentUser?.updateDisplayName(newUser.userName);
+    _userCollection.add(userData);
+  }
+
   // User update operations
-  void updateProfilePic(){}
+  void updateProfilePic() {}
 
-
+  // end of user update operations
 }

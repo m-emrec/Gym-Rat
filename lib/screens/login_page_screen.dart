@@ -1,14 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_rat_v2/authService.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/provider/user_provider.dart';
 import 'package:gym_rat_v2/screens/sign_up_page.dart';
 import 'package:gym_rat_v2/utils/Custom%20Widgets/customSnackBar.dart';
 import 'package:gym_rat_v2/utils/Custom%20Widgets/customTitle.dart';
-import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_progress_indicator.dart';
+import 'package:gym_rat_v2/utils/Forms/reset_password_form.dart';
+import 'package:gym_rat_v2/utils/Forms/sign_up_form_field.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/Custom Widgets/custom_buton.dart';
@@ -18,20 +17,6 @@ class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
   static const routeName = "login-page";
-
-  void onError(BuildContext ctx, var error) {
-    logger.e(error.code);
-    Map errorMap = {
-      "user-not-found":
-          "User not found ! Please check your e-mail address and try again.",
-      "wrong-password":
-          "Wrong Password ! Please check your password and try again. If you forget your password click Forget my password.",
-      "invalid-email": "Invalid email ! PLease check your email address."
-    };
-    final snackBar =
-        customSnackBar(message: errorMap[error.code]).createSnackBar();
-    ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
-  }
 
   void signInUSer({
     required BuildContext ctx,
@@ -44,6 +29,9 @@ class LoginPage extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  final GlobalKey<FormState> sigInFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     // This container contains --or-- text and below that a row with Google and Facebook Sıng in in it.
@@ -91,7 +79,8 @@ class LoginPage extends StatelessWidget {
               children: [
                 // Google Sign in
                 GestureDetector(
-                  onTap: () => Provider.of<UserProvider>(context,listen: false).googleSignIn(context),
+                  onTap: () => Provider.of<UserProvider>(context, listen: false)
+                      .googleSignIn(context),
                   child: Image.asset(
                     "lib/assets/images/GoogleLogo.webp",
                     height: 32,
@@ -152,22 +141,13 @@ class LoginPage extends StatelessWidget {
                 const CustomTitle(
                   title: "Sign In",
                   withDivider: true,
-                  dividerColor: AppColors.kTextColor,
+                ),
+                SignFormField(
+                  emailController: emailController,
+                  passwordController: passwordController,
+                  formKey: sigInFormKey,
                 ),
 
-                // Email Field
-                CustomTextField(
-                  textController: emailController,
-                  isEmailField: true,
-                  label: "Email",
-                  goToNextTextField: true,
-                ),
-                // Password Field
-                CustomTextField(
-                  textController: passwordController,
-                  label: "Password",
-                  isPassword: true,
-                ),
                 // Continue Button
                 CustomButton(
                   onTap: () => signInUSer(
@@ -178,7 +158,10 @@ class LoginPage extends StatelessWidget {
                 ),
                 TextButton(
                   //TODO: Add Forget my password function.
-                  onPressed: () {},
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (_) => ResetPasswordForm(),
+                  ),
                   child: const Text(
                     "Forget my password.",
                     style: TextStyle(color: AppColors.kButtonColor),

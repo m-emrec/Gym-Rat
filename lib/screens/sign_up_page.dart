@@ -1,44 +1,20 @@
-import 'dart:math';
 import 'dart:ui';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
-import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/provider/user_provider.dart';
-import 'package:gym_rat_v2/screens/auth_page.dart';
-import 'package:gym_rat_v2/screens/login_page_screen.dart';
-import 'package:gym_rat_v2/utils/Custom%20Widgets/customSnackBar.dart';
-import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_progress_indicator.dart';
 import 'package:gym_rat_v2/utils/terms_and_privacy_popup.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/Custom Widgets/customTitle.dart';
 import '../utils/Custom Widgets/custom_buton.dart';
 import '../utils/Custom Widgets/custom_text_field.dart';
+import '../utils/Forms/sign_up_form_field.dart';
 
 class SignUpPage extends StatelessWidget {
   SignUpPage({super.key});
 
   static const routeName = "sign-up-page";
-
-  // I use this function to show an error message during Sign Up process.
-  void onError(BuildContext ctx, var error) {
-    Navigator.of(ctx).pop(); // Just for closing the Progress Indicator.
-    logger.e(error.code);
-    Map errorMap = {
-      "unknown": "Email or Password can't be empty!",
-      "invalid-email": "Please enter a valid email\nex: email@hotmail.com",
-      "weak-password": "Your password must be longer than 6 char.",
-      "email-already-in-use":
-          "This email already in use.Please go to login page."
-    };
-
-    final snack =
-        customSnackBar(message: errorMap[error.code]).createSnackBar();
-
-    ScaffoldMessenger.of(ctx).showSnackBar(snack);
-  }
 
   // Sign up function.
   void signUpUser({
@@ -60,8 +36,12 @@ class SignUpPage extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    // termsAndPrivacy Text
     Widget termsAndPrivacyPolicyText = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 30),
       child: Wrap(
@@ -134,37 +114,32 @@ class SignUpPage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Sign Up title
+
                       const CustomTitle(
                         title: "Sign Up",
                         withDivider: true,
-                        dividerColor: AppColors.kTextColor,
+                      ),
+                      SignFormField(
+                        formKey: _signUpFormKey,
+                        emailController: emailController,
+                        passwordController: passwordController,
                       ),
 
-                      // Email Field
-                      CustomTextField(
-                        textController: emailController,
-                        isEmailField: true,
-                        label: "Email",
-                        goToNextTextField: true,
-                      ),
-
-                      // Password Field
-                      CustomTextField(
-                        textController: passwordController,
-                        label: "Password",
-                        isPassword: true,
-                      ),
-                      // By selecting Agree and continue below, I agree to Terms of Service and Privacy Policy
                       termsAndPrivacyPolicyText,
                       // Sign Up Button
                       Padding(
                         padding: const EdgeInsets.only(bottom: 60.0),
                         child: CustomButton(
-                          onTap: () => signUpUser(
-                            ctx: context,
-                            email: emailController.text,
-                            password: passwordController.text,
-                          ),
+                          onTap: () => {
+                            if (_signUpFormKey.currentState!.validate())
+                              {
+                                signUpUser(
+                                  ctx: context,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                )
+                              },
+                          },
                           text: "Agree and Continue",
                         ),
                       ),

@@ -10,8 +10,7 @@ class customSnackBar {
         message,
         style: const TextStyle(color: AppColors.kTextColor),
       ),
-      behavior: SnackBarBehavior.floating,
-      backgroundColor: AppColors.kPrimary,
+      dismissDirection: DismissDirection.horizontal,
       margin: const EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 10.0),
     );
   }
