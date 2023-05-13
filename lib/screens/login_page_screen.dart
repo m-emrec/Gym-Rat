@@ -11,7 +11,6 @@ import 'package:gym_rat_v2/utils/Forms/sign_up_form_field.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/Custom Widgets/custom_buton.dart';
-import '../utils/Custom Widgets/custom_text_field.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -110,7 +109,7 @@ class LoginPage extends StatelessWidget {
         children: [
           const Text("Don't have an account ?"),
           TextButton(
-            onPressed: () => Navigator.of(context).pushNamed(
+            onPressed: () => Navigator.of(context).pushReplacementNamed(
               SignUpPage.routeName,
             ),
             child: const Text(
@@ -125,7 +124,7 @@ class LoginPage extends StatelessWidget {
       ),
     );
     return Scaffold(
-      backgroundColor: AppColors.kSignInPagebgColor,
+      // backgroundColor: AppColors.kSignInPagebgColor,
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -157,14 +156,13 @@ class LoginPage extends StatelessWidget {
                   text: "Continue",
                 ),
                 TextButton(
-                  //TODO: Add Forget my password function.
                   onPressed: () => showDialog(
                     context: context,
                     builder: (_) => ResetPasswordForm(),
                   ),
                   child: const Text(
                     "Forget my password.",
-                    style: TextStyle(color: AppColors.kButtonColor),
+                    // style: TextStyle(color: AppColors.kButtonColor),
                   ),
                 ),
                 // Don't have an Account ? Sign Up(Text button)

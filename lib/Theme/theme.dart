@@ -19,24 +19,33 @@ final titleLarge = GoogleFonts.openSans(
 );
 
 final subtitle = GoogleFonts.openSans(
-    fontSize: 16,
-    color: kTextColor,
-    fontWeight: FontWeight.w300,
-    fontStyle: FontStyle.italic);
+  fontSize: 16,
+  color: kTextColor,
+  fontWeight: FontWeight.w300,
+  fontStyle: FontStyle.italic,
+);
 
-var a = Color.fromRGBO(95, 95, 95, 1);
+// var a = Color.fromRGBO(95, 95, 95, 1);
 
 ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
   primaryColor: kPrimary,
   canvasColor: kCanvasColor,
-  dividerColor: kTextColor,
+  buttonTheme: const ButtonThemeData(),
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateProperty.all<Color>(kButtonColor),
+    ),
+  ),
+
+  /// Text Theme
   textTheme: TextTheme(
     bodySmall: bodySmall,
     titleLarge: titleLarge,
     displaySmall: subtitle,
   ),
-  brightness: Brightness.light,
-  // input decoration
+
+  /// input decoration
   inputDecorationTheme: InputDecorationTheme(
     //Borders
     border: OutlineInputBorder(
@@ -63,7 +72,6 @@ ThemeData lightTheme = ThemeData(
 
     // Label Style
     errorStyle: TextStyle(
-
       fontSize: 12,
       color: Colors.red.shade900,
       fontWeight: FontWeight.w500,
@@ -75,11 +83,12 @@ ThemeData lightTheme = ThemeData(
     ),
   ),
 
+  /// Snackbar theme
   snackBarTheme: const SnackBarThemeData(
     behavior: SnackBarBehavior.floating,
-      backgroundColor: kPrimary,
-      
+    backgroundColor: kPrimary,
   ),
 
+  ///Divder Theme
   dividerTheme: const DividerThemeData(color: kTextColor),
 );

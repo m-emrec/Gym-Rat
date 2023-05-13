@@ -28,14 +28,14 @@ class SignInFormField extends StatelessWidget {
           CustomTextFormField(
             textController: emailController,
             label: "Email",
-            isEmailField: true,
+            keyboardType: KeyboardType.email,
             goToNextTextField: true,
           ),
           // Password Field
           CustomTextFormField(
             textController: passwordController,
             label: "Password",
-            isPassword: true,
+            keyboardType: KeyboardType.password,
           ),
         ],
       ),

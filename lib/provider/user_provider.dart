@@ -15,8 +15,10 @@ class UserProvider extends ChangeNotifier {
   final CollectionReference _userCollection =
       FirebaseFirestore.instance.collection("Users");
 
-  // I use this function to manage errors on SignIn
+  /// I use this function to manage errors on SignIn
   void _onSignInError(BuildContext ctx, FirebaseAuthException error) {
+    /// Close [ProgressIndicator]
+    Navigator.of(ctx).pop();
     logger.e(error.code);
     Map errorMap = {
       "user-not-found":
@@ -30,7 +32,7 @@ class UserProvider extends ChangeNotifier {
     ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
   }
 
-  // I use this function to manage errors on Sign Up
+  /// I use this function to manage errors on Sign Up
   void _onSignUpError(BuildContext ctx, FirebaseAuthException error) {
     Navigator.of(ctx).pop(); // Just for closing the Progress Indicator.
     logger.e(error.code);
@@ -54,6 +56,7 @@ class UserProvider extends ChangeNotifier {
     required String email,
     required String password,
   }) {
+    /// Show a Progress indicator [FirebaseAuth].
     CustomProgressIndicator().showProgressIndicator(ctx);
     final snackBar =
         customSnackBar(message: "Logged in as $email").createSnackBar();
@@ -62,7 +65,6 @@ class UserProvider extends ChangeNotifier {
         .signInWithEmailAndPassword(email: email, password: password)
         .catchError(
           (error) => {
-            Navigator.of(ctx).pop(),
             _onSignInError(ctx, error),
           },
         )
@@ -71,11 +73,15 @@ class UserProvider extends ChangeNotifier {
             // Close the Progress Indicator.
             Navigator.of(ctx).pop(),
           },
-        ) // Navigate to AuthPage
-        .then((_) => {
-              ScaffoldMessenger.of(ctx).showSnackBar(snackBar),
-              Navigator.of(ctx).pushReplacementNamed("/"),
-            });
+        )
+
+        /// Navigate to [AuthPage]
+        .then(
+          (_) => {
+            ScaffoldMessenger.of(ctx).showSnackBar(snackBar),
+            Navigator.of(ctx).pushReplacementNamed("/"),
+          },
+        );
   }
 
   void googleSignIn(BuildContext ctx) {
@@ -124,8 +130,8 @@ class UserProvider extends ChangeNotifier {
 
 // end of Auth operations
 
-  //this function connects the User from FirebaseAuth to Firestore database.
-  void addUserToDatabase(UserModel newUser) {
+  /// this function connects the User from FirebaseAuth to Firestore database.
+  Future<void> addUserToDatabase(UserModel newUser) async {
     final Map<String, dynamic> userData = {
       "uid": newUser.uid,
       "userName": newUser.userName,
@@ -134,8 +140,8 @@ class UserProvider extends ChangeNotifier {
       "length": newUser.length,
       "weight": newUser.weight,
     };
-    _auth.currentUser?.updateDisplayName(newUser.userName);
-    _userCollection.add(userData);
+    await _auth.currentUser?.updateDisplayName(newUser.userName);
+    await _userCollection.add(userData);
   }
 
   // User update operations

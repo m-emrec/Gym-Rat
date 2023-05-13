@@ -1,8 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:gym_rat_v2/utils/Custom%20Widgets/customTitle.dart';
 import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_buton.dart';
 import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_text_field.dart';
@@ -27,6 +25,7 @@ class ResetPasswordForm extends StatelessWidget {
             CustomTextFormField(
               textController: _controller,
               label: "Email",
+              keyboardType: KeyboardType.email,
             ),
             CustomButton(
               text: "Send",
