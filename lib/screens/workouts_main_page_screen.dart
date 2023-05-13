@@ -24,7 +24,6 @@ class WorkoutsMainPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-
           //* add new workout Cycle button
           Tooltip(
             message: "Click to add new Cycle",
@@ -76,11 +75,21 @@ class WorkoutsMainPage extends StatelessWidget {
       ),
     );
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(
-          75,
-        ),
-        child: CustomAppBar(),
+      appBar: AppBar(
+        
+        title: Text("Gym Rat",
+            style:
+                Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 18)),
+        actions: [
+          //* Profile button
+          GestureDetector(
+            onTap: () => FirebaseAuth.instance.signOut(),
+            child: Image.asset(
+              filterQuality: FilterQuality.high,
+              "lib/assets/images/user_icon.webp",
+            ),
+          )
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,10 +99,10 @@ class WorkoutsMainPage extends StatelessWidget {
             subtitle: "Your Workouts",
           ),
           buttonContainer,
-          const Divider(
+          Divider(
             indent: 15,
             endIndent: 15,
-            color: AppColors.kPrimary,
+            color: Theme.of(context).primaryColor,
             thickness: 3,
           ),
           const Flexible(

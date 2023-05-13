@@ -7,8 +7,10 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+    return PreferredSize(
+      preferredSize: Size.fromHeight(
+        75,
+      ),
       child: AppBar(
         backgroundColor: Colors.transparent,
         shape: const Border(
@@ -19,17 +21,11 @@ class CustomAppBar extends StatelessWidget {
         ),
         elevation: 0,
         // App Title
-        title: Text(
-          "Gym Rat",
-          style: TextStyle(
-            fontSize: 24,
-            color: Theme.of(context).textTheme.titleLarge?.color,
-          ),
-        ),
+        title: Text("Gym Rat", style: Theme.of(context).textTheme.titleLarge),
         actions: [
           //* Profile button
           GestureDetector(
-            onTap: ()=>FirebaseAuth.instance.signOut(),
+            onTap: () => FirebaseAuth.instance.signOut(),
             child: Image.asset(
               filterQuality: FilterQuality.high,
               "lib/assets/images/user_icon.webp",

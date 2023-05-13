@@ -14,9 +14,9 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
+      statusBarColor: kCanvasColor,
       // systemStatusBarContrastEnforced: true,
-      statusBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light
     ),
   );
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
           "/": (context) => const AuthPage(),
           WorkoutsMainPage.routeName: (context) => const WorkoutsMainPage(),
           LoginPage.routeName: (context) => LoginPage(),
-          SignUpPage.routeName: (context) => SignUpPage(),
+          SignUpPage.routeName: (context) => const SignUpPage(),
           GetStartedPage.routeName: (context) => GetStartedPage(),
         },
       ),

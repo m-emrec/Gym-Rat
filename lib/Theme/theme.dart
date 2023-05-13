@@ -38,6 +38,18 @@ ThemeData lightTheme = ThemeData(
     ),
   ),
 
+  /// App bar theme
+  appBarTheme: const AppBarTheme(
+    backgroundColor: kCanvasColor,
+    // shape: Border(
+    //   bottom: BorderSide(
+    //     color: kPrimary,
+    //     width: 2.5,
+    //   ),
+    // ),
+    elevation: 2,
+  ),
+
   /// Text Theme
   textTheme: TextTheme(
     bodySmall: bodySmall,
