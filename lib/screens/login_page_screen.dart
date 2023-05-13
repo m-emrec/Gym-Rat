@@ -22,6 +22,7 @@ class LoginPage extends StatelessWidget {
     required String email,
     required String password,
   }) {
+    
     Provider.of<UserProvider>(ctx, listen: false)
         .signIn(ctx: ctx, email: email, password: password);
   }

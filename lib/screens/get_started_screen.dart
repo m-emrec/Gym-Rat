@@ -58,11 +58,9 @@ class GetStartedPage extends StatelessWidget {
     await Provider.of<UserProvider>(context, listen: false)
         .addUserToDatabase(userData);
 
-    Navigator.of(context).pushReplacementNamed("/").then(
-          (value) => Navigator.pop(
-            context,
-          ),
-        );
+  Navigator.of(context)
+    .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+    // Navigator.of(context).popAndPushNamed("/");
   }
 
   @override

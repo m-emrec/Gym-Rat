@@ -68,18 +68,13 @@ class UserProvider extends ChangeNotifier {
             _onSignInError(ctx, error),
           },
         )
-        .then(
-          (_) => {
-            // Close the Progress Indicator.
-            Navigator.of(ctx).pop(),
-          },
-        )
 
         /// Navigate to [AuthPage]
         .then(
           (_) => {
             ScaffoldMessenger.of(ctx).showSnackBar(snackBar),
-            Navigator.of(ctx).pushReplacementNamed("/"),
+            Navigator.of(ctx)
+                .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false),
           },
         );
   }
