@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/logger.dart';
-import 'package:gym_rat_v2/provider/user_provider.dart';
+import 'package:gym_rat_v2/provider/auth_provider.dart';
 import 'package:gym_rat_v2/screens/sign_up_page.dart';
-import 'package:gym_rat_v2/utils/Custom%20Widgets/customSnackBar.dart';
 import 'package:gym_rat_v2/utils/Custom%20Widgets/customTitle.dart';
 import 'package:gym_rat_v2/utils/Forms/reset_password_form.dart';
 import 'package:gym_rat_v2/utils/Forms/sign_up_form_field.dart';
@@ -22,8 +20,7 @@ class LoginPage extends StatelessWidget {
     required String email,
     required String password,
   }) {
-    
-    Provider.of<UserProvider>(ctx, listen: false)
+    Provider.of<AuthProvider>(ctx, listen: false)
         .signIn(ctx: ctx, email: email, password: password);
   }
 
@@ -42,8 +39,8 @@ class LoginPage extends StatelessWidget {
       child: Column(
         children: [
           // --- or --- text
-          Row(
-            children: const [
+          const Row(
+            children: [
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8),
@@ -79,8 +76,13 @@ class LoginPage extends StatelessWidget {
               children: [
                 // Google Sign in
                 GestureDetector(
-                  onTap: () => Provider.of<UserProvider>(context, listen: false)
-                      .googleSignIn(context),
+                  onTap: () => Provider.of<AuthProvider>(context, listen: false)
+                      .googleSignIn(context)
+                      .onError((error, stackTrace) => logger.e(error))
+                      .then(
+                        (value) =>
+                            Navigator.of(context).pushReplacementNamed("/"),
+                      ),
                   child: Image.asset(
                     "lib/assets/images/GoogleLogo.webp",
                     height: 32,

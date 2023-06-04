@@ -18,31 +18,20 @@ class CustomTextFormField extends StatelessWidget {
     required this.label,
     this.goToNextTextField = false,
     this.validator,
-    this.keyboardType = KeyboardType.text,
+    this.keyboardType = TextInputType.text,
     this.suffixText,
+    this.isPassword = false,
+    this.startWithCapital = false,
   });
 
   final TextEditingController textController;
   final String label;
   final bool goToNextTextField;
   final Function? validator;
-  final KeyboardType keyboardType;
+  final TextInputType keyboardType;
   final String? suffixText;
-
-  TextInputType _setKeyboardType() {
-    switch (keyboardType) {
-      case KeyboardType.email:
-        return TextInputType.emailAddress;
-      case KeyboardType.number:
-        return const TextInputType.numberWithOptions();
-      case KeyboardType.numberWithDecimals:
-        return TextInputType.number;
-      case KeyboardType.phone:
-        return TextInputType.phone;
-      default:
-        return TextInputType.text;
-    }
-  }
+  final bool isPassword;
+  final bool startWithCapital;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +40,12 @@ class CustomTextFormField extends StatelessWidget {
       child: TextFormField(
         validator: (String? val) => validator!(val),
         controller: textController,
-        textCapitalization: TextCapitalization.sentences,
-        keyboardType: _setKeyboardType(),
+        textCapitalization: startWithCapital
+            ? TextCapitalization.sentences
+            : TextCapitalization.none,
+        keyboardType: keyboardType,
         inputFormatters: [
-          _setKeyboardType() == TextInputType.number
+          keyboardType == TextInputType.number
               ? FilteringTextInputFormatter.digitsOnly
               : FilteringTextInputFormatter.deny(""),
         ],
@@ -62,7 +53,7 @@ class CustomTextFormField extends StatelessWidget {
           labelText: label,
           suffixText: suffixText,
         ),
-        obscureText: keyboardType == KeyboardType.password,
+        obscureText: isPassword,
         cursorColor: AppColors.kButtonColor,
         textInputAction:
             goToNextTextField ? TextInputAction.next : TextInputAction.done,

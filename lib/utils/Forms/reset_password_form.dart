@@ -25,7 +25,7 @@ class ResetPasswordForm extends StatelessWidget {
             CustomTextFormField(
               textController: _controller,
               label: "Email",
-              keyboardType: KeyboardType.email,
+              keyboardType: TextInputType.emailAddress,
             ),
             CustomButton(
               text: "Send",

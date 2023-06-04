@@ -4,7 +4,10 @@ import 'package:gym_rat_v2/constants.dart';
 class CustomNavigationBar extends StatefulWidget {
   const CustomNavigationBar({
     super.key,
+    required this.pageController,
   });
+
+  final PageController pageController;
 
   @override
   State<CustomNavigationBar> createState() => _CustomNavigationBarState();
@@ -27,6 +30,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         setState(
           () {
             currentIndex = value;
+            widget.pageController.jumpToPage(value);
           },
         );
       },
@@ -54,8 +58,11 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           icon: SizedBox(
             width: 50,
             height: 50,
-            child: Image.asset("lib/assets/images/dumbell.png",
-                scale: 0.5, cacheHeight: 75),
+            child: Image.asset(
+              "lib/assets/images/dumbell.png",
+              scale: 0.5,
+              cacheHeight: 75,
+            ),
           ),
         ),
         // Track page button
@@ -65,8 +72,11 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           icon: SizedBox(
             width: 50,
             height: 50,
-            child: Image.asset("lib/assets/images/dumbell.png",
-                scale: 0.5, cacheHeight: 75),
+            child: Image.asset(
+              "lib/assets/images/dumbell.png",
+              scale: 0.5,
+              cacheHeight: 75,
+            ),
           ),
         ),
       ],

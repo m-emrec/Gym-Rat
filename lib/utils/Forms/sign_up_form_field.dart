@@ -1,8 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_rat_v2/logger.dart';
 
-import '../Custom Widgets/customTitle.dart';
 import '../Custom Widgets/custom_text_field.dart';
 
 class SignFormField extends StatelessWidget {
@@ -47,15 +45,15 @@ class SignFormField extends StatelessWidget {
             textController: emailController,
             label: "Email",
             validator: _validateEmail,
-            keyboardType: KeyboardType.email,
+            keyboardType: TextInputType.emailAddress,
             goToNextTextField: true,
           ),
           // Password Field
           CustomTextFormField(
             textController: passwordController,
             label: "Password",
-            keyboardType: KeyboardType.password,
             validator: _validatePassword,
+            isPassword: true,
           ),
         ],
       ),

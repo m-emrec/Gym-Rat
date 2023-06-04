@@ -14,9 +14,8 @@ class AuthService {
     final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
     return await FirebaseAuth.instance.signInWithCredential(credential).then(
-      //Just to close the Procgress indicator.
+          //Just to close the Procgress indicator.
           (_) => Navigator.of(ctx).pop(),
         );
-    //TODO: User name falan girme ekranı ekle.
   }
 }

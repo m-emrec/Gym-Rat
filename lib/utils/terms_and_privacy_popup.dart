@@ -14,13 +14,13 @@ class TermsAndPrivacy extends StatefulWidget {
 class _TermsAndPrivacyState extends State<TermsAndPrivacy> {
   @override
   Widget build(BuildContext context) {
-    return Dialog(
+    return const Dialog(
       backgroundColor: AppColors.kCanvasColor,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          children: const [
+          children: [
             CustomTitle(title: "Terms of Service"),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -45,7 +45,6 @@ class _TermsAndPrivacyState extends State<TermsAndPrivacy> {
                 "Disclaimer of Warranty: We do not warrant that the app will meet your requirements, or that the app will be error-free or uninterrupted. We provide the app on an 'as is' and 'as available' basis, without warranty of any kind.",
               ),
             ),
-            
           ],
         ),
       ),

@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gym_rat_v2/Theme/theme_manager.dart';
+import 'package:gym_rat_v2/provider/auth_provider.dart';
+import 'package:gym_rat_v2/provider/cycle_provider.dart';
 import 'package:gym_rat_v2/provider/user_provider.dart';
+import 'package:gym_rat_v2/routes.dart';
 import 'package:gym_rat_v2/screens/auth_page.dart';
 import 'package:gym_rat_v2/screens/get_started_screen.dart';
 import 'package:gym_rat_v2/screens/login_page_screen.dart';
 import 'package:gym_rat_v2/screens/sign_up_page.dart';
 import 'Theme/theme.dart';
-import 'screens/workouts_main_page_screen.dart';
+import 'screens/workouts_page.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: kCanvasColor,
-      // systemStatusBarContrastEnforced: true,
-      statusBarIconBrightness: Brightness.light
-    ),
+        statusBarColor: kCanvasColor,
+        // systemStatusBarContrastEnforced: true,
+        statusBarIconBrightness: Brightness.light),
   );
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -32,8 +34,14 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (context) => AuthProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => UserProvider(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CycleProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -41,13 +49,7 @@ class MyApp extends StatelessWidget {
         theme: lightTheme,
         themeMode: themeMode,
         initialRoute: AuthPage.routeName,
-        routes: {
-          "/": (context) => const AuthPage(),
-          WorkoutsMainPage.routeName: (context) => const WorkoutsMainPage(),
-          LoginPage.routeName: (context) => LoginPage(),
-          SignUpPage.routeName: (context) => const SignUpPage(),
-          GetStartedPage.routeName: (context) => GetStartedPage(),
-        },
+        routes: AppRoutes().appRoutes,
       ),
     );
   }

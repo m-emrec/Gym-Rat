@@ -10,7 +10,10 @@ class GetStartedForm extends StatelessWidget {
     required this.nameController,
     required this.lengthController,
     required this.weightController,
-    required this.formKey, required this.genderController, required this.changeGender, required this.pickDate,
+    required this.formKey,
+    required this.genderController,
+    required this.changeGender,
+    required this.pickDate,
   });
   final TextEditingController nameController;
   final TextEditingController lengthController;
@@ -39,20 +42,21 @@ class GetStartedForm extends StatelessWidget {
             label: "Name",
             validator: validator,
             goToNextTextField: true,
+            startWithCapital: true,
           ),
           CustomTextFormField(
             textController: lengthController,
             label: "Length",
             goToNextTextField: true,
             validator: validator,
-            keyboardType: KeyboardType.number,
+            keyboardType: TextInputType.number,
             suffixText: "cm",
           ),
           CustomTextFormField(
             textController: weightController,
             label: "Weight",
             validator: validator,
-            keyboardType: KeyboardType.number,
+            keyboardType: TextInputType.number,
             suffixText: "kg",
           ),
           Container(

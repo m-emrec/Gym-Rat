@@ -5,7 +5,7 @@ import 'package:gym_rat_v2/screens/login_page_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
-import '../../provider/user_provider.dart';
+import '../../provider/auth_provider.dart';
 import '../Custom Widgets/customTitle.dart';
 import '../Custom Widgets/custom_buton.dart';
 import '../Forms/sign_up_form_field.dart';
@@ -19,7 +19,7 @@ class SignUpPageContainer extends StatelessWidget {
     required String password,
     required BuildContext ctx,
   }) {
-    Provider.of<UserProvider>(ctx, listen: false)
+    Provider.of<AuthProvider>(ctx, listen: false)
         .signUp(email: email, password: password, ctx: ctx);
   }
 
@@ -107,6 +107,7 @@ class SignUpPageContainer extends StatelessWidget {
                 ),
 
                 termsAndPrivacyPolicyText,
+
                 /// All ready have an account. Navigate to Login Page
                 TextButton(
                   onPressed: () => Navigator.of(context)

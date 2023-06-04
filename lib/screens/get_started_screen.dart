@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/models/user_model.dart';
-import 'package:gym_rat_v2/screens/auth_page.dart';
-import 'package:gym_rat_v2/screens/workouts_main_page_screen.dart';
-import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_buton.dart';
+import 'package:gym_rat_v2/provider/user_provider.dart';
 import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_progress_indicator.dart';
 import 'package:gym_rat_v2/utils/Forms/get_started_page_form.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/user_provider.dart';
+import '../utils/circle_button.dart';
 
+// ignore: must_be_immutable
 class GetStartedPage extends StatelessWidget {
   GetStartedPage({super.key});
 
@@ -42,7 +41,7 @@ class GetStartedPage extends StatelessWidget {
     };
   }
 
-  void saveDataToDatabase(
+  Future<void> saveDataToDatabase(
       BuildContext context, Map<String, dynamic> data) async {
     final userData = UserModel(
       userName: data["name"],
@@ -57,59 +56,72 @@ class GetStartedPage extends StatelessWidget {
     logger.i(userData);
     await Provider.of<UserProvider>(context, listen: false)
         .addUserToDatabase(userData);
-
-  Navigator.of(context)
-    .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
-    // Navigator.of(context).popAndPushNamed("/");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Hello Text
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0, top: 20.0),
-                child: Text(
-                  "Hello Gym Rat",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              // Let us know you text
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Text(
-                  "Let us know about you.",
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.kButtonColor,
-                        fontWeight: FontWeight.bold,
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                height: double.maxFinite,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Hello Text
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 10.0,
+                        top: 20.0,
                       ),
+                      child: Text(
+                        "Hello Gym Rat",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                    ),
+                    // Let us know you text
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20.0, bottom: 64),
+                      child: Text(
+                        "Let us know about you.",
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.kButtonColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ),
+
+                    ///Text fields
+                    GetStartedForm(
+                      formKey: _formKey,
+                      nameController: nameController,
+                      lengthController: lengthController,
+                      weightController: weightController,
+                      changeGender: changeGender,
+                      genderController: genderController,
+                      pickDate: pickDate,
+                    ),
+                  ],
                 ),
               ),
-
-              ///Text fields
-              GetStartedForm(
-                formKey: _formKey,
-                nameController: nameController,
-                lengthController: lengthController,
-                weightController: weightController,
-                changeGender: changeGender,
-                genderController: genderController,
-                pickDate: pickDate,
-              ),
-
-              CustomButton(
-                text: "Continue",
+            ),
+            Positioned(
+              bottom: 16,
+              right: 16,
+              child: CircleButton(
+                label: "Next",
                 onTap: () => _formKey.currentState!.validate()
-                    ? saveDataToDatabase(context, collectedData)
-                    : null,
+                    ? saveDataToDatabase(context, collectedData).then(
+                        (value) => Navigator.of(context)
+                            .pushNamedAndRemoveUntil(
+                                '/', (Route<dynamic> route) => false),
+                      )
+                    : () {},
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

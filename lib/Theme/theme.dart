@@ -24,6 +24,11 @@ final subtitle = GoogleFonts.openSans(
   fontWeight: FontWeight.w300,
   fontStyle: FontStyle.italic,
 );
+final labelLarge = GoogleFonts.openSans(
+  fontSize: 12,
+  color: kButtonColor,
+  fontWeight: FontWeight.bold,
+);
 
 // var a = Color.fromRGBO(95, 95, 95, 1);
 
@@ -55,6 +60,7 @@ ThemeData lightTheme = ThemeData(
     bodySmall: bodySmall,
     titleLarge: titleLarge,
     displaySmall: subtitle,
+    labelLarge: labelLarge,
   ),
 
   /// input decoration

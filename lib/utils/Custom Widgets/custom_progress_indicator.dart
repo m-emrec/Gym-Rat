@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_rat_v2/utils/loading_indicator.dart';
 
 import '../../constants.dart';
 
@@ -10,10 +11,9 @@ class CustomProgressIndicator {
 
   void showProgressIndicator(BuildContext ctx) {
     showDialog(
+      barrierDismissible: false,
       context: ctx,
-      builder: (_) => Center(
-        child: customProgressInd,
-      ),
+      builder: (_) => const LoadingIndicator(),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gym_rat_v2/constants.dart';
 
 /*  **Definition**
 
@@ -34,44 +33,47 @@ class CustomTitle extends StatelessWidget {
       ),
       child: SizedBox(
         width: _screenWidth * 0.5,
-        child: subtitle == null
-            ?
-            // if subtitle equals null
-            Column(
-                children: [
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Visibility(
-                    visible: withDivider,
-                    child: divider,
-                  )
-                ],
-              )
-            // if there is subtitle
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Hello $title",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Text(
-                    subtitle!,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(fontSize: 20, fontStyle: FontStyle.italic),
-                    textAlign: TextAlign.start,
-                  ),
-                  // if withDivider is true show put divider else don't put divider.
-                  Visibility(
-                    visible: withDivider,
-                    child: divider,
-                  )
-                ],
-              ),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: subtitle == null
+              ?
+              // if subtitle equals null
+              Column(
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    Visibility(
+                      visible: withDivider,
+                      child: divider,
+                    )
+                  ],
+                )
+              // if there is subtitle
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    Text(
+                      subtitle!,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(fontSize: 20, fontStyle: FontStyle.italic),
+                      textAlign: TextAlign.start,
+                    ),
+                    // if withDivider is true show put divider else don't put divider.
+                    Visibility(
+                      visible: withDivider,
+                      child: divider,
+                    )
+                  ],
+                ),
+        ),
       ),
     );
   }
