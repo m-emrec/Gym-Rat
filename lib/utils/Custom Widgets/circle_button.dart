@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/extensions/empth_padding_extension.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 
 class CircleButton extends StatelessWidget {
   const CircleButton({
@@ -11,12 +11,15 @@ class CircleButton extends StatelessWidget {
     this.labelColor = AppColors.kButtonColor,
     required this.onTap,
     this.labelSize = 16,
+    this.icon = Icons.navigate_next_rounded,
   });
   final String label;
   final double radius;
   final double labelSize;
   final Color labelColor;
   final VoidCallback onTap;
+  final IconData icon;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -41,10 +44,10 @@ class CircleButton extends StatelessWidget {
                 color: AppColors.kButtonColor,
               ),
             ),
-            child: const Align(
+            child: Align(
               alignment: Alignment.center,
               child: Icon(
-                Icons.navigate_next,
+                icon,
                 color: AppColors.kButtonColor,
                 size: 32,
               ),

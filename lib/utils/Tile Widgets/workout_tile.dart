@@ -26,7 +26,7 @@ class WorkoutTile extends StatelessWidget {
         children: [
           // * Title and popMenu button
           SizedBox(
-            height: 20,
+            height: 30,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

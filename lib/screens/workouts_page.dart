@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/logger.dart';
-import 'package:gym_rat_v2/utils/Boxes/archive.dart';
-import 'package:gym_rat_v2/utils/Boxes/workouts_container.dart';
+import 'package:gym_rat_v2/utils/Workouts%20Page%20Widgets/archive.dart';
+import 'package:gym_rat_v2/utils/Workouts%20Page%20Widgets/workouts_container.dart';
 import 'package:gym_rat_v2/utils/Custom%20Widgets/customTitle.dart';
 
 import '../utils/Workouts Page Widgets/hello_widget.dart';
@@ -34,9 +34,6 @@ class WorkoutsPage extends StatelessWidget {
                   ),
                   Text(
                     "New Cycle",
-                    style: TextStyle(
-                      color: Theme.of(context).textTheme.bodySmall!.color,
-                    ),
                   ),
                 ],
               ),
@@ -60,9 +57,6 @@ class WorkoutsPage extends StatelessWidget {
                   ),
                   Text(
                     "New Workout",
-                    style: TextStyle(
-                      color: Theme.of(context).textTheme.bodySmall!.color,
-                    ),
                   ),
                 ],
               ),

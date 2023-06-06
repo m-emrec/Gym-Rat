@@ -8,7 +8,7 @@ import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_progress_indicator.dart
 import 'package:gym_rat_v2/utils/Forms/get_started_page_form.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/circle_button.dart';
+import '../utils/Custom Widgets/circle_button.dart';
 
 // ignore: must_be_immutable
 class GetStartedPage extends StatelessWidget {

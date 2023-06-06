@@ -36,12 +36,21 @@ ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: kPrimary,
   canvasColor: kCanvasColor,
+
+  /// Button Themes
   buttonTheme: const ButtonThemeData(),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
       foregroundColor: MaterialStateProperty.all<Color>(kButtonColor),
     ),
   ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateProperty.all<Color>(bodySmall.color!),
+      iconColor: MaterialStateProperty.all<Color>(bodySmall.color!),
+    ),
+  ),
+  ////
 
   /// App bar theme
   appBarTheme: const AppBarTheme(
