@@ -1,9 +1,9 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_rat_v2/utils/Custom%20Widgets/customTitle.dart';
+import 'package:gym_rat_v2/utils/shared/customTitle.dart';
 import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_buton.dart';
-import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_text_field.dart';
+import 'package:gym_rat_v2/utils/shared/custom_text_field.dart';
 
 class ResetPasswordForm extends StatelessWidget {
   ResetPasswordForm({super.key});

@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../provider/auth_provider.dart';
-import '../Custom Widgets/customTitle.dart';
+import '../shared/customTitle.dart';
 import '../Custom Widgets/custom_buton.dart';
 import '../Forms/sign_up_form_field.dart';
-import '../terms_and_privacy_popup.dart';
+import '../shared/terms_and_privacy_popup.dart';
 
 class SignUpPageContainer extends StatelessWidget {
   SignUpPageContainer({super.key});

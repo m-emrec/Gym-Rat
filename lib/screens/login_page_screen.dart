@@ -3,7 +3,7 @@ import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/provider/auth_provider.dart';
 import 'package:gym_rat_v2/screens/sign_up_page.dart';
-import 'package:gym_rat_v2/utils/Custom%20Widgets/customTitle.dart';
+import 'package:gym_rat_v2/utils/shared/customTitle.dart';
 import 'package:gym_rat_v2/utils/Forms/reset_password_form.dart';
 import 'package:gym_rat_v2/utils/Forms/sign_up_form_field.dart';
 import 'package:provider/provider.dart';

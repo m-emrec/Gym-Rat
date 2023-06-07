@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Custom Widgets/custom_text_field.dart';
+import '../shared/custom_text_field.dart';
 import '../Get Starter Page Widgets/date_picker.dart';
 import '../Get Starter Page Widgets/gender_dropdown.dart';
 

@@ -36,6 +36,7 @@ ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: kPrimary,
   canvasColor: kCanvasColor,
+  focusColor: kTextColor,
 
   /// Button Themes
   buttonTheme: const ButtonThemeData(),
@@ -48,6 +49,8 @@ ThemeData lightTheme = ThemeData(
     style: ButtonStyle(
       foregroundColor: MaterialStateProperty.all<Color>(bodySmall.color!),
       iconColor: MaterialStateProperty.all<Color>(bodySmall.color!),
+      fixedSize:
+          MaterialStateProperty.all(const Size.fromWidth(double.maxFinite)),
     ),
   ),
   ////

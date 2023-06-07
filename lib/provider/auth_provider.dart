@@ -5,7 +5,7 @@ import 'package:gym_rat_v2/authService.dart';
 
 import '../logger.dart';
 import '../utils/Custom Widgets/customSnackBar.dart';
-import '../utils/Custom Widgets/custom_progress_indicator.dart';
+import '../utils/shared/custom_progress_indicator.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;

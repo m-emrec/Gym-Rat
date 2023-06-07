@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/enums/workouts_collection_enum.dart';
 import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/provider/cycle_provider.dart';
-import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_progress_indicator.dart';
+import 'package:gym_rat_v2/utils/shared/custom_progress_indicator.dart';
 import 'package:gym_rat_v2/utils/Workouts%20Page%20Widgets/empty_workout_container.dart';
 import 'package:provider/provider.dart';
 

@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_rat_v2/utils/stats_widget.dart';
+import 'package:gym_rat_v2/utils/shared/stats_widget.dart';
 
-import '../Custom Widgets/customTitle.dart';
+import '../shared/customTitle.dart';
 
 class HelloWidget extends StatefulWidget {
   const HelloWidget({

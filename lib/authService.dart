@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:gym_rat_v2/utils/Custom%20Widgets/custom_progress_indicator.dart';
+import 'package:gym_rat_v2/utils/shared/custom_progress_indicator.dart';
 
 class AuthService {
   signInWithGoogle(BuildContext ctx) async {

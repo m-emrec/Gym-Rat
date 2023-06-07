@@ -5,4 +5,5 @@ enum CycleCollection {
   isActive,
   numberOfWeeks,
   startDate,
+  goal,
 }

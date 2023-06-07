@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_rat_v2/utils/loading_indicator.dart';
+import 'package:gym_rat_v2/utils/shared/loading_indicator.dart';
 
 import '../../constants.dart';
 
