@@ -1,3 +1,4 @@
 enum WorkoutsCollection {
   workoutName,
+  id,
 }

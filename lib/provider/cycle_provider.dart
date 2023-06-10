@@ -65,14 +65,16 @@ class CycleProvider extends ChangeNotifier {
     logger.i(cycleData);
     final userDocs = await getUserDocs();
 
-    await userDocs.collection("Cycles").doc(cycleData.id).set({
-      CycleCollection.id.name: cycleData.id,
-      CycleCollection.cycleName.name: cycleData.cycleName,
-      CycleCollection.goal.name: cycleData.goal,
-      CycleCollection.endDate.name: null,
-      CycleCollection.isActive.name: cycleData.isActive,
-      CycleCollection.numberOfWeeks.name: cycleData.numberOfWeeks,
-      CycleCollection.startDate.name: cycleData.startDate,
-    });
+    await userDocs.collection("Cycles").doc(cycleData.id).set(
+      {
+        CycleCollection.id.name: cycleData.id,
+        CycleCollection.cycleName.name: cycleData.cycleName,
+        CycleCollection.goal.name: cycleData.goal,
+        CycleCollection.endDate.name: null,
+        CycleCollection.isActive.name: cycleData.isActive,
+        CycleCollection.numberOfWeeks.name: cycleData.numberOfWeeks,
+        CycleCollection.startDate.name: cycleData.startDate,
+      },
+    );
   }
 } //* end of PRovider

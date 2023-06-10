@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
+import '../../../constants.dart';
 
 class WorkoutTile extends StatelessWidget {
   /*
@@ -13,14 +13,16 @@ class WorkoutTile extends StatelessWidget {
     super.key,
     required this.workoutName,
     required this.exercises,
+    required this.onTap,
   });
 
   final String workoutName;
   final List exercises;
-
+  final Function onTap;
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () => onTap(),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_rat_v2/screens/diet_page.dart';
-import 'package:gym_rat_v2/screens/track_page.dart';
-import 'package:gym_rat_v2/screens/workouts_page.dart';
+import 'package:gym_rat_v2/screens/Main%20Page/Diet%20Page/diet_page.dart';
+import 'package:gym_rat_v2/screens/Main%20Page/Track%20Page/track_page.dart';
+import 'package:gym_rat_v2/screens/Main%20Page/Workouts%20Page/workouts_page.dart';
 
-import '../utils/Custom Widgets/navigationBar.dart';
+import '../../utils/Custom Widgets/navigationBar.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreen({super.key});

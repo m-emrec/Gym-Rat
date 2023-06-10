@@ -6,7 +6,7 @@ import 'package:gym_rat_v2/utils/Workouts%20Page%20Widgets/archive.dart';
 import 'package:gym_rat_v2/utils/Workouts%20Page%20Widgets/workouts_container.dart';
 import 'package:gym_rat_v2/utils/shared/customTitle.dart';
 
-import '../utils/Workouts Page Widgets/hello_widget.dart';
+import '../../../utils/Workouts Page Widgets/hello_widget.dart';
 
 class WorkoutsPage extends StatelessWidget {
   const WorkoutsPage({super.key});

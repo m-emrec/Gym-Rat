@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gym_rat_v2/constants.dart';
 
 const Color kButtonColor = Color(0xFF6C757D);
 const Color kCanvasColor = Color(0xFFF8F9FA);
@@ -121,4 +122,9 @@ ThemeData lightTheme = ThemeData(
 
   ///Divder Theme
   dividerTheme: const DividerThemeData(color: kTextColor),
+  // Progress Indicator Theme
+  progressIndicatorTheme: const ProgressIndicatorThemeData(
+    color: AppColors.kButtonColor,
+    circularTrackColor: AppColors.kPrimary,
+  ),
 );

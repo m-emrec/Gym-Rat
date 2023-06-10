@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:gym_rat_v2/screens/login_page_screen.dart';
+import 'package:gym_rat_v2/screens/Auth%20Screens/login_page_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';

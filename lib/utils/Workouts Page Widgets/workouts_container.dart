@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/enums/workouts_collection_enum.dart';
 import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/provider/cycle_provider.dart';
+import 'package:gym_rat_v2/provider/exercises_provider.dart';
+import 'package:gym_rat_v2/provider/workout_provider.dart';
+import 'package:gym_rat_v2/screens/Main%20Page/Workouts%20Page/workout_detail_page.dart';
 import 'package:gym_rat_v2/utils/shared/custom_progress_indicator.dart';
 import 'package:gym_rat_v2/utils/Workouts%20Page%20Widgets/empty_workout_container.dart';
 import 'package:provider/provider.dart';
 
-import '../Tile Widgets/workout_tile.dart';
+import '../shared/Tile Widgets/workout_tile.dart';
 
 /*
   * This widget used to contain Workouts.
@@ -35,7 +38,7 @@ class _WorkoutsBoxState extends State<WorkoutsBox> {
           child: SizedBox(
             height: constraints.maxHeight,
             child: FutureBuilder(
-              future: Provider.of<CycleProvider>(context).getWorkouts(),
+              future: Provider.of<WorkoutProvider>(context).getUserWorkouts(),
               builder: (context, snapshot) {
                 // * if connection is done then show data
                 if (snapshot.connectionState == ConnectionState.done) {
@@ -46,6 +49,14 @@ class _WorkoutsBoxState extends State<WorkoutsBox> {
                       itemBuilder: (context, index) {
                         final workout = snapshot.data!.docs[index];
                         return WorkoutTile(
+                          onTap: () => Navigator.of(context).pushNamed(
+                            WorkoutDetailPage.routeName,
+                            arguments: {
+                              "name":
+                                  workout[WorkoutsCollection.workoutName.name],
+                              "id": workout.id,
+                            },
+                          ),
                           workoutName:
                               workout[WorkoutsCollection.workoutName.name],
                           exercises: [

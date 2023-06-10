@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/screens/get_started_screen.dart';
-import 'package:gym_rat_v2/screens/login_page_screen.dart';
-import 'package:gym_rat_v2/screens/main_page.dart';
+import 'package:gym_rat_v2/screens/Auth%20Screens/login_page_screen.dart';
+import 'package:gym_rat_v2/screens/Main%20Page/main_page.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});

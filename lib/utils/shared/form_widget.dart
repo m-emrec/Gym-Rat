@@ -16,20 +16,23 @@ class FormWidget extends StatelessWidget {
     return Form(
       key: formKey,
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            title == null
-                ? const SizedBox()
-                : Text(
-                    title!,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge!
-                        .copyWith(fontSize: 16),
-                  ),
-            ...children
-          ],
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              title == null
+                  ? const SizedBox()
+                  : Text(
+                      title!,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge!
+                          .copyWith(fontSize: 16),
+                    ),
+              ...children
+            ],
+          ),
         ),
       ),
     );

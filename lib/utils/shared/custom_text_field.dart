@@ -22,6 +22,7 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixText,
     this.isPassword = false,
     this.startWithCapital = false,
+    this.suffixWidget,
   });
 
   final TextEditingController textController;
@@ -32,6 +33,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? suffixText;
   final bool isPassword;
   final bool startWithCapital;
+  final Widget? suffixWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,7 @@ class CustomTextFormField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           suffixText: suffixText,
+          suffix: suffixWidget,
         ),
         obscureText: isPassword,
         cursorColor: AppColors.kButtonColor,

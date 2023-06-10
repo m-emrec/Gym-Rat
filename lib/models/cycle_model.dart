@@ -5,7 +5,7 @@ class CycleModel {
   final DateTime? endDate;
   final bool isActive;
   final int numberOfWeeks;
-  final String goal;
+  final String? goal;
 
   String printData() {
     return "ID : $id\nCycle Name : $cycleName\nGoal : $goal\nIs Active : $isActive\nWeeks : $numberOfWeeks\nStart Date : $startDate";
@@ -18,6 +18,6 @@ class CycleModel {
     this.endDate,
     required this.isActive,
     required this.numberOfWeeks,
-    required this.goal,
+    this.goal,
   });
 }
