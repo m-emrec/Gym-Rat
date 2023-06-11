@@ -75,9 +75,8 @@ class ExerciseProvider extends ChangeNotifier {
 
   addExerciseToWorkout(ExerciseModel data) async {
     final currentWorkout = await getCurrentWorkoutDoc();
-    final id = Uuid().v4();
-    await currentWorkout.collection("Exercises").doc(id).set({
-      ExercisesCollection.id.name: id,
+    await currentWorkout.collection("Exercises").doc(data.id).set({
+      ExercisesCollection.id.name: data.id,
       ExercisesCollection.exerciseName.name: data.exerciseName,
       ExercisesCollection.rest.name: data.rest,
       ExercisesCollection.numberOfReps.name: data.numberOfReps,

@@ -17,7 +17,7 @@ class ExerciseList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        itemExtent: 80,
+        // itemExtent: 90,
         controller: scrollController,
         itemCount: exerciseData.length,
         itemBuilder: (context, index) {

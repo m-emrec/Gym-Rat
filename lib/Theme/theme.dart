@@ -120,6 +120,8 @@ ThemeData lightTheme = ThemeData(
     backgroundColor: kPrimary,
   ),
 
+  dropdownMenuTheme: DropdownMenuThemeData(menuStyle: MenuStyle()),
+
   ///Divder Theme
   dividerTheme: const DividerThemeData(color: kTextColor),
   // Progress Indicator Theme
