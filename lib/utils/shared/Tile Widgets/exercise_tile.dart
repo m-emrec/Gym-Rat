@@ -41,6 +41,7 @@ class ExerciseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final String title = exercise[ExerciseApiKeys.name.name];
     muscle = exercise[ExerciseApiKeys.muscle.name];
+    //add exercise to workout
     return ListTile(
       leading: leading,
       title: Text(
