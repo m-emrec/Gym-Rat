@@ -24,7 +24,7 @@ class EmptyExerciseContainer extends StatelessWidget {
             OutlinedButton(
               onPressed: () => Navigator.of(context)
                   .pushNamed(AddExerciseToWorkoutPage.routeName),
-              child: Text("Add Exercise"),
+              child: const Text("Add Exercise"),
               style: ButtonStyle().copyWith(
                 fixedSize: MaterialStatePropertyAll(
                   Size.fromWidth(width * 0.6),

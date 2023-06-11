@@ -14,7 +14,7 @@ class WorkoutDetailPage extends StatelessWidget {
     final double width = MediaQuery.of(context).size.height;
     final double height = MediaQuery.of(context).size.height;
     final data = ModalRoute.of(context)!.settings.arguments as Map;
-    Provider.of<ExerciseProvider>(context).getCurrentWorkout(data["id"]);
+    Provider.of<ExerciseProvider>(context).setCurrentWorkoutId(data["id"]);
     return Scaffold(
         appBar: AppBar(
           leading: TextButton(
@@ -53,7 +53,7 @@ class WorkoutDetailPage extends StatelessWidget {
                         if (snapshot.data!.docs.isNotEmpty) {
                           return Text("data");
                         } else {
-                          return EmptyExerciseContainer();
+                          return const EmptyExerciseContainer();
                         }
                       } else {
                         return const CircularProgressIndicator();

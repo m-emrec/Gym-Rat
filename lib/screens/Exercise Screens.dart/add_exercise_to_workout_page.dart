@@ -4,9 +4,12 @@ import 'package:gym_rat_v2/enums/exercises_collection_enum.dart';
 import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/provider/exercises_provider.dart';
 import 'package:gym_rat_v2/utils/shared/Tile%20Widgets/exercise_tile.dart';
+import 'package:gym_rat_v2/utils/shared/custom_text_field.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../../utils/Add Exercises Page Widgets/exercise_list.dart';
+import '../../utils/Add Exercises Page Widgets/filter_and_search_bar.dart';
 
 class AddExerciseToWorkoutPage extends StatefulWidget {
   AddExerciseToWorkoutPage({super.key});
@@ -59,8 +62,7 @@ class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
-
+    // logger.d(Provider.of<ExerciseProvider>(context).currentWorkoutId);
     return Scaffold(
       appBar: AppBar(
         leading: TextButton(
@@ -85,10 +87,7 @@ class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
         builder: (context, value, child) => Column(
           children: [
             // Search Bar, Filter etc.
-            Container(
-              height: 100,
-              width: double.infinity,
-            ),
+            FilterAndSearchBar(),
             // Exercise List
             FutureBuilder(
               future: value.fetchExerciseData(),
@@ -96,27 +95,9 @@ class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
                 if (snapshot.connectionState == ConnectionState.done ||
                     _isLoading) {
                   _isLoading = false;
-                  return Expanded(
-                    child: ListView.builder(
-                      itemExtent: 80,
-                      controller: widget._scrollController,
-                      itemCount: value.exerciseData.length,
-                      itemBuilder: (context, index) {
-                        final exercise = value.exerciseData[index];
-                        if (index + 1 == value.exerciseData.length) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return ExerciseTile(
-                          title: exercise[ExerciseApiKeys.name.name],
-                          muscle: exercise[ExerciseApiKeys.muscle.name],
-                          leading: Text(
-                            index.toString(),
-                          ),
-                        );
-                      },
-                    ),
+                  return ExerciseList(
+                    exerciseData: value.exerciseData,
+                    scrollController: widget._scrollController,
                   );
                 } else {
                   return const Center(
@@ -124,11 +105,7 @@ class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
                   );
                 }
               },
-            )
-            // TextButton(
-            //   onPressed: () => value.setExerciseOffset(offset: 10),
-            //   child: Text("See more..."),
-            // )
+            ),
           ],
         ),
       ),

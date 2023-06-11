@@ -4,11 +4,15 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_rat_v2/enums/exercises_collection_enum.dart';
 import 'package:gym_rat_v2/logger.dart';
+import 'package:gym_rat_v2/models/exercise_model.dart';
 import 'package:gym_rat_v2/provider/workout_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
 class ExerciseProvider extends ChangeNotifier {
+  // ignore: constant_identifier_names
   static const String API_KEY = "3QiuXduPluL6XSoZaJ/LjA==wu6tKTBupAQ6KLxs";
 
   late String currentWorkoutId;
@@ -16,8 +20,6 @@ class ExerciseProvider extends ChangeNotifier {
   int get exerciseOffset => _exerciseOffset;
   set exerciseOffset(int offset) {
     _exerciseOffset = offset;
-    // notifyListeners();
-    // logger.i(_exerciseOffset);
   }
 
   List _exerciseData = [];
@@ -29,6 +31,20 @@ class ExerciseProvider extends ChangeNotifier {
   void setExerciseOffset({required int offset}) {
     _exerciseOffset += offset;
     notifyListeners();
+  }
+
+  /// Get's the current workout's ID
+  setCurrentWorkoutId(String id) {
+    currentWorkoutId = id;
+  }
+
+  Future<DocumentReference<Map<String, dynamic>>> getCurrentWorkoutDoc() async {
+    final userWorkouts = await WorkoutProvider().getUserWorkouts();
+
+    final selectedWorkout = userWorkouts.docs
+        .firstWhere((doc) => doc.id == currentWorkoutId)
+        .reference;
+    return selectedWorkout;
   }
 
   Future<List> fetchExerciseData() async {
@@ -46,21 +62,39 @@ class ExerciseProvider extends ChangeNotifier {
     return [];
   }
 
-  getCurrentWorkout(String id) {
-    currentWorkoutId = id;
-  }
-
   Future<QuerySnapshot<Map<String, dynamic>>> getExerciseOfWorkout(
       String workoutId) async {
     final userWorkouts = await WorkoutProvider().getUserWorkouts();
 
-    final selectedWorkout = userWorkouts.docs
-        .firstWhere((doc) => doc.id == currentWorkoutId)
-        .reference;
+    final selectedWorkout = await getCurrentWorkoutDoc();
+
     final exerciseCollection = selectedWorkout.collection("Exercises");
 
     return await exerciseCollection.get();
   }
+
+  addExerciseToWorkout(ExerciseModel data) async {
+    final currentWorkout = await getCurrentWorkoutDoc();
+    final id = Uuid().v4();
+    await currentWorkout.collection("Exercises").doc(id).set({
+      ExercisesCollection.id.name: id,
+      ExercisesCollection.exerciseName.name: data.exerciseName,
+      ExercisesCollection.rest.name: data.rest,
+      ExercisesCollection.numberOfReps.name: data.numberOfReps,
+      ExercisesCollection.numberOfSets.name: data.numberOfSets,
+      ExercisesCollection.rpe.name: data.rpe,
+    });
+  }
+
+//* Filters
+
+  // filter by Muscle
+
+  // filter by Type
+
+  // filter by Difficulty
+
+//// end of filters
 
   ////
 }
