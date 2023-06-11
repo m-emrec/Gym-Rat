@@ -20,17 +20,46 @@ class AddExerciseToWorkoutPage extends StatefulWidget {
 }
 
 class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
+  late bool _isLoading;
+
   @override
   void initState() {
     Provider.of<ExerciseProvider>(context, listen: false).exerciseOffset = 0;
     Provider.of<ExerciseProvider>(context, listen: false).exerciseData = [];
+    _isLoading = false;
+    _scrollListener();
     super.initState();
+  }
+
+  void _scrollListener() {
+    widget._scrollController.addListener(
+      () {
+        // logger.i(_isLoading);
+        if (widget._scrollController.position.pixels ==
+            widget._scrollController.position.maxScrollExtent) {
+          if (!_isLoading) {
+            _isLoading = true;
+            Provider.of<ExerciseProvider>(context, listen: false)
+                .setExerciseOffset(offset: 10);
+          }
+        } else {
+          // logger.e("else");
+          // _isLoading = false;
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    widget._scrollController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -52,50 +81,55 @@ class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
         ),
         centerTitle: true,
       ),
-      body: SizedBox(
-        width: width,
-        child: Consumer<ExerciseProvider>(
-          builder: (context, value, child) => Column(
-            children: [
-              // Search Bar, Filter etc.
-              // Container(
-              //   height: 100,
-              //   width: double.infinity,
-              // ),
-              // exercise_list_branch
-              // Exercise List
-              FutureBuilder(
-                future: value.fetchExerciseData(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          final exercise = snapshot.data![index];
-                          return ExerciseTile(
-                            title: exercise[ExerciseApiKeys.name.name],
-                            muscle: exercise[ExerciseApiKeys.muscle.name],
-                            leading: Text(
-                              index.toString(),
-                            ),
+      body: Consumer<ExerciseProvider>(
+        builder: (context, value, child) => Column(
+          children: [
+            // Search Bar, Filter etc.
+            Container(
+              height: 100,
+              width: double.infinity,
+            ),
+            // Exercise List
+            FutureBuilder(
+              future: value.fetchExerciseData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done ||
+                    _isLoading) {
+                  _isLoading = false;
+                  return Expanded(
+                    child: ListView.builder(
+                      itemExtent: 80,
+                      controller: widget._scrollController,
+                      itemCount: value.exerciseData.length,
+                      itemBuilder: (context, index) {
+                        final exercise = value.exerciseData[index];
+                        if (index + 1 == value.exerciseData.length) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
                           );
-                        },
-                      ),
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              )
-              // TextButton(
-              //   onPressed: () => value.setExerciseOffset(offset: 10),
-              //   child: Text("See more..."),
-              // )
-            ],
-          ),
+                        }
+                        return ExerciseTile(
+                          title: exercise[ExerciseApiKeys.name.name],
+                          muscle: exercise[ExerciseApiKeys.muscle.name],
+                          leading: Text(
+                            index.toString(),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            )
+            // TextButton(
+            //   onPressed: () => value.setExerciseOffset(offset: 10),
+            //   child: Text("See more..."),
+            // )
+          ],
         ),
       ),
     );

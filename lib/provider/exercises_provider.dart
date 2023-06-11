@@ -40,8 +40,8 @@ class ExerciseProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       _exerciseData += (json.decode(response.body));
       final data = _exerciseData;
-      logger.d(_exerciseOffset);
-      return await data;
+      // logger.d(_exerciseOffset);
+      return data;
     }
     return [];
   }
