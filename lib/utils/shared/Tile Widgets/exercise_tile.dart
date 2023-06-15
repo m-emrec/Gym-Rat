@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_rat_v2/constants.dart';
-import 'package:gym_rat_v2/models/exercise_model.dart';
-import 'package:gym_rat_v2/provider/exercises_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
+import 'package:gym_rat_v2/logger.dart';
 
 import '../../../enums/exercises_collection_enum.dart';
 import '../../Add Exercises Page Widgets/add_exercise_show_detail_container.dart';
@@ -13,11 +9,12 @@ class ExerciseTile extends StatefulWidget {
     super.key,
     required this.leading,
     required this.exercise,
+    required this.changeItemExtent,
   });
 
   final Widget leading;
   final Map exercise;
-
+  final Function changeItemExtent;
   @override
   State<ExerciseTile> createState() => _ExerciseTileState();
 }
@@ -31,6 +28,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
     setState(() {
       _showAddExerciseContainer = !_showAddExerciseContainer;
     });
+    widget.changeItemExtent();
   }
 
   /// This getter turns the first letter of the muscle name to capital letter.
@@ -47,7 +45,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
     return Column(
       children: [
         ListTile(
-          leading: widget.leading,
+          // leading: widget.leading,
           title: Text(
             title,
             style:

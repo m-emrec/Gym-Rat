@@ -8,8 +8,10 @@ class ExerciseModel {
   final String? muscle;
   final String? type;
   final String? instructions;
+  final int? exerciseIndex;
 
   ExerciseModel({
+    this.exerciseIndex,
     this.instructions,
     required this.id,
     required this.exerciseName,

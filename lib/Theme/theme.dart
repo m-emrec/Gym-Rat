@@ -119,8 +119,7 @@ ThemeData lightTheme = ThemeData(
     behavior: SnackBarBehavior.floating,
     backgroundColor: kPrimary,
   ),
-
-  dropdownMenuTheme: DropdownMenuThemeData(menuStyle: MenuStyle()),
+  dropdownMenuTheme: DropdownMenuThemeData(menuStyle: const MenuStyle()),
 
   ///Divder Theme
   dividerTheme: const DividerThemeData(color: kTextColor),
@@ -129,4 +128,14 @@ ThemeData lightTheme = ThemeData(
     color: AppColors.kButtonColor,
     circularTrackColor: AppColors.kPrimary,
   ),
+
+  /// Chip Theme
+  chipTheme: ChipThemeData(
+    backgroundColor: AppColors.kPrimary,
+    elevation: 1,
+    deleteIconColor: AppColors.kButtonColor,
+    labelStyle: labelLarge.copyWith(color: AppColors.kTextColor),
+  ),
+
+  ////
 );

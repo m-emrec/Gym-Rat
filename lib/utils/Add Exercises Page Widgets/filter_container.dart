@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
+import 'package:gym_rat_v2/extensions/context_extenions.dart';
 import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/utils/shared/customTitle.dart';
 import 'package:gym_rat_v2/utils/shared/filters.dart';
@@ -30,6 +31,15 @@ class _FilterContainerState extends State<FilterContainer> {
     byDifficultyControllerText = val;
   }
 
+  Map get _collectFilters => {
+        "byMuscle":
+            byMuscleControllerText == "none" ? null : byMuscleControllerText,
+        "byType": byTypeControllerText == "none" ? null : byTypeControllerText,
+        "byDiff": byDifficultyControllerText == "none"
+            ? null
+            : byDifficultyControllerText,
+      };
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -55,16 +65,19 @@ class _FilterContainerState extends State<FilterContainer> {
               label: "by Type",
               values: byType.values,
               controller: _setByType,
+              filterType: "byType",
             ),
             FilterRow(
               label: "by Muscle",
               values: byMuscle.values,
               controller: _setByMuscle,
+              filterType: "byMuscle",
             ),
             FilterRow(
               label: "by Difficulty",
               values: byDifficulty.values,
               controller: _setByDifficulty,
+              filterType: "byDiff",
             ),
           ],
         ),
@@ -77,12 +90,17 @@ class _FilterContainerState extends State<FilterContainer> {
           ),
           child: const Text("Cancel"),
         ),
+
+        /// Apply Filter button
         TextButton(
           style: const ButtonStyle().copyWith(
             foregroundColor:
                 const MaterialStatePropertyAll(AppColors.kButtonColor),
           ),
-          onPressed: () {},
+          onPressed: () {
+            context.exerciseProv.setFilters(_collectFilters);
+            context.navPop();
+          },
           child: const Text("Filter"),
         ),
       ],

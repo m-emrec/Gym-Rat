@@ -6,6 +6,7 @@ enum ExercisesCollection {
   numberOfSets,
   rest,
   rpe,
+  exerciseIndex,
 }
 
 enum ExerciseApiKeys {

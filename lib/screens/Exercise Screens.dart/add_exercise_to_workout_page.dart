@@ -1,10 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_rat_v2/enums/exercises_collection_enum.dart';
-import 'package:gym_rat_v2/logger.dart';
+import 'package:gym_rat_v2/extensions/context_extenions.dart';
 import 'package:gym_rat_v2/provider/exercises_provider.dart';
-import 'package:gym_rat_v2/utils/shared/Tile%20Widgets/exercise_tile.dart';
-import 'package:gym_rat_v2/utils/shared/custom_text_field.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -27,8 +23,7 @@ class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
 
   @override
   void initState() {
-    Provider.of<ExerciseProvider>(context, listen: false).exerciseOffset = 0;
-    Provider.of<ExerciseProvider>(context, listen: false).exerciseData = [];
+    context.exerciseProv.resetData();
     _isLoading = false;
     _scrollListener();
     super.initState();
@@ -37,7 +32,6 @@ class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
   void _scrollListener() {
     widget._scrollController.addListener(
       () {
-        // logger.i(_isLoading);
         if (widget._scrollController.position.pixels ==
             widget._scrollController.position.maxScrollExtent) {
           if (!_isLoading) {
@@ -55,7 +49,6 @@ class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     widget._scrollController.dispose();
   }
@@ -100,8 +93,10 @@ class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
                     scrollController: widget._scrollController,
                   );
                 } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
                 }
               },

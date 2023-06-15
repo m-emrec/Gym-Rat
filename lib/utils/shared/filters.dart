@@ -1,4 +1,5 @@
 enum byType {
+  none,
   cardio,
   olympic_weightlifting,
   plyometrics,
@@ -9,6 +10,7 @@ enum byType {
 }
 
 enum byMuscle {
+  none,
   abdominals,
   abductors,
   adductors,
@@ -28,6 +30,7 @@ enum byMuscle {
 }
 
 enum byDifficulty {
+  none,
   beginner,
   intermediate,
   expert,
@@ -36,6 +39,7 @@ enum byDifficulty {
 extension GetValueExtension on Enum {
   String get getValue {
     switch (this) {
+      /// By Type
       case byType.cardio:
         return "Cardio";
       case byType.olympic_weightlifting:
@@ -50,6 +54,10 @@ extension GetValueExtension on Enum {
         return "Stretching";
       case byType.strongman:
         return "Strongman";
+      case byType.none:
+        return "None";
+
+      /// By Diff
       case byDifficulty.beginner:
         // TODO: Handle this case.
         return "Beginner";
@@ -59,6 +67,11 @@ extension GetValueExtension on Enum {
       case byDifficulty.expert:
         // TODO: Handle this case.
         return "Expert";
+      case byDifficulty.none:
+        // TODO: Handle this case.
+        return "None";
+
+      /// By Muscle
       case byMuscle.abdominals:
         // TODO: Handle this case.
         return "Abdominals";
@@ -107,6 +120,9 @@ extension GetValueExtension on Enum {
       case byMuscle.triceps:
         // TODO: Handle this case.
         return "Triceps";
+      case byMuscle.none:
+        // TODO: Handle this case.
+        return "None";
       default:
         {
           return "";
