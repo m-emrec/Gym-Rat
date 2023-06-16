@@ -120,26 +120,6 @@ class ExerciseProvider extends ChangeNotifier {
     return await exerciseCollection.get();
   }
 
-  test() async {
-    logger.i(_filters["byMuscle"]);
-    final baseUrl = Uri.parse(
-      "https://api.api-ninjas.com/v1/exercises?muscle=${_filters["byMuscle"] ?? ""}&type=${_filters["byType"] ?? ""}&difficulty=${_filters["byDiff"] ?? ""}&offset=$exerciseOffset",
-    );
-    final Map<String, String> headers = {'X-Api-Key': API_KEY};
-    final response = await http.get(baseUrl, headers: headers);
-
-    if (response.statusCode == 200) {
-      // logger.d(_exerciseOffset);
-      var a = json.decode(response.body);
-      logger.d(a);
-    }
-    return [];
-  }
-
-//* Filters
-
-//// end of filters
-
   /// Database CRUD operations
   addExerciseToWorkout(ExerciseModel data) async {
     final currentWorkout = await getCurrentWorkoutDoc();
@@ -168,4 +148,19 @@ class ExerciseProvider extends ChangeNotifier {
 
   updateExercise() {}
   ////
+  ///
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getExerciseHistory(
+      String exerciseId) async {
+    final selectedWorkout = await getCurrentWorkoutDoc();
+
+    final exercsieCollection = selectedWorkout.collection("Exercises");
+
+    final selectedExercise = exercsieCollection.doc(exerciseId);
+    final historyOfTheExercise = await selectedExercise
+        .collection("ExerciseData")
+        .orderBy("date", descending: true)
+        .get();
+    return historyOfTheExercise;
+  }
 }
