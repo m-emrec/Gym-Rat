@@ -145,7 +145,35 @@ class ExerciseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateExercise() {}
+  updateExercise(String exerciseId, Map data) async {
+    final currentWorkout = await getCurrentWorkoutDoc();
+
+    final DocumentReference<Map<String, dynamic>> selectedExercise =
+        currentWorkout.collection("Exercises").doc(exerciseId);
+
+    final oldDataGet = await selectedExercise.get();
+    final Map<String, dynamic> oldData = oldDataGet.data()!;
+    selectedExercise.update({
+      ExercisesCollection.id.name: oldData["id"],
+      ExercisesCollection.exerciseIndex.name:
+          oldData[ExercisesCollection.exerciseIndex.name],
+      ExercisesCollection.exerciseName.name:
+          oldData[ExercisesCollection.exerciseName.name],
+      ExercisesCollection.note.name: oldData[ExercisesCollection.note.name],
+      ExercisesCollection.numberOfReps.name:
+          data[ExercisesCollection.numberOfReps.name] ??
+              oldData[ExercisesCollection.numberOfReps.name],
+      ExercisesCollection.numberOfSets.name:
+          data[ExercisesCollection.numberOfSets.name] ??
+              oldData[ExercisesCollection.numberOfSets.name],
+      ExercisesCollection.rest.name: data[ExercisesCollection.rest.name] ??
+          oldData[ExercisesCollection.rest.name],
+      ExercisesCollection.rpe.name: data[ExercisesCollection.rpe.name] ??
+          oldData[ExercisesCollection.rpe.name]
+    });
+
+    notifyListeners();
+  }
   ////
   ///
 
