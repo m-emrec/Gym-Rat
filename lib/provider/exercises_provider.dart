@@ -175,7 +175,6 @@ class ExerciseProvider extends ChangeNotifier {
     notifyListeners();
   }
   ////
-  ///
 
   Future<QuerySnapshot<Map<String, dynamic>>> getExerciseHistory(
       String exerciseId) async {
