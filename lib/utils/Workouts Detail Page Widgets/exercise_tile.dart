@@ -100,6 +100,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
               subtitleTextStyle: context.textTheme.labelLarge,
 
               /// Infos Section
+              ///
               subtitle: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
