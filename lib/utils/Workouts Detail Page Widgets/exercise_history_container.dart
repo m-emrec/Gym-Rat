@@ -15,13 +15,14 @@ class ExerciseDataHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: BoxConstraints(
+        maxHeight: context.mediaQuerySize.height * 0.3,
+      ),
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(width: 3, color: context.theme.primaryColor),
         ),
       ),
-      height: 250,
-      width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
         child: FutureBuilder(

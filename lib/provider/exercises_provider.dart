@@ -9,7 +9,6 @@ import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/models/exercise_model.dart';
 import 'package:gym_rat_v2/provider/workout_provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:uuid/uuid.dart';
 
 class ExerciseProvider extends ChangeNotifier {
   // ignore: constant_identifier_names

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
+import 'package:gym_rat_v2/logger.dart';
 
 import '../../constants.dart';
 import '../../enums/exercises_collection_enum.dart';
@@ -58,13 +59,33 @@ class _ExerciseTileState extends State<ExerciseTile> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    color: AppColors.kRedCollor,
+                    color: context.theme.primaryColor,
                     itemBuilder: (context) => [
+                      /// Edit
                       PopupMenuItem(
+                        // height: 10,
+                        child: Text(
+                          "Edit",
+                          style: context.textTheme.labelLarge!.copyWith(),
+                        ),
+
+                        /// Call the Delete function from Exercise Proivder.
+                        // onTap: () => context.exerciseProv.deleteExercise(
+                        //   widget.exercise["id"],
+                        // ),
+                      ),
+
+                      /// Divider
+                      const PopupMenuItem(height: 10, child: Divider()),
+
+                      /// Delete
+                      PopupMenuItem(
+                        // height: 10,
                         child: Text(
                           "Delete",
-                          style: context.textTheme.labelLarge!
-                              .copyWith(color: context.theme.canvasColor),
+                          style: context.textTheme.labelLarge!.copyWith(
+                            color: AppColors.kRedCollor,
+                          ),
                         ),
 
                         /// Call the Delete function from Exercise Proivder.
