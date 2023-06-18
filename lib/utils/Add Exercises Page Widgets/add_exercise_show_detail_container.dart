@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_rat_v2/extensions/context_extenions.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -126,9 +127,7 @@ class AddExerciseDetailContainer extends StatelessWidget {
         TextButton(
           onPressed: () {
             final id = const Uuid().v4();
-
-            Provider.of<ExerciseProvider>(context, listen: false)
-                .addExerciseToWorkout(
+            context.exerciseProv.addExerciseToList(
               ExerciseModel(
                 id: id,
                 exerciseName: exerciseData[ExerciseApiKeys.name.name],
@@ -138,6 +137,17 @@ class AddExerciseDetailContainer extends StatelessWidget {
                 rpe: double.parse(_rpeController.text),
               ),
             );
+            // Provider.of<ExerciseProvider>(context, listen: false)
+            //     .addExerciseToWorkout(
+            //   ExerciseModel(
+            //     id: id,
+            //     exerciseName: exerciseData[ExerciseApiKeys.name.name],
+            //     numberOfReps: int.parse(_repController.text),
+            //     numberOfSets: int.parse(_setController.text),
+            //     rest: int.parse(_restController.text),
+            //     rpe: double.parse(_rpeController.text),
+            //   ),
+            // );
             func();
           },
           child: const Text("Add"),

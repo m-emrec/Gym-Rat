@@ -43,7 +43,7 @@ class EditWorkoutScreen extends StatelessWidget {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) => LoadingScreen(),
+                builder: (_) => const LoadingScreen(),
               );
               context.exerciseProv.comleteUpdateWorkoutExerciseOrder().then(
                     (value) => Navigator.of(context).popUntil(

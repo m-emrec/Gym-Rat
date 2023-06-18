@@ -75,12 +75,10 @@ class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
                 color: AppColors.kButtonColor,
               ),
         ),
-        //
         actions: [
           TextButton(
             onPressed: () {
-              // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-              context.exerciseProv.notifyListeners();
+              context.exerciseProv.addExerciseToWorkout();
               Navigator.of(context)
                   .popUntil(ModalRoute.withName(WorkoutDetailPage.routeName));
             },

@@ -78,6 +78,7 @@ class ExerciseProvider extends ChangeNotifier {
     _exerciseOffset = 0;
     _searchName = "";
     _filters = {};
+    _addExerciseToWorkoutList.clear();
   }
 
   /// Get's the current workout's ID
@@ -121,24 +122,46 @@ class ExerciseProvider extends ChangeNotifier {
   }
 
   /// Database CRUD operations
-  addExerciseToWorkout(ExerciseModel data) async {
+  ///
+  ///
+  final List<ExerciseModel> _addExerciseToWorkoutList = [];
+
+  addExerciseToList(ExerciseModel model) {
+    _addExerciseToWorkoutList.add(model);
+    logger.i(_addExerciseToWorkoutList);
+  }
+
+  addExerciseToWorkout() async {
+    logger.wtf("message");
     final currentWorkout = await getCurrentWorkoutDoc();
     int index;
+    logger.e("1");
+    try {
+      index = await currentWorkout
+          .collection("Exercises")
+          .orderBy("exerciseIndex")
+          .get()
+          .then((value) => value.docs.last["exerciseIndex"]);
+    } catch (e) {
+      index = 0;
+    }
 
-    index = await currentWorkout
-        .collection("Exercises")
-        .orderBy("exerciseIndex")
-        .get()
-        .then((value) => value.docs.last["exerciseIndex"]);
-    await currentWorkout.collection("Exercises").doc(data.id).set({
-      ExercisesCollection.id.name: data.id,
-      ExercisesCollection.exerciseName.name: data.exerciseName,
-      ExercisesCollection.rest.name: data.rest,
-      ExercisesCollection.numberOfReps.name: data.numberOfReps,
-      ExercisesCollection.numberOfSets.name: data.numberOfSets,
-      ExercisesCollection.rpe.name: data.rpe,
-      ExercisesCollection.exerciseIndex.name: index + 1,
-    });
+    logger.e("2");
+
+    for (var data in _addExerciseToWorkoutList) {
+      index++;
+      logger.d(data);
+      await currentWorkout.collection("Exercises").doc(data.id).set({
+        ExercisesCollection.id.name: data.id,
+        ExercisesCollection.exerciseName.name: data.exerciseName,
+        ExercisesCollection.rest.name: data.rest,
+        ExercisesCollection.numberOfReps.name: data.numberOfReps,
+        ExercisesCollection.numberOfSets.name: data.numberOfSets,
+        ExercisesCollection.rpe.name: data.rpe,
+        ExercisesCollection.exerciseIndex.name: index,
+      });
+    }
+    notifyListeners();
   }
 
   deleteExercise(String exerciseId) async {
@@ -215,15 +238,11 @@ class ExerciseProvider extends ChangeNotifier {
     final exercise2Data = await exercise2.get();
     if (goingUp) {
       for (var i = 0; i < exerciseDocs.length; i++) {
-        // selectedExercise
-        //     .update({"exerciseIndex": exercise2Data["exerciseIndex"]});
         _reorderList.add({
           "id": selectedExercise.id,
           "newIndex": exercise2Data["exerciseIndex"],
         });
         if (i < oldIndex && i >= newIndex) {
-          // exerciseDocs[i].reference.update(
-          //     {"exerciseIndex": exerciseDocs[i].data()["exerciseIndex"] + 1});
           _reorderList.add({
             "id": exerciseDocs[i].reference.id,
             "newIndex": exerciseDocs[i].data()["exerciseIndex"] + 1,
@@ -235,12 +254,8 @@ class ExerciseProvider extends ChangeNotifier {
         "id": selectedExercise.id,
         "newIndex": exercise2Data["exerciseIndex"],
       });
-      // selectedExercise
-      //     .update({"exerciseIndex": exercise2Data["exerciseIndex"]});
       for (var i = 0; i < exerciseDocs.length; i++) {
         if (i > oldIndex && i <= newIndex) {
-          // exerciseDocs[i].reference.update(
-          //     {"exerciseIndex": exerciseDocs[i].data()["exerciseIndex"] - 1});
           _reorderList.add({
             "id": exerciseDocs[i].reference.id,
             "newIndex": exerciseDocs[i].data()["exerciseIndex"] - 1,
@@ -248,8 +263,6 @@ class ExerciseProvider extends ChangeNotifier {
         }
       }
     }
-
-    // notifyListeners();
   }
 
   Future comleteUpdateWorkoutExerciseOrder() async {
