@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Gym Rat',
-        theme: lightTheme,
+        theme: AppTheme().lightTheme,
         themeMode: themeMode,
         initialRoute: AuthPage.routeName,
         routes: AppRoutes().appRoutes,

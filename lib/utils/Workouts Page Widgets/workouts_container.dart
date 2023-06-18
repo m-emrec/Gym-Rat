@@ -37,6 +37,7 @@ class _WorkoutsBoxState extends State<WorkoutsBox> {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Column(
             children: [
+              /// Workouts List
               SizedBox(
                 height: constraints.maxHeight,
                 child: FutureBuilder(
@@ -80,6 +81,8 @@ class _WorkoutsBoxState extends State<WorkoutsBox> {
                   },
                 ),
               ),
+
+              /// Button Row
             ],
           ),
         );
