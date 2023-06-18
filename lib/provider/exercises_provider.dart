@@ -123,10 +123,12 @@ class ExerciseProvider extends ChangeNotifier {
   addExerciseToWorkout(ExerciseModel data) async {
     final currentWorkout = await getCurrentWorkoutDoc();
     int index;
+
     index = await currentWorkout
         .collection("Exercises")
+        .orderBy("exerciseIndex")
         .get()
-        .then((value) => value.docs.length);
+        .then((value) => value.docs.last["exerciseIndex"]);
     await currentWorkout.collection("Exercises").doc(data.id).set({
       ExercisesCollection.id.name: data.id,
       ExercisesCollection.exerciseName.name: data.exerciseName,
@@ -175,6 +177,19 @@ class ExerciseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  final List<Map> _reorderList = [
+    /*
+    {
+      "id": ExerciseId,
+      "newIndex" : exerciseIndex,
+    },
+    {
+      "id": ExerciseId,
+      "newIndex" : exerciseIndex,
+    },
+    ...
+    */
+  ];
   updateWorkoutExerciseOrder(
       {required String movingItemId,
       required String id2,
@@ -182,7 +197,7 @@ class ExerciseProvider extends ChangeNotifier {
       required int newIndex,
       required int oldIndex}) async {
     final currentWorkout = await getCurrentWorkoutDoc();
-
+    //TODO: If user taps Done button on AppBar then call this function.
     final List<QueryDocumentSnapshot<Map<String, dynamic>>> exerciseDocs =
         await currentWorkout
             .collection("Exercises")
@@ -220,6 +235,7 @@ class ExerciseProvider extends ChangeNotifier {
 
   ////
 
+  ///Gets the selected Exercise's data history.
   Future<QuerySnapshot<Map<String, dynamic>>> getExerciseHistory(
       String exerciseId) async {
     final selectedWorkout = await getCurrentWorkoutDoc();

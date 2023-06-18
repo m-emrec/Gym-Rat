@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
-import 'package:gym_rat_v2/logger.dart';
-import 'package:gym_rat_v2/utils/Add%20Exercises%20Page%20Widgets/exercises_props_dropdown.dart';
 
 import '../../constants.dart';
 import '../../enums/exercises_collection_enum.dart';
@@ -12,10 +10,11 @@ class ExerciseTile extends StatefulWidget {
   const ExerciseTile({
     super.key,
     required this.exercise,
+    this.leading,
   });
 
   final Map exercise;
-
+  final Widget? leading;
   @override
   State<ExerciseTile> createState() => _ExerciseTileState();
 }
@@ -87,16 +86,20 @@ class _ExerciseTileState extends State<ExerciseTile> {
         child: Column(
           children: [
             ListTile(
+              leading: widget.leading,
+
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ///* Exercise Name
                   Text(
-                    widget.exercise[ExercisesCollection.exerciseName.name] +
-                        " " +
-                        "{ Index : " +
-                        widget.exercise["exerciseIndex"].toString() +
-                        " }",
+                    widget.exercise[ExercisesCollection.exerciseName.name]
+                    // +
+                    //     " " +
+                    //     "{ Index : " +
+                    //     widget.exercise["exerciseIndex"].toString() +
+                    //     " }"
+                    ,
                     style: context.textTheme.labelLarge!.copyWith(
                       fontSize: 16,
                       color: AppColors.kTextColor.withOpacity(0.8),
@@ -154,8 +157,8 @@ class _ExerciseTileState extends State<ExerciseTile> {
               ///
               subtitle: _isEditing
 
-                  /// if the user wants to edit the exercise then show @[EditExerciseTileRow]
-                  /// otherwise show @[infoRow]
+                  ///* if the user wants to edit the exercise then show @[EditExerciseTileRow]
+                  ///* otherwise show @[infoRow]
                   ? EditExerciseTileRow(
                       exercise: widget.exercise,
                       cancelEdit: _editFeatures,

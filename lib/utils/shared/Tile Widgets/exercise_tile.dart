@@ -58,7 +58,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
               child: IconButton(
                 onPressed: null,
                 icon: _showAddExerciseContainer
-                    ? const Icon(Icons.minimize)
+                    ? const Icon(Icons.remove)
                     : const Icon(Icons.add),
               ),
             ),

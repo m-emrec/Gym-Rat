@@ -112,42 +112,42 @@ class _EditWorkoutDetailPageListState extends State<EditWorkoutDetailPageList> {
 
   @override
   Widget build(BuildContext context) {
-    return ReorderableListView.builder(
-      itemCount: exerciseData.length,
-      itemBuilder: (context, index) {
-        return ExerciseTile(
-          key: ValueKey(index),
-          exercise: widget.exerciseData[index].data(),
-        );
-      },
-      onReorder: (oldIndex, newIndex) {
-        late bool goingUp;
-        setState(() {
-          if (newIndex > oldIndex) newIndex -= 1;
-
-          selectedExercise = exerciseData[oldIndex].data();
-          newExercise = exerciseData[newIndex].data();
-
-          final item = exerciseData.removeAt(oldIndex);
-          exerciseData.insert(newIndex, item);
-          if (newIndex > oldIndex) {
-            goingUp = false;
-          } else if (newIndex < oldIndex) {
-            goingUp = true;
-          }
-          context.exerciseProv.updateWorkoutExerciseOrder(
-            movingItemId: selectedExercise["id"],
-            id2: newExercise["id"],
-            goingUp: goingUp,
-            oldIndex: oldIndex,
-            newIndex: newIndex,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ReorderableListView.builder(
+        itemCount: exerciseData.length,
+        itemBuilder: (context, index) {
+          return ExerciseTile(
+            key: ValueKey(index),
+            leading: const Icon(Icons.reorder_outlined),
+            exercise: widget.exerciseData[index].data(),
           );
-        });
-      },
-      // onReorderEnd: (index) {
-      //   context.exerciseProv
-      //       .updateWorkoutExerciseOrder(oldExercise["id"], newExercise["id"]);
-      // },
+        },
+        onReorder: (oldIndex, newIndex) {
+          late bool goingUp;
+          setState(() {
+            if (newIndex > oldIndex) newIndex -= 1;
+
+            selectedExercise = exerciseData[oldIndex].data();
+            newExercise = exerciseData[newIndex].data();
+
+            final item = exerciseData.removeAt(oldIndex);
+            exerciseData.insert(newIndex, item);
+            if (newIndex > oldIndex) {
+              goingUp = false;
+            } else if (newIndex < oldIndex) {
+              goingUp = true;
+            }
+            context.exerciseProv.updateWorkoutExerciseOrder(
+              movingItemId: selectedExercise["id"],
+              id2: newExercise["id"],
+              goingUp: goingUp,
+              oldIndex: oldIndex,
+              newIndex: newIndex,
+            );
+          });
+        },
+      ),
     );
   }
 }
