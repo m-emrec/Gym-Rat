@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
-import 'package:gym_rat_v2/enums/exercises_collection_enum.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
-import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/provider/exercises_provider.dart';
-import 'package:gym_rat_v2/screens/Exercise%20Screens.dart/add_exercise_to_workout_page.dart';
+import 'package:gym_rat_v2/screens/Main%20Page/Workouts%20Page/edit_workout_screen.dart';
 import 'package:gym_rat_v2/utils/Workouts%20Detail%20Page%20Widgets/empty_exercise_container.dart';
 import 'package:provider/provider.dart';
 
@@ -40,10 +37,11 @@ class WorkoutDetailPage extends StatelessWidget {
           ),
         ),
         actions: [
-          //TODO: Add edit function.
           TextButton(
             onPressed: () {
               //* Navigates to @[EditWorkoutScreen]
+              Navigator.of(context)
+                  .pushNamed(EditWorkoutScreen.routeName, arguments: data);
             },
             child: Text(
               "Edit",

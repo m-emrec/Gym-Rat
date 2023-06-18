@@ -1,4 +1,5 @@
 import 'package:gym_rat_v2/screens/Exercise%20Screens.dart/add_exercise_to_workout_page.dart';
+import 'package:gym_rat_v2/screens/Main%20Page/Workouts%20Page/edit_workout_screen.dart';
 import 'package:gym_rat_v2/screens/Main%20Page/Workouts%20Page/start_new_cycle_screen.dart';
 import 'package:gym_rat_v2/screens/Main%20Page/Workouts%20Page/add_new_workout_screen.dart';
 import 'package:gym_rat_v2/screens/Auth%20Screens/auth_page.dart';
@@ -19,5 +20,6 @@ class AppRoutes {
     StartNewCyclePage.routeName: (context) => StartNewCyclePage(),
     WorkoutDetailPage.routeName: (context) => WorkoutDetailPage(),
     AddExerciseToWorkoutPage.routeName: (context) => AddExerciseToWorkoutPage(),
+    EditWorkoutScreen.routeName: (context) => EditWorkoutScreen(),
   };
 }

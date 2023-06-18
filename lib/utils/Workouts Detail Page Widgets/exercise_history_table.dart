@@ -228,7 +228,6 @@ class _DataRowsState extends State<DataRows> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     lastData = widget.lastData;
     data = widget.data;

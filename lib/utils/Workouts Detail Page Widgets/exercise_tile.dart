@@ -92,7 +92,11 @@ class _ExerciseTileState extends State<ExerciseTile> {
                 children: [
                   ///* Exercise Name
                   Text(
-                    widget.exercise[ExercisesCollection.exerciseName.name],
+                    widget.exercise[ExercisesCollection.exerciseName.name] +
+                        " " +
+                        "{ Index : " +
+                        widget.exercise["exerciseIndex"].toString() +
+                        " }",
                     style: context.textTheme.labelLarge!.copyWith(
                       fontSize: 16,
                       color: AppColors.kTextColor.withOpacity(0.8),
@@ -149,6 +153,9 @@ class _ExerciseTileState extends State<ExerciseTile> {
               /// Infos Section
               ///
               subtitle: _isEditing
+
+                  /// if the user wants to edit the exercise then show @[EditExerciseTileRow]
+                  /// otherwise show @[infoRow]
                   ? EditExerciseTileRow(
                       exercise: widget.exercise,
                       cancelEdit: _editFeatures,

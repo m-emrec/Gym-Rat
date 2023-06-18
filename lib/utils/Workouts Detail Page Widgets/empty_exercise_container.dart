@@ -8,32 +8,25 @@ class EmptyExerciseContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Text(
-              "You don't have any exercise.\nLet's add some",
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge!
-                  .copyWith(fontSize: 16),
-            ),
-            16.ph(),
-            OutlinedButton(
-              onPressed: () => Navigator.of(context)
-                  .pushNamed(AddExerciseToWorkoutPage.routeName),
-              style: const ButtonStyle().copyWith(
-                fixedSize: MaterialStatePropertyAll(
-                  Size.fromWidth(width * 0.6),
-                ),
-              ),
-              child: const Text("Add Exercise"),
-            ),
-          ],
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "You don't have any exercise.\nLet's add some",
+          style: Theme.of(context).textTheme.labelLarge!.copyWith(fontSize: 16),
         ),
-      ),
+        16.ph(),
+        OutlinedButton(
+          onPressed: () => Navigator.of(context)
+              .pushNamed(AddExerciseToWorkoutPage.routeName),
+          style: const ButtonStyle().copyWith(
+            fixedSize: MaterialStatePropertyAll(
+              Size.fromWidth(width * 0.6),
+            ),
+          ),
+          child: const Text("Add Exercise"),
+        ),
+      ],
     );
   }
 }

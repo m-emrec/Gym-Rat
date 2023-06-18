@@ -174,6 +174,50 @@ class ExerciseProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  updateWorkoutExerciseOrder(
+      {required String movingItemId,
+      required String id2,
+      required bool goingUp,
+      required int newIndex,
+      required int oldIndex}) async {
+    final currentWorkout = await getCurrentWorkoutDoc();
+
+    final List<QueryDocumentSnapshot<Map<String, dynamic>>> exerciseDocs =
+        await currentWorkout
+            .collection("Exercises")
+            .orderBy("exerciseIndex")
+            .get()
+            .then((value) => value.docs);
+
+    final DocumentReference<Map<String, dynamic>> selectedExercise =
+        currentWorkout.collection("Exercises").doc(movingItemId);
+    final DocumentReference<Map<String, dynamic>> exercise2 =
+        currentWorkout.collection("Exercises").doc(id2);
+    final exercise2Data = await exercise2.get();
+    if (goingUp) {
+      for (var i = 0; i < exerciseDocs.length; i++) {
+        selectedExercise
+            .update({"exerciseIndex": exercise2Data["exerciseIndex"]});
+        if (i < oldIndex && i >= newIndex) {
+          exerciseDocs[i].reference.update(
+              {"exerciseIndex": exerciseDocs[i].data()["exerciseIndex"] + 1});
+        }
+      }
+    } else {
+      selectedExercise
+          .update({"exerciseIndex": exercise2Data["exerciseIndex"]});
+      for (var i = 0; i < exerciseDocs.length; i++) {
+        if (i > oldIndex && i <= newIndex) {
+          exerciseDocs[i].reference.update(
+              {"exerciseIndex": exerciseDocs[i].data()["exerciseIndex"] - 1});
+        }
+      }
+    }
+
+    notifyListeners();
+  }
+
   ////
 
   Future<QuerySnapshot<Map<String, dynamic>>> getExerciseHistory(

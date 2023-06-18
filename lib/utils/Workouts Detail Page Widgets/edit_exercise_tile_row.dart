@@ -89,26 +89,29 @@ class _EditExerciseTileRowState extends State<EditExerciseTileRow> {
               ),
               8.pw(),
 
-              /// Done Butto
+              /// Done Button
               Flexible(
                 child: OutlinedButton(
-                  onPressed: () =>
-                      context.exerciseProv.updateExercise(exercise["id"], {
-                    ExercisesCollection.numberOfReps.name:
-                        _repController.text.isEmpty
-                            ? null
-                            : _repController.text,
-                    ExercisesCollection.numberOfSets.name:
-                        _setController.text.isEmpty
-                            ? null
-                            : _setController.text,
-                    ExercisesCollection.rest.name: _restController.text.isEmpty
-                        ? null
-                        : _restController.text,
-                    ExercisesCollection.rpe.name: _rpeController.text.isEmpty
-                        ? null
-                        : _rpeController.text,
-                  }),
+                  onPressed: () => context.exerciseProv.updateExercise(
+                    exercise["id"],
+                    {
+                      ExercisesCollection.numberOfReps.name:
+                          _repController.text.isEmpty
+                              ? null
+                              : _repController.text,
+                      ExercisesCollection.numberOfSets.name:
+                          _setController.text.isEmpty
+                              ? null
+                              : _setController.text,
+                      ExercisesCollection.rest.name:
+                          _restController.text.isEmpty
+                              ? null
+                              : _restController.text,
+                      ExercisesCollection.rpe.name: _rpeController.text.isEmpty
+                          ? null
+                          : _rpeController.text,
+                    },
+                  ),
                   child: const Text("Done"),
                 ),
               ),
