@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
 import 'package:gym_rat_v2/provider/exercises_provider.dart';
+import 'package:gym_rat_v2/screens/Main%20Page/Workouts%20Page/workout_detail_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -79,7 +80,8 @@ class _AddExerciseToWorkoutPageState extends State<AddExerciseToWorkoutPage> {
             onPressed: () {
               // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
               context.exerciseProv.notifyListeners();
-              context.navPop();
+              Navigator.of(context)
+                  .popUntil(ModalRoute.withName(WorkoutDetailPage.routeName));
             },
             child: const Text("Done"),
           )

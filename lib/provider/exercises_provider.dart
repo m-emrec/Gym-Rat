@@ -8,6 +8,7 @@ import 'package:gym_rat_v2/enums/exercises_collection_enum.dart';
 import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/models/exercise_model.dart';
 import 'package:gym_rat_v2/provider/workout_provider.dart';
+import 'package:gym_rat_v2/utils/shared/custom_progress_indicator.dart';
 import 'package:http/http.dart' as http;
 
 class ExerciseProvider extends ChangeNotifier {
@@ -179,7 +180,7 @@ class ExerciseProvider extends ChangeNotifier {
 
   final List<Map> _reorderList = [
     /*
-    asd
+    
     {
       "id": ExerciseId,
       "newIndex" : exerciseIndex,
@@ -197,8 +198,9 @@ class ExerciseProvider extends ChangeNotifier {
       required bool goingUp,
       required int newIndex,
       required int oldIndex}) async {
+    _reorderList.clear();
     final currentWorkout = await getCurrentWorkoutDoc();
-    //TODO: If user taps Done button on AppBar then call this function.
+
     final List<QueryDocumentSnapshot<Map<String, dynamic>>> exerciseDocs =
         await currentWorkout
             .collection("Exercises")
@@ -213,24 +215,59 @@ class ExerciseProvider extends ChangeNotifier {
     final exercise2Data = await exercise2.get();
     if (goingUp) {
       for (var i = 0; i < exerciseDocs.length; i++) {
-        selectedExercise
-            .update({"exerciseIndex": exercise2Data["exerciseIndex"]});
+        // selectedExercise
+        //     .update({"exerciseIndex": exercise2Data["exerciseIndex"]});
+        _reorderList.add({
+          "id": selectedExercise.id,
+          "newIndex": exercise2Data["exerciseIndex"],
+        });
         if (i < oldIndex && i >= newIndex) {
-          exerciseDocs[i].reference.update(
-              {"exerciseIndex": exerciseDocs[i].data()["exerciseIndex"] + 1});
+          // exerciseDocs[i].reference.update(
+          //     {"exerciseIndex": exerciseDocs[i].data()["exerciseIndex"] + 1});
+          _reorderList.add({
+            "id": exerciseDocs[i].reference.id,
+            "newIndex": exerciseDocs[i].data()["exerciseIndex"] + 1,
+          });
         }
       }
     } else {
-      selectedExercise
-          .update({"exerciseIndex": exercise2Data["exerciseIndex"]});
+      _reorderList.add({
+        "id": selectedExercise.id,
+        "newIndex": exercise2Data["exerciseIndex"],
+      });
+      // selectedExercise
+      //     .update({"exerciseIndex": exercise2Data["exerciseIndex"]});
       for (var i = 0; i < exerciseDocs.length; i++) {
         if (i > oldIndex && i <= newIndex) {
-          exerciseDocs[i].reference.update(
-              {"exerciseIndex": exerciseDocs[i].data()["exerciseIndex"] - 1});
+          // exerciseDocs[i].reference.update(
+          //     {"exerciseIndex": exerciseDocs[i].data()["exerciseIndex"] - 1});
+          _reorderList.add({
+            "id": exerciseDocs[i].reference.id,
+            "newIndex": exerciseDocs[i].data()["exerciseIndex"] - 1,
+          });
         }
       }
     }
 
+    // notifyListeners();
+  }
+
+  Future comleteUpdateWorkoutExerciseOrder() async {
+    final currentWorkout = await getCurrentWorkoutDoc();
+    final List<QueryDocumentSnapshot<Map<String, dynamic>>> exerciseDocs =
+        await currentWorkout
+            .collection("Exercises")
+            .orderBy("exerciseIndex")
+            .get()
+            .then((value) => value.docs);
+    for (var i = 0; i < _reorderList.length; i++) {
+      try {
+        await currentWorkout
+            .collection("Exercises")
+            .doc(_reorderList[i]["id"])
+            .update({"exerciseIndex": _reorderList[i]["newIndex"]});
+      } catch (e) {}
+    }
     notifyListeners();
   }
 

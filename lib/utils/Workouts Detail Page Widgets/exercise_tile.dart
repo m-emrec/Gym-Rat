@@ -92,17 +92,23 @@ class _ExerciseTileState extends State<ExerciseTile> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ///* Exercise Name
-                  Text(
-                    widget.exercise[ExercisesCollection.exerciseName.name]
-                    // +
-                    //     " " +
-                    //     "{ Index : " +
-                    //     widget.exercise["exerciseIndex"].toString() +
-                    //     " }"
-                    ,
-                    style: context.textTheme.labelLarge!.copyWith(
-                      fontSize: 16,
-                      color: AppColors.kTextColor.withOpacity(0.8),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: context.mediaQuerySize.width * 0.5,
+                    ),
+                    child: Text(
+                      widget.exercise[ExercisesCollection.exerciseName.name]
+                      // +
+                      //     " " +
+                      //     "{ Index : " +
+                      //     widget.exercise["exerciseIndex"].toString() +
+                      // " }"
+                      ,
+                      overflow: TextOverflow.fade,
+                      style: context.textTheme.labelLarge!.copyWith(
+                        fontSize: 16,
+                        color: AppColors.kTextColor.withOpacity(0.8),
+                      ),
                     ),
                   ),
 

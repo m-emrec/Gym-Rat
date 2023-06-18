@@ -1,18 +1,15 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
-import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/screens/Main%20Page/Workouts%20Page/workout_detail_page.dart';
+import 'package:gym_rat_v2/screens/loading_screen.dart';
 import 'package:gym_rat_v2/utils/Workouts%20Detail%20Page%20Widgets/exercise_tile.dart';
+import 'package:gym_rat_v2/utils/shared/custom_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
-import '../../../enums/workouts_collection_enum.dart';
 import '../../../provider/exercises_provider.dart';
 import '../../../utils/Workouts Detail Page Widgets/empty_exercise_container.dart';
-import '../../../utils/Workouts Detail Page Widgets/workout_detail_page_exercise_list.dart';
 
 class EditWorkoutScreen extends StatelessWidget {
   const EditWorkoutScreen({super.key});
@@ -43,13 +40,30 @@ class EditWorkoutScreen extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).popAndPushNamed(
-              WorkoutDetailPage.routeName,
-              arguments: {
-                "name": data["name"],
-                "id": data["id"],
-              },
-            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => LoadingScreen(),
+              );
+              context.exerciseProv.comleteUpdateWorkoutExerciseOrder().then(
+                    (value) => Navigator.of(context).popUntil(
+                        (ModalRoute.withName(WorkoutDetailPage.routeName))),
+                  );
+
+              // context.exerciseProv
+              //     .comleteUpdateWorkoutExerciseOrder()
+              //     .then(
+              //       (_) => showDialog(
+              //         context: context,
+              //         builder: (_) => LoadingScreen(),
+              //       ),
+              //     )
+              //     .then(
+              //       (_) => Navigator.of(context).popUntil(
+              //         (ModalRoute.withName("/")),
+              //       ),
+              //     );
+            },
             child: Text(
               "Done",
               style: context.textTheme.labelLarge,
