@@ -49,20 +49,6 @@ class EditWorkoutScreen extends StatelessWidget {
                     (value) => Navigator.of(context).popUntil(
                         (ModalRoute.withName(WorkoutDetailPage.routeName))),
                   );
-
-              // context.exerciseProv
-              //     .comleteUpdateWorkoutExerciseOrder()
-              //     .then(
-              //       (_) => showDialog(
-              //         context: context,
-              //         builder: (_) => LoadingScreen(),
-              //       ),
-              //     )
-              //     .then(
-              //       (_) => Navigator.of(context).popUntil(
-              //         (ModalRoute.withName("/")),
-              //       ),
-              //     );
             },
             child: Text(
               "Done",

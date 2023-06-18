@@ -61,10 +61,11 @@ class WorkoutTile extends StatelessWidget {
         ],
       ),
       // * Sneak peak of the exercise list
-      subtitle: Text(
-        exercises.toString(),
-        style: Theme.of(context).textTheme.displaySmall?.copyWith(fontSize: 12),
-      ),
+
+      // subtitle: Text(
+      //   exercises.toString(),
+      //   style: Theme.of(context).textTheme.displaySmall?.copyWith(fontSize: 12),
+      // ),
     );
   }
 }

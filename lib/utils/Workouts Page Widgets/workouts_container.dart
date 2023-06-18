@@ -35,52 +35,52 @@ class _WorkoutsBoxState extends State<WorkoutsBox> {
       builder: (context, constraints) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: SizedBox(
-            height: constraints.maxHeight,
-            child: FutureBuilder(
-              future: Provider.of<WorkoutProvider>(context).getUserWorkouts(),
-              builder: (context, snapshot) {
-                // * if connection is done then show data
-                if (snapshot.connectionState == ConnectionState.done) {
-                  // if there is data show workouts in list view
-                  if (snapshot.hasData) {
-                    return ListView.separated(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        final workout = snapshot.data!.docs[index];
-                        return WorkoutTile(
-                          onTap: () => Navigator.of(context).pushNamed(
-                            WorkoutDetailPage.routeName,
-                            arguments: {
-                              "name":
+          child: Column(
+            children: [
+              SizedBox(
+                height: constraints.maxHeight,
+                child: FutureBuilder(
+                  future:
+                      Provider.of<WorkoutProvider>(context).getUserWorkouts(),
+                  builder: (context, snapshot) {
+                    // * if connection is done then show data
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      // if there is data show workouts in list view
+                      if (snapshot.hasData) {
+                        return ListView.separated(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            final workout = snapshot.data!.docs[index];
+                            return WorkoutTile(
+                              onTap: () => Navigator.of(context).pushNamed(
+                                WorkoutDetailPage.routeName,
+                                arguments: {
+                                  "name": workout[
+                                      WorkoutsCollection.workoutName.name],
+                                  "id": workout.id,
+                                },
+                              ),
+                              workoutName:
                                   workout[WorkoutsCollection.workoutName.name],
-                              "id": workout.id,
-                            },
+                              exercises: [],
+                            );
+                          },
+                          separatorBuilder: (context, index) => Divider(
+                            thickness: 2,
+                            color: Theme.of(context).primaryColor,
                           ),
-                          workoutName:
-                              workout[WorkoutsCollection.workoutName.name],
-                          exercises: [
-                            "Exercise 1",
-                            "Exercise 2 ",
-                            "Exercise 3",
-                            "Exercise 4"
-                          ],
                         );
-                      },
-                      separatorBuilder: (context, index) => Divider(
-                        thickness: 2,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    );
-                    // if there is no data then show add cycle box.
-                  } else {
-                    return EmptyWorkoutContainer();
-                  }
-                }
-                // if connection is loading show circular indicator.
-                return const Center(child: CircularProgressIndicator());
-              },
-            ),
+                        // if there is no data then show add cycle box.
+                      } else {
+                        return EmptyWorkoutContainer();
+                      }
+                    }
+                    // if connection is loading show circular indicator.
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
+              ),
+            ],
           ),
         );
       },
