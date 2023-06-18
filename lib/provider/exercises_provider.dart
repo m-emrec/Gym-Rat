@@ -179,6 +179,7 @@ class ExerciseProvider extends ChangeNotifier {
 
   final List<Map> _reorderList = [
     /*
+    asd
     {
       "id": ExerciseId,
       "newIndex" : exerciseIndex,
