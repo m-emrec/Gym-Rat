@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_rat_v2/provider/app_states.dart';
 import 'package:gym_rat_v2/provider/exercises_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -28,5 +29,10 @@ extension ContextExtension on BuildContext {
 
   /// Listen = true
   ExerciseProvider get exerciseProvL => Provider.of<ExerciseProvider>(this);
+
+  /// @[AppStates] getters
+  AppStates get appStates => Provider.of<AppStates>(this, listen: false);
+  AppStates get appStatesL => Provider.of<AppStates>(this);
+
   ////
 }

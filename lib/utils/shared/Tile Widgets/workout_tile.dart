@@ -39,29 +39,30 @@ class WorkoutTile extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                 ),
-                // * menu button
-                PopupMenuButton(
-                  icon: const Icon(
-                    Icons.more_horiz,
-                    color: AppColors.kButtonColor,
-                  ),
-                  itemBuilder: (_) => [
-                    const PopupMenuItem(
-                      child: Text(
-                        "Delete",
-                      ),
-                    ),
-                    const PopupMenuItem(
-                      height: 5,
-                      child: Divider(),
-                    ),
-                    const PopupMenuItem(
-                      child: Text(
-                        "Start",
-                      ),
-                    ),
-                  ],
-                )
+
+                // // * menu button
+                // PopupMenuButton(
+                //   icon: const Icon(
+                //     Icons.more_horiz,
+                //     color: AppColors.kButtonColor,
+                //   ),
+                //   itemBuilder: (_) => [
+                //     const PopupMenuItem(
+                //       child: Text(
+                //         "Delete",
+                //       ),
+                //     ),
+                //     const PopupMenuItem(
+                //       height: 5,
+                //       child: Divider(),
+                //     ),
+                //     const PopupMenuItem(
+                //       child: Text(
+                //         "Start",
+                //       ),
+                //     ),
+                //   ],
+                // )
               ],
             ),
           ),

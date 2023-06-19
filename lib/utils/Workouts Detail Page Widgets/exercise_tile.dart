@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
+import 'package:gym_rat_v2/provider/app_states.dart';
 
 import '../../constants.dart';
 import '../../enums/exercises_collection_enum.dart';
+import '../../logger.dart';
 import 'edit_exercise_tile_row.dart';
 import 'exercise_history_container.dart';
 
@@ -23,6 +25,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
   bool _showExerciseHistory = false;
 
   bool _isEditing = false;
+  bool _showAddDataContainerController = false;
 
   void _openExerciseHistory() {
     setState(() {
@@ -33,6 +36,12 @@ class _ExerciseTileState extends State<ExerciseTile> {
   void _editFeatures() {
     setState(() {
       _isEditing = !_isEditing;
+    });
+  }
+
+  void _showAddDataContainer() {
+    setState(() {
+      _showAddDataContainerController = true;
     });
   }
 
@@ -124,6 +133,20 @@ class _ExerciseTileState extends State<ExerciseTile> {
                     ),
                     color: context.theme.primaryColor,
                     itemBuilder: (context) => [
+                      /// Add data
+                      PopupMenuItem(
+                        // height: 10,
+                        child: Text(
+                          "Add Data",
+                          style: context.textTheme.labelLarge!.copyWith(),
+                        ),
+
+                        // onTap: () => context.appStates
+                        //     .changeState(AppStatesEnum.addExerciseData),
+                      ),
+
+                      const PopupMenuItem(height: 10, child: Divider()),
+
                       /// Edit
                       PopupMenuItem(
                         // height: 10,
@@ -176,7 +199,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
             Visibility(
               visible: _showExerciseHistory,
               child: ExerciseDataHistory(
-                exerciseId: widget.exercise["id"],
+                exercise: widget.exercise,
               ),
             )
           ],

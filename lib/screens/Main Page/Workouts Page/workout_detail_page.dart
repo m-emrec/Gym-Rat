@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
+import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/provider/exercises_provider.dart';
 import 'package:gym_rat_v2/screens/Main%20Page/Workouts%20Page/edit_workout_screen.dart';
 import 'package:gym_rat_v2/utils/Workouts%20Detail%20Page%20Widgets/empty_exercise_container.dart';
@@ -14,7 +15,6 @@ class WorkoutDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.height;
     final data = ModalRoute.of(context)!.settings.arguments as Map;
     Provider.of<ExerciseProvider>(context).setCurrentWorkoutId(data["id"]);
     return Scaffold(
@@ -60,7 +60,7 @@ class WorkoutDetailPage extends StatelessWidget {
       ),
       body: SizedBox(
         // height: height,
-        width: width,
+        width: double.maxFinite,
         child: Consumer<ExerciseProvider>(
           builder: (context, value, child) => FutureBuilder(
             future: value.getExerciseOfWorkout(

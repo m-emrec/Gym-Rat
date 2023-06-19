@@ -30,6 +30,10 @@ final labelLarge = GoogleFonts.openSans(
   color: kButtonColor,
   fontWeight: FontWeight.bold,
 );
+final labelMedium = GoogleFonts.openSans(
+  fontSize: 14,
+  color: kButtonColor,
+);
 
 // var a = Color.fromRGBO(95, 95, 95, 1);
 
@@ -69,6 +73,7 @@ class AppTheme {
       titleLarge: titleLarge,
       displaySmall: subtitle,
       labelLarge: labelLarge,
+      labelMedium: labelMedium,
     ),
 
     /// input decoration

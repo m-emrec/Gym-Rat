@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/enums/exercises_collection_enum.dart';
 import 'package:gym_rat_v2/logger.dart';
+import 'package:gym_rat_v2/models/exercise_data_model.dart';
 import 'package:gym_rat_v2/models/exercise_model.dart';
 import 'package:gym_rat_v2/provider/workout_provider.dart';
 import 'package:gym_rat_v2/utils/shared/custom_progress_indicator.dart';
@@ -125,7 +126,6 @@ class ExerciseProvider extends ChangeNotifier {
   ///
   ///
   final List<ExerciseModel> _addExerciseToWorkoutList = [];
-
   addExerciseToList(ExerciseModel model) {
     _addExerciseToWorkoutList.add(model);
     logger.i(_addExerciseToWorkoutList);
@@ -286,6 +286,8 @@ class ExerciseProvider extends ChangeNotifier {
 
   ////
 
+  /// *  Exercise History Features
+
   ///Gets the selected Exercise's data history.
   Future<QuerySnapshot<Map<String, dynamic>>> getExerciseHistory(
       String exerciseId) async {
@@ -300,4 +302,21 @@ class ExerciseProvider extends ChangeNotifier {
         .get();
     return historyOfTheExercise;
   }
+
+  addExerciseData(
+      {required String exerciseId, required ExerciseData data}) async {
+    final selectedWorkout = await getCurrentWorkoutDoc();
+
+    final exercsieCollection = selectedWorkout.collection("Exercises");
+
+    final selectedExercise = exercsieCollection.doc(exerciseId);
+    logger.i(data);
+    selectedExercise.collection("ExerciseData").doc(data.date.toString()).set({
+      "date": data.date,
+      "note": data.note,
+      "data": data.data,
+    }).onError((error, stackTrace) => logger.e(error));
+  }
+
+////
 }

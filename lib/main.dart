@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gym_rat_v2/Theme/theme_manager.dart';
+import 'package:gym_rat_v2/provider/app_states.dart';
 import 'package:gym_rat_v2/provider/auth_provider.dart';
 import 'package:gym_rat_v2/provider/cycle_provider.dart';
 import 'package:gym_rat_v2/provider/exercises_provider.dart';
@@ -44,6 +45,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ExerciseProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AppStates(),
         ),
       ],
       child: MaterialApp(

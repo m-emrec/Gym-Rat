@@ -10,6 +10,7 @@ class ExerciseData {
   ///   {
   ///     rpe:8.5,
   ///     weight:130,
+  ///     "rep": 10
   ///   }
   ///     ]
   final String? note;
