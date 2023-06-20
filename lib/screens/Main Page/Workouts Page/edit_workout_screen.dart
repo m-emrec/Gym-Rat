@@ -12,9 +12,10 @@ import '../../../provider/exercises_provider.dart';
 import '../../../utils/Workouts Detail Page Widgets/empty_exercise_container.dart';
 
 class EditWorkoutScreen extends StatelessWidget {
-  const EditWorkoutScreen({super.key});
+  EditWorkoutScreen({super.key});
 
   static const routeName = "edit-workout-screen";
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +71,7 @@ class EditWorkoutScreen extends StatelessWidget {
                 if (snapshot.data!.docs.isNotEmpty) {
                   return EditWorkoutDetailPageList(
                     exerciseData: snapshot.data!.docs,
+                    scaffoldKey: scaffoldKey,
                   );
 
                   // WorkoutDetailPageExerciseList(
@@ -90,8 +92,10 @@ class EditWorkoutScreen extends StatelessWidget {
 }
 
 class EditWorkoutDetailPageList extends StatefulWidget {
-  const EditWorkoutDetailPageList({super.key, required this.exerciseData});
+  const EditWorkoutDetailPageList(
+      {super.key, required this.exerciseData, required this.scaffoldKey});
   final List<QueryDocumentSnapshot<Map<String, dynamic>>> exerciseData;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   State<EditWorkoutDetailPageList> createState() =>
@@ -121,6 +125,7 @@ class _EditWorkoutDetailPageListState extends State<EditWorkoutDetailPageList> {
             key: ValueKey(index),
             leading: const Icon(Icons.reorder_outlined),
             exercise: widget.exerciseData[index].data(),
+            scaffoldKey: widget.scaffoldKey,
           );
         },
         onReorder: (oldIndex, newIndex) {

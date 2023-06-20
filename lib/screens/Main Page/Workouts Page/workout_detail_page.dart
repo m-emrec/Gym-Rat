@@ -9,15 +9,21 @@ import 'package:provider/provider.dart';
 
 import '../../../utils/Workouts Detail Page Widgets/workout_detail_page_exercise_list.dart';
 
+// yesilköy , datam danışm
+
 class WorkoutDetailPage extends StatelessWidget {
   static const routeName = "workout-detail-page";
-  const WorkoutDetailPage({super.key});
+  WorkoutDetailPage({super.key});
+
+  final GlobalKey<ScaffoldState> scaffoldKey =
+      GlobalKey<ScaffoldState>(debugLabel: "workouts detail scaffold");
 
   @override
   Widget build(BuildContext context) {
     final data = ModalRoute.of(context)!.settings.arguments as Map;
     Provider.of<ExerciseProvider>(context).setCurrentWorkoutId(data["id"]);
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: context.theme.canvasColor,
       appBar: AppBar(
         centerTitle: true,
@@ -71,6 +77,7 @@ class WorkoutDetailPage extends StatelessWidget {
                 if (snapshot.data!.docs.isNotEmpty) {
                   return WorkoutDetailPageExerciseList(
                     exerciseData: snapshot.data!.docs,
+                    scaffoldKey: scaffoldKey,
                   );
                 } else {
                   return const EmptyExerciseContainer();

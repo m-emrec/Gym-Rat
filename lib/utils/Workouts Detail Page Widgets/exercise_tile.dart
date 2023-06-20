@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_rat_v2/utils/snackbars.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
 import 'package:gym_rat_v2/provider/app_states.dart';
 
@@ -13,7 +14,10 @@ class ExerciseTile extends StatefulWidget {
     super.key,
     required this.exercise,
     this.leading,
+    required this.scaffoldKey,
   });
+
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   final Map exercise;
   final Widget? leading;
@@ -47,6 +51,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
 
   @override
   Widget build(BuildContext context) {
+    final scaffoldState = Scaffold.of(context);
     var infoRow = Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -163,25 +168,29 @@ class _ExerciseTileState extends State<ExerciseTile> {
 
                       /// Delete
                       PopupMenuItem(
-                          // height: 10,
-                          child: Text(
-                            "Delete",
-                            style: context.textTheme.labelLarge!.copyWith(
-                              color: AppColors.kRedCollor,
-                            ),
+                        // height: 10,
+                        child: Text(
+                          "Delete",
+                          style: context.textTheme.labelLarge!.copyWith(
+                            color: AppColors.kRedCollor,
                           ),
+                        ),
 
-                          /// Call the Delete function from Exercise Proivder.
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (_) => Center(
-                                      child: Text("sad"),
-                                    ));
-                            //  context.exerciseProv.deleteExercise(
-                            //   widget.exercise["id"],
-                            // ),
-                          }),
+                        /// Call the Delete function from Exercise Proivder.
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(Snack(
+                            snackType: SnackType.warning,
+                            context: context,
+                            content: const SizedBox(),
+                            label:
+                                "Are yo Sure to Delete ${widget.exercise["exerciseName"]}",
+                            acceptFunc: () =>
+                                context.exerciseProv.deleteExercise(
+                              widget.exercise["id"],
+                            ),
+                          ));
+                        },
+                      ),
                     ],
                   )
                 ],

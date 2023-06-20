@@ -11,8 +11,11 @@ class WorkoutDetailPageExerciseList extends StatelessWidget {
   const WorkoutDetailPageExerciseList({
     super.key,
     required this.exerciseData,
+    required this.scaffoldKey,
   });
   final List<QueryDocumentSnapshot<Map<String, dynamic>>> exerciseData;
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,7 +25,10 @@ class WorkoutDetailPageExerciseList extends StatelessWidget {
         itemBuilder: (context, index) {
           if (index < exerciseData.length) {
             final Map exercise = exerciseData[index].data();
-            return ExerciseTile(exercise: exercise);
+            return ExerciseTile(
+              exercise: exercise,
+              scaffoldKey: scaffoldKey,
+            );
           } else {
             return OutlinedButton(
               onPressed: () => context.navPushNamed(
