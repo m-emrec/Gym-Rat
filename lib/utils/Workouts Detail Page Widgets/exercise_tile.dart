@@ -132,7 +132,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     color: context.theme.primaryColor,
-                    itemBuilder: (context) => [
+                    itemBuilder: (ctx) => [
                       /// Add data
                       PopupMenuItem(
                         // height: 10,
@@ -163,19 +163,25 @@ class _ExerciseTileState extends State<ExerciseTile> {
 
                       /// Delete
                       PopupMenuItem(
-                        // height: 10,
-                        child: Text(
-                          "Delete",
-                          style: context.textTheme.labelLarge!.copyWith(
-                            color: AppColors.kRedCollor,
+                          // height: 10,
+                          child: Text(
+                            "Delete",
+                            style: context.textTheme.labelLarge!.copyWith(
+                              color: AppColors.kRedCollor,
+                            ),
                           ),
-                        ),
 
-                        /// Call the Delete function from Exercise Proivder.
-                        onTap: () => context.exerciseProv.deleteExercise(
-                          widget.exercise["id"],
-                        ),
-                      ),
+                          /// Call the Delete function from Exercise Proivder.
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (_) => Center(
+                                      child: Text("sad"),
+                                    ));
+                            //  context.exerciseProv.deleteExercise(
+                            //   widget.exercise["id"],
+                            // ),
+                          }),
                     ],
                   )
                 ],
