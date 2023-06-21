@@ -51,7 +51,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
 
   @override
   Widget build(BuildContext context) {
-    final scaffoldState = Scaffold.of(context);
     var infoRow = Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
