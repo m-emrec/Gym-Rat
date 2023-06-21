@@ -13,7 +13,7 @@ enum SnackType {
 }
 
 class Snack extends SnackBar {
-  const Snack({
+  Snack({
     super.key,
     required this.context,
     required super.content,
@@ -23,16 +23,20 @@ class Snack extends SnackBar {
     this.sDuration,
     this.declineFunc,
     this.disposeFunction,
+    this.declineLabel,
+    this.acceptLabel,
   });
 
   /// The text that will be written on the snackbar body.
   final String label;
+  final String? declineLabel;
+  final String? acceptLabel;
 
   ///
   final BuildContext context;
 
   /// Which type of snack you want to show.
-  /// @[backgroundColor] , @[duration] and some properties will be changed dependimng on the @[SnackType]
+  /// @[backgroundColor] , [duration] and some properties will be changed dependimng on the @[SnackType]
   final SnackType? snackType;
 
   /// Can be null.
@@ -49,26 +53,55 @@ class Snack extends SnackBar {
   ///       Let'say user wanted to delete something if he taps "No" button then this function will be called.
   final Function? declineFunc;
 
-  /// Can be @[null]
-  /// What will happen after this @[Snack] removed from the screen.
+  /// Can be [Null]
+  /// What will happen after this [Snack] removed from the screen.
   final Function? disposeFunction;
+
+  bool _isDeclined = false;
+
+  Function get _declineFunc =>
+      declineFunc ??
+      () {
+        _isDeclined = true;
+        a.value = true;
+        logger.i("Decline Called");
+      };
+
+  ValueNotifier<bool> a = ValueNotifier(false);
 
   @override
   Widget get content {
+    a.addListener(() {
+      logger.i("A changed");
+    });
+
+    /// if the the [declineLabel] is not [Null] but [declineFunc] is null then throw an error.
+    // assert(declineLabel != null && declineFunc != null,
+    //     "declineLabel is not null but declineFunc is null.\nYou have to provide declineFunc");
+
+    /// if the the [acceptLabel] is not null but [acceptFunc] is null then throw an error.
+    // assert(acceptLabel != null && acceptFunc == null,
+    //     "acceptLAbel is not null but acceptFunc is null.\nYou have to provide acceptFunc");
+
     switch (snackType) {
       /// if the @[SnackType] is widget the return content which is givn to the @[Snack].
       case SnackType.widget:
         return super.content;
 
       /// By Default return a Text, button and timer,
+      ///
+
       default:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// @[TimeBar] this will be shown on the @[Snack]'s top.
+
             TimerBar(
               duration: duration,
-              disposeFunc: disposeFunction,
+              disposeFunc: a.value
+                  ? () => logger.w("message")
+                  : () => logger.d("Delete"), // disposeFunction,
             ),
 
             /// Body of the snackbar.
@@ -78,6 +111,7 @@ class Snack extends SnackBar {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  /// [this.label]
                   Flexible(
                     child: Text(
                       label,
@@ -88,14 +122,34 @@ class Snack extends SnackBar {
                       ),
                     ),
                   ),
-                  TextButton(
-                    style: context.theme.textButtonTheme.style!.copyWith(
-                      foregroundColor: const MaterialStatePropertyAll(
-                          AppColors.kCanvasColor),
-                    ),
-                    onPressed: () => acceptFunc!(),
-                    child: const Text("Yes"),
-                  ),
+
+                  /// if @[declineLabel] is not null then show accept button
+                  acceptLabel == null
+                      ? const SizedBox(
+                          height: 64,
+                        )
+                      : TextButton(
+                          style: context.theme.textButtonTheme.style!.copyWith(
+                            foregroundColor: const MaterialStatePropertyAll(
+                                AppColors.kCanvasColor),
+                          ),
+                          onPressed: acceptFunc!(),
+                          child: Text(acceptLabel!),
+                        ),
+
+                  /// if @[declineLabel] is not null then show decline button
+                  declineLabel == null
+                      ? const SizedBox(
+                          height: 14,
+                        )
+                      : TextButton(
+                          style: context.theme.textButtonTheme.style!.copyWith(
+                            foregroundColor: const MaterialStatePropertyAll(
+                                AppColors.kCanvasColor),
+                          ),
+                          onPressed: () => _declineFunc(),
+                          child: Text(declineLabel!),
+                        ),
                 ],
               ),
             ),
@@ -130,7 +184,33 @@ class Snack extends SnackBar {
   EdgeInsetsGeometry? get padding => EdgeInsets.zero;
   @override
   DismissDirection get dismissDirection => DismissDirection.horizontal;
+
+  @override
+  State<Snack> createState() => _SnackState();
 }
+
+class _SnackState extends State<Snack> {
+  @override
+  void initState() {
+    logger.d("message");
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    logger.i("asdasdasdasdasd");
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    logger.i("Build");
+    return Snack(
+        context: context, content: widget.content, label: widget.label);
+  }
+}
+
+
 
 // class a implements SnackBar {
 //   @override
