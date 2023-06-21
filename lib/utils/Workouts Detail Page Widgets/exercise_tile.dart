@@ -178,19 +178,22 @@ class _ExerciseTileState extends State<ExerciseTile> {
 
                         /// Call the Delete function from Exercise Proivder.
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(Snack(
-                            snackType: SnackType.warning,
-                            context: context,
-                            content: const SizedBox(),
-                            label:
-                                "Are yo Sure to Delete ${widget.exercise["exerciseName"]}",
-                            declineLabel: "No",
-                            //TODO: Add decline function.
-                            // disposeFunction: () =>
-                            //     context.exerciseProv.deleteExercise(
-                            //   widget.exercise["id"],
-                            // ),
-                          ));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            Snack(
+                              snackType: SnackType.warning,
+                              context: context,
+                              content: const SizedBox(),
+                              label:
+                                  "Are yo Sure to Delete ${widget.exercise["exerciseName"]}",
+                              declineLabel: "Keep",
+                              disposeFunction: () =>
+                                  context.exerciseProv.deleteExercise(
+                                widget.exercise["id"],
+                              ),
+                              acceptLabel: "Delete",
+                              acceptFunc: () {},
+                            ),
+                          );
                         },
                       ),
                     ],

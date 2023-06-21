@@ -63,18 +63,19 @@ class Snack extends SnackBar {
       declineFunc ??
       () {
         _isDeclined = true;
-        a.value = true;
-        logger.i("Decline Called");
       };
 
-  ValueNotifier<bool> a = ValueNotifier(false);
+  /// Just to reach to value of [_isDeclined] from outside of this class.
+  bool getIsDeclined() {
+    if (_isDeclined) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   Widget get content {
-    a.addListener(() {
-      logger.i("A changed");
-    });
-
     /// if the the [declineLabel] is not [Null] but [declineFunc] is null then throw an error.
     // assert(declineLabel != null && declineFunc != null,
     //     "declineLabel is not null but declineFunc is null.\nYou have to provide declineFunc");
@@ -96,12 +97,10 @@ class Snack extends SnackBar {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// @[TimeBar] this will be shown on the @[Snack]'s top.
-
             TimerBar(
               duration: duration,
-              disposeFunc: a.value
-                  ? () => logger.w("message")
-                  : () => logger.d("Delete"), // disposeFunction,
+              disposeFunc: disposeFunction,
+              isDeclined: getIsDeclined,
             ),
 
             /// Body of the snackbar.
@@ -123,7 +122,7 @@ class Snack extends SnackBar {
                     ),
                   ),
 
-                  /// if @[declineLabel] is not null then show accept button
+                  /// if [acceptLabel] is not null then show accept button
                   acceptLabel == null
                       ? const SizedBox(
                           height: 64,
@@ -133,7 +132,10 @@ class Snack extends SnackBar {
                             foregroundColor: const MaterialStatePropertyAll(
                                 AppColors.kCanvasColor),
                           ),
-                          onPressed: acceptFunc!(),
+                          onPressed: () {
+                            acceptFunc!();
+                            ScaffoldMessenger.of(context).clearSnackBars();
+                          },
                           child: Text(acceptLabel!),
                         ),
 
@@ -147,7 +149,10 @@ class Snack extends SnackBar {
                             foregroundColor: const MaterialStatePropertyAll(
                                 AppColors.kCanvasColor),
                           ),
-                          onPressed: () => _declineFunc(),
+                          onPressed: () {
+                            _declineFunc();
+                            ScaffoldMessenger.of(context).clearSnackBars();
+                          },
                           child: Text(declineLabel!),
                         ),
                 ],

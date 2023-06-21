@@ -2,16 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
+import 'package:gym_rat_v2/logger.dart';
 
 class TimerBar extends StatefulWidget {
   const TimerBar({
     super.key,
     required this.duration,
     this.disposeFunc,
+    this.isDeclined,
   });
 
   final Duration duration;
   final Function? disposeFunc;
+  final Function? isDeclined;
   @override
   State<TimerBar> createState() => _TimerBarState();
 }
@@ -36,7 +39,11 @@ class _TimerBarState extends State<TimerBar> {
     super.dispose();
 
     /// if @[disposeFunc] is null then return an empty function.
-    widget.disposeFunc == null ? () {} : widget.disposeFunc!();
+    if (widget.disposeFunc != null) {
+      if (widget.isDeclined!() == false || widget.isDeclined!() == null) {
+        widget.disposeFunc!();
+      }
+    } else {}
     timer.cancel();
   }
 
