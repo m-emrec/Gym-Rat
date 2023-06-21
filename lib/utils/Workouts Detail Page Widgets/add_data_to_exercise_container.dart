@@ -91,7 +91,7 @@ class _AddDataToExerciseContainerState
       data.add({
         "rep": int.parse(repField.controller.text),
         "weight": int.parse(weightField.controller!.text),
-        "rpe": rpeField.controller.text,
+        "rpe": double.parse(rpeField.controller.text),
         "note": noteField.controller!.text
       });
     }
@@ -144,7 +144,9 @@ class _AddDataToExerciseContainerState
                 ),
               ),
               TextButton(
-                  onPressed: () => _saveDataToDatabase(), child: Text("asda"))
+                onPressed: () => _saveDataToDatabase(),
+                child: const Text("Save"),
+              )
             ],
           ),
         );

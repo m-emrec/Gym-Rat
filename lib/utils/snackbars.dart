@@ -30,18 +30,24 @@ class Snack extends SnackBar {
 
   /// The text that will be written on the snackbar body.
   final String label;
+
+  /// Can be [Null].
+  ///   This will used as [declineButton]'s label.
   final String? declineLabel;
+
+  /// Can be [Null]
+  ///   This will used as [acceptButton]'s label.
   final String? acceptLabel;
 
   ///
   final BuildContext context;
 
   /// Which type of snack you want to show.
-  /// @[backgroundColor] , [duration] and some properties will be changed dependimng on the @[SnackType]
+  /// [backgroundColor] , [duration] and some properties will be changed depending on the [SnackType]
   final SnackType? snackType;
 
-  /// Can be null.
-  /// If defined than @[SnakcBar] will use this instead of pre-defined durations.
+  /// Can be [Null].
+  /// If defined than [SnackBar] will use this instead of pre-defined durations.
   final Duration? sDuration;
 
   /// The function that will be called after user accepted something.
@@ -58,8 +64,10 @@ class Snack extends SnackBar {
   /// What will happen after this [Snack] removed from the screen.
   final Function? disposeFunction;
 
+  /// If user calls the [declineFunc] this will set as [true].
   bool _isDeclined = false;
 
+  /// Default [declineFunc] if [declineFunc] is [Null] this funtion will be used.
   Function get _declineFunc =>
       declineFunc ??
       () {
@@ -77,41 +85,28 @@ class Snack extends SnackBar {
 
   @override
   Widget get content {
-    /// if the the [declineLabel] is not [Null] but [declineFunc] is null then throw an error.
-    // assert(declineLabel != null && declineFunc != null,
-    //     "declineLabel is not null but declineFunc is null.\nYou have to provide declineFunc");
-
-    /// if the the [acceptLabel] is not null but [acceptFunc] is null then throw an error.
-    // assert(acceptLabel != null && acceptFunc == null,
+    ///* if the the [acceptLabel] is not null but [acceptFunc] is null then throw an error.
+    // assert(acceptLabel != null && acceptFunc != null,
     //     "acceptLAbel is not null but acceptFunc is null.\nYou have to provide acceptFunc");
 
     switch (snackType) {
-      /// if the @[SnackType] is widget the return content which is givn to the @[Snack].
+      /// if the [SnackType] is widget the return content which is givn to the @[Snack].
       case SnackType.widget:
         return super.content;
 
       /// By Default return a Text, button and timer,
-      ///
-
       default:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// @[TimeBar] this will be shown on the @[Snack]'s top.
-            TimerBar(
-              duration: duration,
-              disposeFunc: disposeFunction,
-              isDeclined: getIsDeclined,
-            ),
-
-            /// Body of the snackbar.
+            ///* Body of the snackbar.
             Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 0.0, horizontal: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  /// [this.label]
+                  /// [label]
                   Flexible(
                     child: Text(
                       label,
@@ -123,7 +118,7 @@ class Snack extends SnackBar {
                     ),
                   ),
 
-                  /// if [acceptLabel] is not null then show accept button
+                  ///* if [acceptLabel] is not null then show accept button
                   acceptLabel == null
                       ? const SizedBox(
                           height: 64,
@@ -140,7 +135,7 @@ class Snack extends SnackBar {
                           child: Text(acceptLabel!),
                         ),
 
-                  /// if @[declineLabel] is not null then show decline button
+                  ///* if [declineLabel] is not null then show decline button
                   declineLabel == null
                       ? const SizedBox(
                           height: 14,
@@ -158,6 +153,13 @@ class Snack extends SnackBar {
                         ),
                 ],
               ),
+            ),
+
+            ///* [TimeBar] this will be shown on the @[Snack]'s top.
+            TimerBar(
+              duration: duration,
+              disposeFunc: disposeFunction,
+              isDeclined: getIsDeclined,
             ),
           ],
         );
@@ -215,8 +217,6 @@ class _SnackState extends State<Snack> {
         context: context, content: widget.content, label: widget.label);
   }
 }
-
-
 
 // class a implements SnackBar {
 //   @override

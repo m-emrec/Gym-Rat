@@ -20,15 +20,17 @@ class _ExerciseHistoryTableState extends State<ExerciseHistoryTable> {
       visible: showMore,
       child: Column(
         children: [
-          ...data.reversed.map((e) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                e[entry] + (entry == "weight" ? " Kg" : ""),
-                style: context.textTheme.labelSmall!.copyWith(fontSize: 12),
-              ),
-            );
-          })
+          ...data.reversed.map(
+            (e) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  e[entry].toString() + (entry == "weight" ? " Kg" : ""),
+                  style: context.textTheme.labelSmall!.copyWith(fontSize: 12),
+                ),
+              );
+            },
+          )
         ],
       ),
     );
@@ -156,7 +158,7 @@ class _ExerciseHistoryTableState extends State<ExerciseHistoryTable> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            lastData["rep"],
+                            lastData["rep"].toString(),
                             style: context.textTheme.labelSmall!
                                 .copyWith(fontSize: 12),
                           ),
@@ -188,7 +190,7 @@ class _ExerciseHistoryTableState extends State<ExerciseHistoryTable> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            lastData["rpe"],
+                            lastData["rpe"].toString(),
                             style: context.textTheme.labelSmall!
                                 .copyWith(fontSize: 12),
                           ),
@@ -312,7 +314,7 @@ class _DataRowsState extends State<DataRows> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                lastData["rep"],
+                lastData["rep"].toString(),
                 style: context.textTheme.labelSmall!.copyWith(fontSize: 12),
               ),
               moreDetail(_showMore, data, "rep"),
@@ -342,7 +344,7 @@ class _DataRowsState extends State<DataRows> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                lastData["rpe"],
+                lastData["rpe"].toString(),
                 style: context.textTheme.labelSmall!.copyWith(fontSize: 12),
               ),
               moreDetail(_showMore, data, "rpe"),

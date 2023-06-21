@@ -46,9 +46,12 @@ class _ExerciseDataHistoryState extends State<ExerciseDataHistory> {
                   exercise: widget.exercise,
                 );
               }
+
+              /// if [datalist] not empty retun Table
               if (dataList.isNotEmpty) {
                 return ExerciseHistoryTable(dataList: dataList);
               } else {
+                /// if [dataList] is empty return AddData button.
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
