@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/utils/snackbars.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
-import 'package:gym_rat_v2/provider/app_states.dart';
 
 import '../../constants.dart';
 import '../../enums/exercises_collection_enum.dart';
-import '../../logger.dart';
+import '../shared/custom_popup_menu_button.dart';
 import 'edit_exercise_tile_row.dart';
 import 'exercise_history_container.dart';
 
@@ -56,27 +55,27 @@ class _ExerciseTileState extends State<ExerciseTile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ///* Set x Rep
+          //* Set x Rep
 
           Text(
             "${widget.exercise[ExercisesCollection.numberOfSets.name]} x ${widget.exercise[ExercisesCollection.numberOfReps.name]}",
             style: context.textTheme.labelLarge,
           ),
 
-          ///* RPE
+          //* RPE
 
           Text(
             widget.exercise[ExercisesCollection.rpe.name].toString(),
             style: context.textTheme.labelLarge,
           ),
 
-          ///* Rest
+          //* Rest
           Text(
             "${widget.exercise[ExercisesCollection.rest.name]} sec",
             style: context.textTheme.labelLarge,
           ),
 
-          ///* Show Exercise Data
+          //* Show Exercise Data
           Align(
             alignment: Alignment.centerRight,
             child: IconButton(
@@ -104,7 +103,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ///* Exercise Name
+                  //* Exercise Name
                   ConstrainedBox(
                     constraints: BoxConstraints(
                       maxWidth: context.mediaQuerySize.width * 0.5,
@@ -125,19 +124,10 @@ class _ExerciseTileState extends State<ExerciseTile> {
                     ),
                   ),
 
-                  ///* Settings buttons
-                  PopupMenuButton(
-                    position: PopupMenuPosition.under,
-                    icon: const Icon(
-                      Icons.more_horiz,
-                      color: AppColors.kButtonColor,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    color: context.theme.primaryColor,
-                    itemBuilder: (ctx) => [
-                      /// Add data
+                  //* Settings buttons
+                  CustomPopMenuButton(
+                    items: [
+                      //* Add data
                       PopupMenuItem(
                         // height: 10,
                         child: Text(
@@ -151,7 +141,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
 
                       const PopupMenuItem(height: 10, child: Divider()),
 
-                      /// Edit
+                      //* Edit
                       PopupMenuItem(
                         // height: 10,
                         child: Text(
@@ -162,10 +152,10 @@ class _ExerciseTileState extends State<ExerciseTile> {
                         onTap: () => _editFeatures(),
                       ),
 
-                      /// Divider
+                      //* Divider
                       const PopupMenuItem(height: 10, child: Divider()),
 
-                      /// Delete
+                      //* Delete
                       PopupMenuItem(
                         // height: 10,
                         child: Text(
@@ -175,7 +165,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
                           ),
                         ),
 
-                        /// Call the Delete function from Exercise Proivder.
+                        //* Call the Delete function from Exercise Proivder.
                         onTap: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             Snack(
@@ -189,24 +179,23 @@ class _ExerciseTileState extends State<ExerciseTile> {
                                   context.exerciseProv.deleteExercise(
                                 widget.exercise["id"],
                               ),
-                              acceptLabel: "Delete",
+                              acceptLabel: "Delete !",
                               acceptFunc: () {},
                             ),
                           );
                         },
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
               subtitleTextStyle: context.textTheme.labelLarge,
 
-              /// Infos Section
-              ///
+              //* Infos Section
               subtitle: _isEditing
 
-                  ///* if the user wants to edit the exercise then show @[EditExerciseTileRow]
-                  ///* otherwise show @[infoRow]
+                  //* if the user wants to edit the exercise then show @[EditExerciseTileRow]
+                  //* otherwise show [infoRow]
                   ? EditExerciseTileRow(
                       exercise: widget.exercise,
                       cancelEdit: _editFeatures,
@@ -214,7 +203,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
                   : infoRow,
             ),
 
-            /// Exercise History Container
+            //* Exercise History Container
             Visibility(
               visible: _showExerciseHistory,
               child: ExerciseDataHistory(

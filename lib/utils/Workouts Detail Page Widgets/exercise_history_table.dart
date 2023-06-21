@@ -29,15 +29,6 @@ class _ExerciseHistoryTableState extends State<ExerciseHistoryTable> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
-        ////
-        /// FIXME:
-        /// !Two option :
-        /// ? - 1 : Wrap the elements in [titleRow] with a [Row]. There will one column inside the first [TableRow].
-        ///         Wrap the elements of [DataRows] with a [Row] and wrap that [Row] with a [StateFulBuilder].
-        ///         Instead of [FlexColumnWidth] wrap the elements inside the [Row] with [Flexible]
-        /// ? - 2 : THERE IS NO SECOND OPTION.
-        ////
-
         child: Table(
           columnWidths: const {
             0: FlexColumnWidth(3),
