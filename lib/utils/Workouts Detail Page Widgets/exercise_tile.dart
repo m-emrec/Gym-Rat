@@ -185,7 +185,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
                               content: const SizedBox(),
                               label:
                                   "Are yo Sure to Delete ${widget.exercise["exerciseName"]}",
-                              declineLabel: "Keep",
+                              declineLabel: "No",
                               disposeFunction: () =>
                                   context.exerciseProv.deleteExercise(
                                 widget.exercise["id"],

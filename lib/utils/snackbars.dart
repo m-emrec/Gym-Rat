@@ -12,6 +12,7 @@ enum SnackType {
   widget,
 }
 
+// ignore: must_be_immutable
 class Snack extends SnackBar {
   Snack({
     super.key,
