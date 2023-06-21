@@ -209,7 +209,7 @@ class _ExerciseHistoryTableState extends State<ExerciseHistoryTable> {
   }
 }
 
-class DataRows extends StatefulWidget {
+class DataRows extends TableRow {
   const DataRows(
       {super.key,
       required this.lastData,
@@ -219,11 +219,23 @@ class DataRows extends StatefulWidget {
   final Map lastData;
   final List data;
   final String date;
-  @override
-  State<DataRows> createState() => _DataRowsState();
 }
 
-class _DataRowsState extends State<DataRows> {
+class DataRowsa extends StatefulWidget {
+  const DataRowsa(
+      {super.key,
+      required this.lastData,
+      required this.data,
+      required this.date});
+
+  final Map lastData;
+  final List data;
+  final String date;
+  @override
+  State<DataRowsa> createState() => _DataRowsaState();
+}
+
+class _DataRowsaState extends State<DataRowsa> {
   late final Map lastData;
   late final List data;
   late final String date;
