@@ -122,17 +122,27 @@ class _ExerciseTileState extends State<ExerciseTile> {
                   CustomPopMenuButton(
                     items: [
                       //* Add data
-                      PopupMenuItem(
-                        // height: 10,
-                        child: Text(
-                          "Add Data",
-                          style: context.textTheme.labelLarge!.copyWith(),
-                        ),
+                      _showExerciseHistory
+                          ? PopupMenuItem(
+                              // height: 10,
+                              child: Text(
+                                "Add Data",
+                                style: context.textTheme.labelLarge!.copyWith(),
+                              ),
 
-                        onTap: () => context.appStates.showAddDataContainer(),
-                      ),
-
-                      const PopupMenuItem(height: 10, child: Divider()),
+                              onTap: () =>
+                                  context.appStates.showAddDataContainer(),
+                            )
+                          : const PopupMenuItem(
+                              child: null,
+                              height: 0,
+                            ),
+                      _showExerciseHistory
+                          ? const PopupMenuItem(height: 10, child: Divider())
+                          : const PopupMenuItem(
+                              child: null,
+                              height: 0,
+                            ),
 
                       //* Edit
                       PopupMenuItem(
