@@ -59,9 +59,8 @@ class _AddDataToExerciseContainerState
           keyboardType: TextInputType.number,
           controller: TextEditingController(),
           onTapOutside: (event) {
-            // logger.i(event);
-            // final currentFocus = FocusScope.of(context);
-            // currentFocus.unfocus();
+            final currentFocus = FocusScope.of(context);
+            currentFocus.unfocus();
           },
         ),
       );
@@ -145,6 +144,12 @@ class _AddDataToExerciseContainerState
                     final ExercisePropsDropdown rpeWidget =
                         dataRow[3] as ExercisePropsDropdown;
                     final TextField noteWidget = dataRow[4] as TextField;
+
+                    //* Set the default values for the controllers
+
+                    repWidget.controller.text =
+                        widget.exercise["numberOfReps"].toString();
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -164,8 +169,7 @@ class _AddDataToExerciseContainerState
                 ),
               ),
               TextButton(
-                onPressed: () =>
-                    logger.wtf(_dataRowList.length), //_saveDataToDatabase(),
+                onPressed: () => _saveDataToDatabase(),
                 child: const Text("Save"),
               )
             ],
