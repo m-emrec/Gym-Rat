@@ -23,6 +23,7 @@ class _AddDataToExerciseContainerState
   final List<List<Widget>> _dataRowList = [];
 
   void _createDataRowList() {
+    //TODO: Add Date selection.
     for (var i = 0; i < widget.exercise["numberOfSets"]; i++) {
       _dataRowList.add([]);
 
@@ -94,7 +95,7 @@ class _AddDataToExerciseContainerState
 
   void _saveDataToDatabase() {
     final List<Map> data = [];
-
+    //TODO : After adding dataSelection add a checker which warn the user when he tries to add second data for the same date.
     try {
       for (var row in _dataRowList) {
         final repField = row[1] as ExercisePropsDropdown;
@@ -110,6 +111,7 @@ class _AddDataToExerciseContainerState
         });
       }
       final ExerciseData exerciseData = ExerciseData(
+        //TODO : Change this one also;
         date: DateTime.now(),
         data: data,
       );
@@ -138,6 +140,7 @@ class _AddDataToExerciseContainerState
       );
     } catch (e) {
       /// if there is another error then call this.
+      logger.e(e);
       ScaffoldMessenger.of(context).showSnackBar(
         Snack(
           context: context,
@@ -167,9 +170,8 @@ class _AddDataToExerciseContainerState
                   shrinkWrap: true,
                   itemCount: _dataRowList.length,
                   itemBuilder: (context, index) {
-                    // logger.d(index);
-
                     final dataRow = _dataRowList[index];
+
                     final Text setNumber = dataRow[0] as Text;
                     final ExercisePropsDropdown repWidget =
                         dataRow[1] as ExercisePropsDropdown;
