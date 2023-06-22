@@ -1,9 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
 import 'package:gym_rat_v2/logger.dart';
+import 'package:gym_rat_v2/provider/app_states.dart';
+import 'package:gym_rat_v2/utils/snackbars.dart';
 
 import '../../models/exercise_data_model.dart';
 import '../Add Exercises Page Widgets/exercises_props_dropdown.dart';
@@ -95,24 +95,57 @@ class _AddDataToExerciseContainerState
   void _saveDataToDatabase() {
     final List<Map> data = [];
 
-    for (var row in _dataRowList) {
-      final repField = row[1] as ExercisePropsDropdown;
-      final weightField = row[2] as TextField;
-      final rpeField = row[3] as ExercisePropsDropdown;
-      final noteField = row[4] as TextField;
-      data.add({
-        "rep": int.parse(repField.controller.text),
-        "weight": int.parse(weightField.controller!.text),
-        "rpe": double.parse(rpeField.controller.text),
-        "note": noteField.controller!.text
-      });
+    try {
+      for (var row in _dataRowList) {
+        final repField = row[1] as ExercisePropsDropdown;
+        final weightField = row[2] as TextField;
+        final rpeField = row[3] as ExercisePropsDropdown;
+        final noteField = row[4] as TextField;
+
+        data.add({
+          "rep": int.parse(repField.controller.text),
+          "weight": int.parse(weightField.controller!.text),
+          "rpe": double.parse(rpeField.controller.text),
+          "note": noteField.controller!.text
+        });
+      }
+      final ExerciseData exerciseData = ExerciseData(
+        date: DateTime.now(),
+        data: data,
+      );
+      context.exerciseProv.addExerciseData(
+          exerciseId: widget.exercise["id"], data: exerciseData);
+
+      //* Show Saved snack
+      ScaffoldMessenger.of(context).showSnackBar(
+        Snack(
+          context: context,
+          label: " Saved !",
+          snackType: SnackType.info,
+          sDuration: const Duration(seconds: 1),
+        ),
+      );
+      context.appStates.resetState(StateControllers.showAddDataController);
+    } on FormatException catch (_) {
+      /// if the user leaves some fields blank , show this [Snack]
+      ScaffoldMessenger.of(context).showSnackBar(
+        Snack(
+          context: context,
+          label: "You must fill the blank fields !",
+          snackType: SnackType.error,
+          sDuration: const Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      /// if there is another error then call this.
+      ScaffoldMessenger.of(context).showSnackBar(
+        Snack(
+          context: context,
+          label: "An error occuried ! Please try again.",
+          snackType: SnackType.error,
+        ),
+      );
     }
-    final ExerciseData exerciseData = ExerciseData(
-      date: DateTime.now(),
-      data: data,
-    );
-    context.exerciseProv
-        .addExerciseData(exerciseId: widget.exercise["id"], data: exerciseData);
   }
 
   @override
@@ -146,7 +179,7 @@ class _AddDataToExerciseContainerState
                     final TextField noteWidget = dataRow[4] as TextField;
 
                     //* Set the default values for the controllers
-                    // update save data
+
                     repWidget.controller.text =
                         widget.exercise["numberOfReps"].toString();
 
@@ -168,9 +201,29 @@ class _AddDataToExerciseContainerState
                   },
                 ),
               ),
-              TextButton(
-                onPressed: () => _saveDataToDatabase(),
-                child: const Text("Save"),
+
+              //* Buton Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  // *Cancel Button.
+                  /// If user taps this. [AddDataContainer] will be closed and [ExerciseistoryTable] will be shown.
+                  TextButton(
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStatePropertyAll(AppColors.kRedCollor),
+                    ),
+                    onPressed: () => context.appStates.showAddDataContainer(),
+                    child: const Text("Cancel"),
+                  ),
+                  //*Save Button
+                  TextButton(
+                    onPressed: () {
+                      _saveDataToDatabase();
+                    },
+                    child: const Text("Save"),
+                  ),
+                ],
               )
             ],
           ),

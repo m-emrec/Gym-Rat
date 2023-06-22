@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 
-enum AppStatesEnum {
-  none,
-  addExerciseData,
+enum StateControllers {
+  showAddDataController,
 }
 
 class AppStates extends ChangeNotifier {
-  AppStatesEnum _appState = AppStatesEnum.none;
-  AppStatesEnum get appState => _appState;
+  /// This Map contains states of the app.
+  final Map _stateControllers = {
+    StateControllers.showAddDataController.name: false,
+  };
+  Map get stateControllers => _stateControllers;
 
-  void changeState(AppStatesEnum newState) {
-    _appState = AppStatesEnum.addExerciseData;
+  bool get showAddDataController =>
+      _stateControllers[StateControllers.showAddDataController.name];
+  void resetState(StateControllers controller) {
+    _stateControllers[controller.name] = false;
+  }
+
+  showAddDataContainer() {
+    _stateControllers[StateControllers.showAddDataController.name] =
+        !_stateControllers[StateControllers.showAddDataController.name];
     notifyListeners();
   }
 }

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
 import 'package:gym_rat_v2/extensions/empth_padding_extension.dart';
+import 'package:gym_rat_v2/provider/app_states.dart';
+import 'package:provider/provider.dart';
 
 import 'add_data_to_exercise_container.dart';
 import 'exercise_history_table.dart';
@@ -18,7 +20,13 @@ class ExerciseDataHistory extends StatefulWidget {
 }
 
 class _ExerciseDataHistoryState extends State<ExerciseDataHistory> {
-  bool _showAddExerciseDataContainer = false;
+  @override
+  void initState() {
+    Provider.of<AppStates>(context, listen: false)
+        .resetState(StateControllers.showAddDataController);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,7 +49,7 @@ class _ExerciseDataHistoryState extends State<ExerciseDataHistory> {
                   snapshot.data!.docs;
 
               /// if showAddExerciseDataContaner is true.
-              if (_showAddExerciseDataContainer) {
+              if (context.appStatesL.showAddDataController) {
                 return AddDataToExerciseContainer(
                   exercise: widget.exercise,
                 );
@@ -70,9 +78,7 @@ class _ExerciseDataHistoryState extends State<ExerciseDataHistory> {
                           ),
                         ),
                       ),
-                      onPressed: () => setState(() {
-                        _showAddExerciseDataContainer = true;
-                      }),
+                      onPressed: () => context.appStates.showAddDataContainer(),
                       child: const Text("Add Data"),
                     )
                   ],

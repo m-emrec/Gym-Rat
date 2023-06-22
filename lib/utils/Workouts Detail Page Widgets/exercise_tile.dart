@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/utils/snackbars.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
 
@@ -28,7 +29,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
   bool _showExerciseHistory = false;
 
   bool _isEditing = false;
-  bool _showAddDataContainerController = false;
 
   void _openExerciseHistory() {
     setState(() {
@@ -39,12 +39,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
   void _editFeatures() {
     setState(() {
       _isEditing = !_isEditing;
-    });
-  }
-
-  void _showAddDataContainer() {
-    setState(() {
-      _showAddDataContainerController = true;
     });
   }
 
@@ -135,8 +129,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
                           style: context.textTheme.labelLarge!.copyWith(),
                         ),
 
-                        // onTap: () => context.appStates
-                        //     .changeState(AppStatesEnum.addExerciseData),
+                        onTap: () => context.appStates.showAddDataContainer(),
                       ),
 
                       const PopupMenuItem(height: 10, child: Divider()),

@@ -4,11 +4,17 @@ import 'package:gym_rat_v2/extensions/context_extenions.dart';
 import 'package:gym_rat_v2/utils/shared/timer.dart';
 
 enum SnackType {
+  /// Returns an SnackBar with a label. [backgroundColor] is [AppColors.kRedCollor]
   error,
   danger,
+
+  /// A warning message .
+  /// Usually used warn the user when he wants delete something.[backgroundColor] is [AppColors.kRedCollor]
   warning,
   primary,
   widget,
+
+  /// Returns an SnackBar with a label. [backgroundColor] is [primaryColor]
   info,
 }
 
@@ -17,7 +23,7 @@ class Snack extends SnackBar {
   Snack({
     super.key,
     required this.context,
-    required super.content,
+    super.content = const SizedBox(),
     required this.label,
     this.acceptFunc,
     this.snackType = SnackType.primary,
@@ -96,6 +102,25 @@ class Snack extends SnackBar {
       ///* if the [SnackType] is widget the return content which is givn to the @[Snack].
       case SnackType.widget:
         return super.content;
+
+      /// Returns an SnackBar with a label. [backgroundColor] is [primaryColor]
+      case SnackType.info:
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            label,
+            style: context.textTheme.labelLarge,
+          ),
+        );
+      case SnackType.error:
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            label,
+            style: context.textTheme.labelLarge!
+                .copyWith(color: context.theme.canvasColor),
+          ),
+        );
 
       ///* By Default return a Text, button and timer,
       default:
@@ -177,6 +202,8 @@ class Snack extends SnackBar {
     switch (snackType) {
       case SnackType.warning:
         return AppColors.kRedCollor;
+      case SnackType.error:
+        return AppColors.kRedCollor;
 
       default:
         return AppColors.kPrimary;
@@ -188,6 +215,8 @@ class Snack extends SnackBar {
     switch (snackType) {
       case SnackType.warning:
         return sDuration ?? const Duration(seconds: 5);
+      case SnackType.error:
+        return sDuration ?? const Duration(seconds: 1);
 
       default:
         return sDuration ?? const Duration(seconds: 10);
