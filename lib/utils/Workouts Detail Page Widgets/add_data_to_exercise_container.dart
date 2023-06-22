@@ -27,7 +27,7 @@ class _AddDataToExerciseContainerState
     for (var i = 0; i < widget.exercise["numberOfSets"]; i++) {
       _dataRowList.add([]);
 
-      /// Set number
+      /// Set number 0
       _dataRowList[i].add(
         Text(
           "${i + 1}",
@@ -38,7 +38,7 @@ class _AddDataToExerciseContainerState
         ),
       );
 
-      /// Rep
+      /// Rep 1
       _dataRowList[i].add(
         ExercisePropsDropdown(
           label: "Rep",
@@ -47,7 +47,7 @@ class _AddDataToExerciseContainerState
         ),
       );
 
-      /// Weight
+      /// Weight 2
       _dataRowList[i].add(
         TextField(
           decoration: const InputDecoration(
@@ -66,7 +66,7 @@ class _AddDataToExerciseContainerState
         ),
       );
 
-      /// Rpe
+      /// Rpe 3
       _dataRowList[i].add(
         ExercisePropsDropdown(
           label: "Rpe",
@@ -75,7 +75,11 @@ class _AddDataToExerciseContainerState
         ),
       );
 
-      /// Note
+      ///Date 4
+      _dataRowList[i].add(
+          IconButton(onPressed: () {}, icon: Icon(Icons.date_range_outlined)));
+
+      /// Note 5
       _dataRowList[i].add(
         TextField(
           decoration: const InputDecoration(
@@ -98,10 +102,10 @@ class _AddDataToExerciseContainerState
     //TODO : After adding dataSelection add a checker which warn the user when he tries to add second data for the same date.
     try {
       for (var row in _dataRowList) {
-        final repField = row[1] as ExercisePropsDropdown;
-        final weightField = row[2] as TextField;
-        final rpeField = row[3] as ExercisePropsDropdown;
-        final noteField = row[4] as TextField;
+        final repField = row[2] as ExercisePropsDropdown;
+        final weightField = row[3] as TextField;
+        final rpeField = row[4] as ExercisePropsDropdown;
+        final noteField = row[5] as TextField;
 
         data.add({
           "rep": int.parse(repField.controller.text),
@@ -172,13 +176,14 @@ class _AddDataToExerciseContainerState
                   itemBuilder: (context, index) {
                     final dataRow = _dataRowList[index];
 
+                    final dateWidget = dataRow[4];
                     final Text setNumber = dataRow[0] as Text;
                     final ExercisePropsDropdown repWidget =
                         dataRow[1] as ExercisePropsDropdown;
                     final TextField weightWidget = dataRow[2] as TextField;
                     final ExercisePropsDropdown rpeWidget =
                         dataRow[3] as ExercisePropsDropdown;
-                    final TextField noteWidget = dataRow[4] as TextField;
+                    final TextField noteWidget = dataRow[5] as TextField;
 
                     //* Set the default values for the controllers
 
@@ -191,10 +196,15 @@ class _AddDataToExerciseContainerState
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Flexible(child: setNumber),
-                            Flexible(child: repWidget),
-                            Flexible(child: weightWidget),
-                            Flexible(child: rpeWidget),
+                            Flexible(
+                              child: dateWidget,
+                              flex: 1,
+                              fit: FlexFit.tight,
+                            ),
+                            Flexible(child: setNumber, flex: 3),
+                            Flexible(child: repWidget, flex: 3),
+                            Flexible(child: weightWidget, flex: 3),
+                            Flexible(child: rpeWidget, flex: 3),
                           ],
                         ),
                         noteWidget,
