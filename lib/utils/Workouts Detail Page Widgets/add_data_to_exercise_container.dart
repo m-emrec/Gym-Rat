@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
+import 'package:gym_rat_v2/logger.dart';
 
 import '../../models/exercise_data_model.dart';
 import '../Add Exercises Page Widgets/exercises_props_dropdown.dart';
@@ -26,7 +30,10 @@ class _AddDataToExerciseContainerState
       _dataRowList[i].add(
         Text(
           "${i + 1}",
-          style: context.textTheme.labelLarge,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.kButtonColor,
+          ),
         ),
       );
 
@@ -51,6 +58,11 @@ class _AddDataToExerciseContainerState
           ),
           keyboardType: TextInputType.number,
           controller: TextEditingController(),
+          onTapOutside: (event) {
+            // logger.i(event);
+            // final currentFocus = FocusScope.of(context);
+            // currentFocus.unfocus();
+          },
         ),
       );
 
@@ -75,6 +87,7 @@ class _AddDataToExerciseContainerState
             focusedBorder: InputBorder.none,
           ),
           controller: TextEditingController(),
+          textCapitalization: TextCapitalization.sentences,
         ),
       );
     }
@@ -104,8 +117,13 @@ class _AddDataToExerciseContainerState
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     _createDataRowList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SizedBox(
@@ -117,6 +135,8 @@ class _AddDataToExerciseContainerState
                   shrinkWrap: true,
                   itemCount: _dataRowList.length,
                   itemBuilder: (context, index) {
+                    // logger.d(index);
+
                     final dataRow = _dataRowList[index];
                     final Text setNumber = dataRow[0] as Text;
                     final ExercisePropsDropdown repWidget =
@@ -144,7 +164,8 @@ class _AddDataToExerciseContainerState
                 ),
               ),
               TextButton(
-                onPressed: () => _saveDataToDatabase(),
+                onPressed: () =>
+                    logger.wtf(_dataRowList.length), //_saveDataToDatabase(),
                 child: const Text("Save"),
               )
             ],

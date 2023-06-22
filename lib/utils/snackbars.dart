@@ -161,7 +161,7 @@ class Snack extends SnackBar {
 
             ///* [TimeBar] this will be shown on the @[Snack]'s bottom.
             /// It shows how much time left.
-            /// asd
+
             TimerBar(
               duration: duration,
               disposeFunc: disposeFunction,

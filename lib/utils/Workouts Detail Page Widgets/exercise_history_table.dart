@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
-import 'package:gym_rat_v2/logger.dart';
 import 'package:intl/intl.dart';
 
 import '../../constants.dart';
@@ -31,7 +30,7 @@ class _ExerciseHistoryTableState extends State<ExerciseHistoryTable> {
       child: SingleChildScrollView(
         child: Table(
           columnWidths: const {
-            0: FlexColumnWidth(3),
+            // 0: FlexColumnWidth(3),
           },
           children: [
             /// Title Row
