@@ -98,18 +98,18 @@ class _EditExerciseTileRowState extends State<EditExerciseTileRow> {
                       ExercisesCollection.numberOfReps.name:
                           _repController.text.isEmpty
                               ? null
-                              : _repController.text,
+                              : int.parse(_repController.text),
                       ExercisesCollection.numberOfSets.name:
                           _setController.text.isEmpty
                               ? null
-                              : _setController.text,
+                              : int.parse(_setController.text),
                       ExercisesCollection.rest.name:
                           _restController.text.isEmpty
                               ? null
-                              : _restController.text,
+                              : int.parse(_restController.text),
                       ExercisesCollection.rpe.name: _rpeController.text.isEmpty
                           ? null
-                          : _rpeController.text,
+                          : double.parse(_rpeController.text),
                     },
                   ),
                   child: const Text("Done"),

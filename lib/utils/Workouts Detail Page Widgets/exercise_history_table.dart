@@ -28,10 +28,8 @@ class _ExerciseHistoryTableState extends State<ExerciseHistoryTable> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
         child: Table(
-          columnWidths: const {
-            // 0: FlexColumnWidth(3),
-          },
           children: [
             /// Title Row
             TableRow(
@@ -133,6 +131,7 @@ class DataRows extends TableRow {
   final List data;
   final String date;
   final BuildContext context;
+
   Visibility moreDetail(bool showMore, List data, String entry) {
     return Visibility(
       visible: showMore,
@@ -161,100 +160,119 @@ class DataRows extends TableRow {
     return [
       StatefulBuilder(
         builder: (_, setState) => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ///* date
-            Padding(
-              padding: const EdgeInsets.only(top: 2.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      /// See More Details Button
-                      GestureDetector(
-                        onTap: () => setState(() {
-                          _showMore = !_showMore;
-                        }),
-                        child: Icon(
-                          color: AppColors.kButtonColor,
-                          _showMore
-                              ? Icons.keyboard_arrow_up_rounded
-                              : Icons.keyboard_arrow_down_rounded,
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 4,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 2.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        /// See More Details Button
+                        GestureDetector(
+                          onTap: () => setState(() {
+                            _showMore = !_showMore;
+                          }),
+                          child: Icon(
+                            color: AppColors.kButtonColor,
+                            _showMore
+                                ? Icons.keyboard_arrow_up_rounded
+                                : Icons.keyboard_arrow_down_rounded,
+                          ),
                         ),
-                      ),
 
-                      /// Date
-                      Text(
-                        date.toString(),
-                        style: context.textTheme.labelSmall!
-                            .copyWith(fontSize: 12),
-                      ),
-                    ],
-                  ),
-                  // moreDetail(_showMore, data, "rpe"),
+                        /// Date
+                        Text(
+                          date.toString(),
+                          style: context.textTheme.labelSmall!
+                              .copyWith(fontSize: 12),
+                        ),
+                      ],
+                    ),
+                    // moreDetail(_showMore, data, "rpe"),
 
-                  Visibility(
-                    visible: _showMore,
-                    child: Column(
-                      children: List.generate(
-                        data.length,
-                        (index) => Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            (data.length - index).toString(),
-                            style: context.textTheme.labelSmall!
-                                .copyWith(fontWeight: FontWeight.bold),
+                    Visibility(
+                      visible: _showMore,
+                      child: Column(
+                        children: List.generate(
+                          data.length,
+                          (index) => Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              (data.length - index).toString(),
+                              style: context.textTheme.labelSmall!
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
 
             ///* Rep
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    lastData["rep"].toString(),
-                    style: context.textTheme.labelSmall!.copyWith(fontSize: 12),
-                  ),
-                  moreDetail(_showMore, data, "rep"),
-                ],
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lastData["rep"].toString(),
+                      style:
+                          context.textTheme.labelSmall!.copyWith(fontSize: 12),
+                    ),
+                    moreDetail(_showMore, data, "rep"),
+                  ],
+                ),
               ),
             ),
 
             ///* Weight
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${lastData["weight"]} Kg",
-                    style: context.textTheme.labelSmall!.copyWith(fontSize: 12),
-                  ),
-                  moreDetail(_showMore, data, "weight"),
-                ],
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${lastData["weight"]} Kg",
+                      style:
+                          context.textTheme.labelSmall!.copyWith(fontSize: 12),
+                    ),
+                    moreDetail(_showMore, data, "weight"),
+                  ],
+                ),
               ),
             ),
 
             ///* Rpe
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    lastData["rpe"].toString(),
-                    style: context.textTheme.labelSmall!.copyWith(fontSize: 12),
-                  ),
-                  moreDetail(_showMore, data, "rpe"),
-                ],
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 0,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lastData["rpe"].toString(),
+                      style:
+                          context.textTheme.labelSmall!.copyWith(fontSize: 12),
+                    ),
+                    moreDetail(_showMore, data, "rpe"),
+                  ],
+                ),
               ),
             ),
           ],

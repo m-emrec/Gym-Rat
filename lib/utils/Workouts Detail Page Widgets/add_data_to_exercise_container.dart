@@ -105,7 +105,7 @@ class _AddDataToExerciseContainerState
 
         data.add({
           "rep": int.parse(repField.controller.text),
-          "weight": int.parse(weightField.controller!.text),
+          "weight": double.parse(weightField.controller!.text),
           "rpe": double.parse(rpeField.controller.text),
           "note": noteField.controller!.text
         });
@@ -117,6 +117,7 @@ class _AddDataToExerciseContainerState
       );
       context.exerciseProv.addExerciseData(
           exerciseId: widget.exercise["id"], data: exerciseData);
+      context.appStates.resetState(StateControllers.showAddDataController);
 
       //* Show Saved snack
       ScaffoldMessenger.of(context).showSnackBar(
@@ -127,8 +128,9 @@ class _AddDataToExerciseContainerState
           sDuration: const Duration(seconds: 1),
         ),
       );
-      context.appStates.resetState(StateControllers.showAddDataController);
     } on FormatException catch (_) {
+      logger.e(_);
+
       /// if the user leaves some fields blank , show this [Snack]
       ScaffoldMessenger.of(context).showSnackBar(
         Snack(
