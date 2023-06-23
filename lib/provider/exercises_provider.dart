@@ -310,12 +310,24 @@ class ExerciseProvider extends ChangeNotifier {
     final exercsieCollection = selectedWorkout.collection("Exercises");
 
     final selectedExercise = exercsieCollection.doc(exerciseId);
-    logger.i(data);
-    selectedExercise.collection("ExerciseData").doc(data.date.toString()).set({
-      "date": data.date,
-      "note": data.note,
-      "data": data.data,
-    }).onError((error, stackTrace) => logger.e(error));
+    var itemLength = await selectedExercise
+        .collection("ExerciseData")
+        .doc(data.date.toString())
+        .get();
+    if (itemLength.data() != null) {
+      logger.wtf("message");
+      return true;
+    } else {
+      // logger.i(data);
+      selectedExercise
+          .collection("ExerciseData")
+          .doc(data.date.toString())
+          .set({
+        "date": data.date,
+        "note": data.note,
+        "data": data.data,
+      }).onError((error, stackTrace) => logger.e(error));
+    }
   }
 
 ////
