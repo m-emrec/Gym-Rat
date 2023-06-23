@@ -20,7 +20,20 @@ class AddDataToExerciseContainer extends StatefulWidget {
 
 class _AddDataToExerciseContainerState
     extends State<AddDataToExerciseContainer> {
-  final List<List<Widget>> _dataRowList = [];
+  final List<List<Map<String, Widget>>> _dataRowList = [];
+
+  /*
+    [
+      [
+        {"set":[Text]},
+        {"rpe":[ExercisePropsDropdown]},
+        {"rep":[ExercisePropsDropdown]},
+      ],
+      [],
+      [],
+
+    ]
+  */
 
   void _createDataRowList() {
     //TODO: Add Date selection.
@@ -28,28 +41,23 @@ class _AddDataToExerciseContainerState
       _dataRowList.add([]);
 
       /// Set number
-      _dataRowList[i].add(
-        Text(
+      _dataRowList[i].add({
+        //*/Set
+        "set": Text(
           "${i + 1}",
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.kButtonColor,
           ),
         ),
-      );
-
-      /// Rep
-      _dataRowList[i].add(
-        ExercisePropsDropdown(
+        //*/ Rep
+        "rep": ExercisePropsDropdown(
           label: "Rep",
           controller: TextEditingController(),
           values: List.generate(20, (index) => index + 1),
         ),
-      );
-
-      /// Weight
-      _dataRowList[i].add(
-        TextField(
+        //*/ Weight
+        "weight": TextField(
           decoration: const InputDecoration(
             label: FittedBox(fit: BoxFit.contain, child: Text("Weight")),
             suffixText: "Kg",
@@ -64,20 +72,15 @@ class _AddDataToExerciseContainerState
             currentFocus.unfocus();
           },
         ),
-      );
-
-      /// Rpe
-      _dataRowList[i].add(
-        ExercisePropsDropdown(
+        //*/ Rpe
+        "rpe": ExercisePropsDropdown(
           label: "Rpe",
           controller: TextEditingController(),
           values: List.generate(10, (index) => ((index) / 2) + 5.5),
         ),
-      );
 
-      /// Note
-      _dataRowList[i].add(
-        TextField(
+        ///* NOTE
+        "note": TextField(
           decoration: const InputDecoration(
             icon: Icon(
               Icons.sticky_note_2_outlined,
@@ -89,8 +92,9 @@ class _AddDataToExerciseContainerState
           controller: TextEditingController(),
           textCapitalization: TextCapitalization.sentences,
         ),
-      );
+      });
     }
+    logger.i(_dataRowList);
   }
 
   void _saveDataToDatabase() {
@@ -173,14 +177,19 @@ class _AddDataToExerciseContainerState
                   itemCount: _dataRowList.length,
                   itemBuilder: (context, index) {
                     final dataRow = _dataRowList[index];
-
-                    final Text setNumber = dataRow[0] as Text;
+                    logger.e(dataRow);
+                    dataRow.map((e) {
+                      logger.wtf(e);
+                    });
+                    final Text setNumber = dataRow[0]["set"] as Text;
                     final ExercisePropsDropdown repWidget =
-                        dataRow[1] as ExercisePropsDropdown;
-                    final TextField weightWidget = dataRow[2] as TextField;
+                        dataRow[0]["rep"] as ExercisePropsDropdown;
+                    final TextField weightWidget =
+                        dataRow[0]["weight"] as TextField;
                     final ExercisePropsDropdown rpeWidget =
-                        dataRow[3] as ExercisePropsDropdown;
-                    final TextField noteWidget = dataRow[4] as TextField;
+                        dataRow[0]["rpe"] as ExercisePropsDropdown;
+                    final TextField noteWidget =
+                        dataRow[0]["note"] as TextField;
 
                     //* Set the default values for the controllers
 
