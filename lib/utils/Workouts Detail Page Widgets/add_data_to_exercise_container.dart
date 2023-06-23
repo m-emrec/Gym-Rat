@@ -39,62 +39,136 @@ class _AddDataToExerciseContainerState
     //TODO: Add Date selection.
     for (var i = 0; i < widget.exercise["numberOfSets"]; i++) {
       _dataRowList.add([]);
-
-      /// Set number
-      _dataRowList[i].add({
-        //*/Set
-        "set": Text(
-          "${i + 1}",
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: AppColors.kButtonColor,
+      final TextEditingController _noteController = TextEditingController();
+      _dataRowList[i].add(
+        {
+          //*/Set
+          "set": Text(
+            "${i + 1}",
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: AppColors.kButtonColor,
+            ),
           ),
-        ),
-        //*/ Rep
-        "rep": ExercisePropsDropdown(
-          label: "Rep",
-          controller: TextEditingController(),
-          values: List.generate(20, (index) => index + 1),
-        ),
-        //*/ Weight
-        "weight": TextField(
-          decoration: const InputDecoration(
-            label: FittedBox(fit: BoxFit.contain, child: Text("Weight")),
-            suffixText: "Kg",
-            border: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
+          //*/ Rep
+          "rep": ExercisePropsDropdown(
+            label: "Rep",
+            controller: TextEditingController(),
+            values: List.generate(20, (index) => index + 1),
           ),
-          keyboardType: TextInputType.number,
-          controller: TextEditingController(),
-          onTapOutside: (event) {
-            final currentFocus = FocusScope.of(context);
-            currentFocus.unfocus();
-          },
-        ),
-        //*/ Rpe
-        "rpe": ExercisePropsDropdown(
-          label: "Rpe",
-          controller: TextEditingController(),
-          values: List.generate(10, (index) => ((index) / 2) + 5.5),
-        ),
+          //*/ Weight
+          "weight": TextField(
+            decoration: const InputDecoration(
+              label: FittedBox(fit: BoxFit.contain, child: Text("Weight")),
+              suffixText: "Kg",
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+            ),
+            keyboardType: TextInputType.number,
+            controller: TextEditingController(),
+            onTapOutside: (event) {
+              final currentFocus = FocusScope.of(context);
+              currentFocus.unfocus();
+            },
+          ),
+          //*/ Rpe
+          "rpe": ExercisePropsDropdown(
+            label: "Rpe",
+            controller: TextEditingController(),
+            values: List.generate(10, (index) => ((index) / 2) + 5.5),
+          ),
 
-        ///* NOTE
-        "note": TextField(
-          decoration: const InputDecoration(
-            icon: Icon(
+          ///* NOTE
+          "note": TextField(
+            decoration: const InputDecoration(
+              icon: Icon(
+                Icons.sticky_note_2_outlined,
+              ),
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+            ),
+            controller: _noteController,
+            textCapitalization: TextCapitalization.sentences,
+          ),
+
+          "note2": IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Note",
+                        style: context.textTheme.titleLarge,
+                      ),
+                      const Divider()
+                    ],
+                  ),
+                  actions: [
+                    //*/ Cancel Button
+                    OutlinedButton(
+                      style: context.theme.outlinedButtonTheme.style!.copyWith(
+                        fixedSize: MaterialStatePropertyAll(
+                          Size.fromWidth(context.mediaQuerySize.width * 0.3),
+                        ),
+                      ),
+                      onPressed: () {
+                        _noteController.clear();
+                        context.navPop();
+                      },
+                      child: Text(
+                        "Cancel",
+                        style: context.textTheme.labelLarge!
+                            .copyWith(color: AppColors.kRedCollor),
+                      ),
+                    ),
+                    //*/ Done Button
+                    OutlinedButton(
+                      style: context.theme.outlinedButtonTheme.style!.copyWith(
+                        fixedSize: MaterialStatePropertyAll(
+                          Size.fromWidth(context.mediaQuerySize.width * 0.3),
+                        ),
+                      ),
+                      onPressed: () => context.navPop(),
+                      child: Text("Done", style: context.textTheme.labelLarge),
+                    ),
+                  ],
+                  content: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 2 / 1,
+                          child: TextField(
+                            controller: _noteController,
+                            maxLines: null,
+                            minLines: null,
+                            expands: true,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(
               Icons.sticky_note_2_outlined,
             ),
-            border: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
           ),
-          controller: TextEditingController(),
-          textCapitalization: TextCapitalization.sentences,
-        ),
-      });
+        }, //// end of Map
+      ); //// end of .add()
     }
-    logger.i(_dataRowList);
   }
 
   void _saveDataToDatabase() {
@@ -176,11 +250,11 @@ class _AddDataToExerciseContainerState
                   shrinkWrap: true,
                   itemCount: _dataRowList.length,
                   itemBuilder: (context, index) {
+                    //*/ This is row of the set.
+                    ///* each row represents one set.
                     final dataRow = _dataRowList[index];
-                    logger.e(dataRow);
-                    dataRow.map((e) {
-                      logger.wtf(e);
-                    });
+
+                    //*/ Define the items inside the row.
                     final Text setNumber = dataRow[0]["set"] as Text;
                     final ExercisePropsDropdown repWidget =
                         dataRow[0]["rep"] as ExercisePropsDropdown;
@@ -188,8 +262,9 @@ class _AddDataToExerciseContainerState
                         dataRow[0]["weight"] as TextField;
                     final ExercisePropsDropdown rpeWidget =
                         dataRow[0]["rpe"] as ExercisePropsDropdown;
-                    final TextField noteWidget =
-                        dataRow[0]["note"] as TextField;
+                    final TextField noteField = dataRow[0]["note"] as TextField;
+                    final IconButton noteWidget =
+                        dataRow[0]["note2"] as IconButton;
 
                     //* Set the default values for the controllers
 
