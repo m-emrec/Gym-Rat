@@ -4,6 +4,7 @@ import 'package:gym_rat_v2/extensions/context_extenions.dart';
 import 'package:gym_rat_v2/logger.dart';
 import 'package:gym_rat_v2/provider/app_states.dart';
 import 'package:gym_rat_v2/utils/snackbars.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/exercise_data_model.dart';
 import '../Add Exercises Page Widgets/exercises_props_dropdown.dart';
@@ -21,7 +22,8 @@ class AddDataToExerciseContainer extends StatefulWidget {
 class _AddDataToExerciseContainerState
     extends State<AddDataToExerciseContainer> {
   final List<List<Map<String, Widget>>> _dataRowList = [];
-
+  final TextEditingController noteController = TextEditingController();
+  DateTime? selectedDate;
   /*
     [
       [
@@ -36,10 +38,8 @@ class _AddDataToExerciseContainerState
   */
 
   void _createDataRowList() {
-    //TODO: Add Date selection.
     for (var i = 0; i < widget.exercise["numberOfSets"]; i++) {
       _dataRowList.add([]);
-      final TextEditingController _noteController = TextEditingController();
       _dataRowList[i].add(
         {
           //*/Set
@@ -78,94 +78,6 @@ class _AddDataToExerciseContainerState
             controller: TextEditingController(),
             values: List.generate(10, (index) => ((index) / 2) + 5.5),
           ),
-
-          ///* NOTE
-          "note": TextField(
-            decoration: const InputDecoration(
-              icon: Icon(
-                Icons.sticky_note_2_outlined,
-              ),
-              border: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-            ),
-            controller: _noteController,
-            textCapitalization: TextCapitalization.sentences,
-          ),
-
-          "note2": IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Note",
-                        style: context.textTheme.titleLarge,
-                      ),
-                      const Divider()
-                    ],
-                  ),
-                  actions: [
-                    //*/ Cancel Button
-                    OutlinedButton(
-                      style: context.theme.outlinedButtonTheme.style!.copyWith(
-                        fixedSize: MaterialStatePropertyAll(
-                          Size.fromWidth(context.mediaQuerySize.width * 0.3),
-                        ),
-                      ),
-                      onPressed: () {
-                        _noteController.clear();
-                        context.navPop();
-                      },
-                      child: Text(
-                        "Cancel",
-                        style: context.textTheme.labelLarge!
-                            .copyWith(color: AppColors.kRedCollor),
-                      ),
-                    ),
-                    //*/ Done Button
-                    OutlinedButton(
-                      style: context.theme.outlinedButtonTheme.style!.copyWith(
-                        fixedSize: MaterialStatePropertyAll(
-                          Size.fromWidth(context.mediaQuerySize.width * 0.3),
-                        ),
-                      ),
-                      onPressed: () => context.navPop(),
-                      child: Text("Done", style: context.textTheme.labelLarge),
-                    ),
-                  ],
-                  content: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AspectRatio(
-                          aspectRatio: 2 / 1,
-                          child: TextField(
-                            controller: _noteController,
-                            maxLines: null,
-                            minLines: null,
-                            expands: true,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-            icon: const Icon(
-              Icons.sticky_note_2_outlined,
-            ),
-          ),
         }, //// end of Map
       ); //// end of .add()
     }
@@ -173,28 +85,31 @@ class _AddDataToExerciseContainerState
 
   void _saveDataToDatabase() {
     final List<Map> data = [];
-    //TODO : After adding dataSelection add a checker which warn the user when he tries to add second data for the same date.
+
     try {
       for (var row in _dataRowList) {
-        final repField = row[1] as ExercisePropsDropdown;
-        final weightField = row[2] as TextField;
-        final rpeField = row[3] as ExercisePropsDropdown;
-        final noteField = row[4] as TextField;
+        final ExercisePropsDropdown repField =
+            row[0]["rep"] as ExercisePropsDropdown;
+        final TextField weightField = row[0]["weight"] as TextField;
+        final ExercisePropsDropdown rpeField =
+            row[0]["rpe"] as ExercisePropsDropdown;
 
         data.add({
           "rep": int.parse(repField.controller.text),
           "weight": double.parse(weightField.controller!.text),
           "rpe": double.parse(rpeField.controller.text),
-          "note": noteField.controller!.text
         });
       }
       final ExerciseData exerciseData = ExerciseData(
-        //TODO : Change this one also;
-        date: DateTime.now(),
+        date: selectedDate ?? DateTime.now(),
         data: data,
+        note: noteController.text,
       );
+
+      /// TODO: Add checker for the date.
       context.exerciseProv.addExerciseData(
           exerciseId: widget.exercise["id"], data: exerciseData);
+
       context.appStates.resetState(StateControllers.showAddDataController);
 
       //* Show Saved snack
@@ -231,6 +146,20 @@ class _AddDataToExerciseContainerState
     }
   }
 
+  Future pickDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1999),
+      lastDate: DateTime(2053),
+    );
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        selectedDate = pickedDate;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -245,6 +174,7 @@ class _AddDataToExerciseContainerState
           height: constraints.maxHeight,
           child: Column(
             children: [
+              //* List of inpıut fields
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
@@ -262,9 +192,6 @@ class _AddDataToExerciseContainerState
                         dataRow[0]["weight"] as TextField;
                     final ExercisePropsDropdown rpeWidget =
                         dataRow[0]["rpe"] as ExercisePropsDropdown;
-                    final TextField noteField = dataRow[0]["note"] as TextField;
-                    final IconButton noteWidget =
-                        dataRow[0]["note2"] as IconButton;
 
                     //* Set the default values for the controllers
 
@@ -283,14 +210,119 @@ class _AddDataToExerciseContainerState
                             Flexible(child: rpeWidget),
                           ],
                         ),
-                        noteWidget,
                       ],
                     );
                   },
                 ),
               ),
+              //* Date Picker and Note
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  /// Add Not Button
+                  IconButton(
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        actionsAlignment: MainAxisAlignment.spaceAround,
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Note",
+                              style: context.textTheme.titleLarge,
+                            ),
+                            const Divider(),
+                          ],
+                        ),
+                        content: AspectRatio(
+                          aspectRatio: 2 / 1,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  height: context.mediaQuerySize.height * 0.3,
+                                  child: TextField(
+                                    controller: noteController,
+                                    expands: true,
+                                    maxLines: null,
+                                    minLines: null,
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          ///* Cancel button
+                          OutlinedButton(
+                            style: context.theme.outlinedButtonTheme.style!
+                                .copyWith(
+                              fixedSize: MaterialStatePropertyAll(
+                                Size.fromWidth(
+                                    context.mediaQuerySize.width * 0.3),
+                              ),
+                            ),
+                            onPressed: () {
+                              noteController.clear();
+                              context.navPop();
+                            },
+                            child: Text(
+                              "Cancel",
+                              style: context.textTheme.labelLarge!
+                                  .copyWith(color: AppColors.kRedCollor),
+                            ),
+                          ),
 
-              //* Buton Row
+                          ///* Done Button
+                          OutlinedButton(
+                            style: context.theme.outlinedButtonTheme.style!
+                                .copyWith(
+                              fixedSize: MaterialStatePropertyAll(
+                                Size.fromWidth(
+                                    context.mediaQuerySize.width * 0.3),
+                              ),
+                            ),
+                            onPressed: () => context.navPop(),
+                            child: Text(
+                              "Done",
+                              style: context.textTheme.labelLarge,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    icon: const Icon(
+                      Icons.note_add_outlined,
+                      color: AppColors.kButtonColor,
+                    ),
+                  ),
+
+                  /// Select Date button
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: () => pickDate(),
+                        icon: const Icon(Icons.date_range_outlined,
+                            color: AppColors.kButtonColor),
+                      ),
+                      Text(
+                        selectedDate == null
+                            ? DateFormat.MMMMd().format(DateTime.now())
+                            : DateFormat.MMMMd().format(selectedDate!),
+                        style: context.textTheme.labelLarge,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              //* Cancel and Save buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

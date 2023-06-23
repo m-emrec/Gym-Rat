@@ -15,6 +15,7 @@ class AppStates extends ChangeNotifier {
       _stateControllers[StateControllers.showAddDataController.name];
   void resetState(StateControllers controller) {
     _stateControllers[controller.name] = false;
+    notifyListeners();
   }
 
   showAddDataContainer() {

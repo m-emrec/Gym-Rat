@@ -31,7 +31,7 @@ class _ExerciseDataHistoryState extends State<ExerciseDataHistory> {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        maxHeight: context.mediaQuerySize.height * 0.3,
+        maxHeight: context.mediaQuerySize.height * 0.4,
       ),
       decoration: BoxDecoration(
         border: Border(
