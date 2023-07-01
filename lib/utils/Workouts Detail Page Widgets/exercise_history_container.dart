@@ -21,13 +21,6 @@ class ExerciseDataHistory extends StatefulWidget {
 
 class _ExerciseDataHistoryState extends State<ExerciseDataHistory> {
   @override
-  void initState() {
-    Provider.of<AppStates>(context, listen: false)
-        .resetState(StateControllers.showAddDataController);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
@@ -57,7 +50,45 @@ class _ExerciseDataHistoryState extends State<ExerciseDataHistory> {
 
               /// if [datalist] not empty retun Table
               if (dataList.isNotEmpty) {
-                return ExerciseHistoryTable(dataList: dataList);
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    /// Buttons Row
+                    /// Edit Button
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        TextButton(
+                          style:
+                              context.theme.outlinedButtonTheme.style!.copyWith(
+                            fixedSize: MaterialStatePropertyAll(
+                              Size.fromWidth(
+                                context.mediaQuerySize.width * 0.4,
+                              ),
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: const Text("Edit"),
+                        ),
+
+                        /// Add Button
+                        TextButton(
+                          style:
+                              context.theme.outlinedButtonTheme.style!.copyWith(
+                            fixedSize: MaterialStatePropertyAll(
+                              Size.fromWidth(
+                                context.mediaQuerySize.width * 0.4,
+                              ),
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: const Text("Add"),
+                        ),
+                      ],
+                    ),
+                    ExerciseHistoryTable(dataList: dataList),
+                  ],
+                );
               } else {
                 /// if [dataList] is empty return AddData button.
                 return Column(

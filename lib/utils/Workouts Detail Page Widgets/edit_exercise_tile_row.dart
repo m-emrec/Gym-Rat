@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_rat_v2/constants.dart';
 import 'package:gym_rat_v2/extensions/context_extenions.dart';
 import 'package:gym_rat_v2/extensions/empth_padding_extension.dart';
+import 'package:gym_rat_v2/logger.dart';
+import 'package:gym_rat_v2/provider/exercises_provider.dart';
+import 'package:gym_rat_v2/provider/workout_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../enums/exercises_collection_enum.dart';
 import '../Add Exercises Page Widgets/exercises_props_dropdown.dart';
@@ -19,16 +24,27 @@ class EditExerciseTileRow extends StatefulWidget {
 class _EditExerciseTileRowState extends State<EditExerciseTileRow> {
   int value = 0;
   late final Map exercise;
-
   final TextEditingController _setController = TextEditingController();
   final TextEditingController _repController = TextEditingController();
   final TextEditingController _restController = TextEditingController();
   final TextEditingController _rpeController = TextEditingController();
 
+  void getOldData() {
+    _setController.value = TextEditingValue(
+        text: exercise[ExercisesCollection.numberOfSets.name].toString());
+    _repController.value = TextEditingValue(
+        text: exercise[ExercisesCollection.numberOfReps.name].toString());
+    _rpeController.value = TextEditingValue(
+        text: exercise[ExercisesCollection.rpe.name].toString());
+    _restController.value = TextEditingValue(
+        text: exercise[ExercisesCollection.rest.name].toString());
+  }
+
   @override
   void initState() {
     super.initState();
     exercise = widget.exercise;
+    getOldData();
   }
 
   @override
@@ -39,6 +55,7 @@ class _EditExerciseTileRowState extends State<EditExerciseTileRow> {
         children: [
           Row(
             children: [
+              // * Set Dropdown
               Flexible(
                 flex: 1,
                 child: ExercisePropsDropdown(
@@ -47,6 +64,7 @@ class _EditExerciseTileRowState extends State<EditExerciseTileRow> {
                   values: List.generate(10, (index) => index + 1),
                 ),
               ),
+              //* Rep Dropdown
               Flexible(
                 flex: 1,
                 child: ExercisePropsDropdown(
@@ -55,6 +73,7 @@ class _EditExerciseTileRowState extends State<EditExerciseTileRow> {
                   values: List.generate(20, (index) => index + 1),
                 ),
               ),
+              //* Rest Dropdown
               Flexible(
                 fit: FlexFit.tight,
                 child: ExercisePropsDropdown(
@@ -63,6 +82,7 @@ class _EditExerciseTileRowState extends State<EditExerciseTileRow> {
                   values: List.generate(20, (index) => (index + 1) * 30),
                 ),
               ),
+              //* Rpe Dropdown
               Flexible(
                 child: ExercisePropsDropdown(
                   label: "Rpe",
@@ -72,6 +92,7 @@ class _EditExerciseTileRowState extends State<EditExerciseTileRow> {
               ),
             ],
           ),
+          //* Buttons Row
           Row(
             children: [
               /// Cancel Button
@@ -92,6 +113,7 @@ class _EditExerciseTileRowState extends State<EditExerciseTileRow> {
               /// Done Button
               Flexible(
                 child: OutlinedButton(
+                  //* Call updateExercise Func
                   onPressed: () => context.exerciseProv.updateExercise(
                     exercise["id"],
                     {
